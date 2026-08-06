@@ -5,6 +5,7 @@ import { ScenvyLogoFull, ScenvyLogoIcon, ScenvyLogoBadge } from '@/components/Sc
 import { ScenvyAppIcon, ScenvyPhoneMockup, ScenvyHeroShowcase, MODULE_COLORS } from '@/components/ScenvyBrandShowcase'
 import { Check, Clock, Star, Play, Video, Zap, Sparkles, MapPin, BarChart2, QrCode, X, Send, Menu, Film, Utensils, Tv, Building, ShoppingBag, Tag, Heart, MessageCircle, Share2 } from 'lucide-react'
 import CmsPasscodeModal from '@/components/CmsPasscodeModal'
+import { EcosystemHeaderBar } from '@/components/EcosystemHeaderBar'
 
 // i18n inline
 const T = {
@@ -331,6 +332,11 @@ export default function Landing({ onOpenAuthModal }){
 
       <div className="noise-bg"></div>
 
+      {/* TOP ECOSYSTEM HEADER BAR */}
+      <div style={{ position: 'sticky', top: 0, zIndex: 110 }}>
+        <EcosystemHeaderBar onOpenAuthModal={handleOpenAuth} lang={lang} setLang={setLang} />
+      </div>
+
       {/* TOP ANNOUNCEMENT BANNER */}
       {landingConfig.show_top_banner && (
         <div style={{background:'linear-gradient(90deg, #7C3AED, #DB2777)',color:C.white,padding:'8px 16px',textAlign:'center',fontSize:12,fontWeight:700,letterSpacing:0.5,display:'flex',alignItems:'center',justifyContent:'center',gap:8,cursor:'pointer'}} onClick={() => nav(landingConfig.top_banner_link || '/menu-addon')}>
@@ -339,26 +345,8 @@ export default function Landing({ onOpenAuthModal }){
         </div>
       )}
 
-      {/* TOP ECOSYSTEM SUBDOMAIN NAVIGATION BAR */}
-      <div style={{background:'rgba(15,23,42,0.95)',borderBottom:`1px solid ${C.border}`,padding:'8px 5%',display:'flex',alignItems:'center',justifyContent:'space-between',fontSize:12,position:'relative',zIndex:102}}>
-        <div style={{display:'flex',alignItems:'center',gap:14,overflowX:'auto'}}>
-          <span style={{color:C.muted,fontWeight:700,letterSpacing:1}}>SUBDOMAINS:</span>
-          <Link to="/" style={{color:C.purple,fontWeight:800}}>scenvy.de</Link>
-          <Link to="/board" style={{color:'#3B82F6',fontWeight:800,background:'rgba(59,130,246,0.15)',padding:'2px 8px',borderRadius:6,border:'1px solid rgba(59,130,246,0.3)'}}>board.sv.de 📺</Link>
-          <Link to="/flow" style={{color:'#8B5CF6',fontWeight:700}}>flow.sv.de</Link>
-          <Link to="/menu" style={{color:'#F97316',fontWeight:700}}>menu.sv.de</Link>
-          <Link to="/magic" style={{color:'#A855F7',fontWeight:700}}>magic.sv.de</Link>
-          <Link to="/link" style={{color:'#06B6D4',fontWeight:700}}>link.sv.de</Link>
-          <Link to="/store" style={{color:'#64748B',fontWeight:700}}>store.sv.de</Link>
-          <Link to="/host" style={{color:'#10B981',fontWeight:700}}>host.sv.de</Link>
-        </div>
-        <button onClick={() => setShowCmsModal(true)} style={{background:'rgba(124,58,237,0.2)',border:'1px solid rgba(124,58,237,0.4)',color:'#A855F7',padding:'3px 10px',borderRadius:6,fontSize:11,fontWeight:800,cursor:'pointer'}}>
-          ⚙️ CMS Designer (1234)
-        </button>
-      </div>
-
       {/* NAV */}
-      <nav style={{position:'fixed',top:34,left:0,right:0,zIndex:100,height:80,background:'rgba(13,13,20,.95)',backdropFilter:'blur(20px)',borderBottom:`1px solid ${C.border}`,padding:'0 5%',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+      <nav style={{position:'sticky',top:42,left:0,right:0,zIndex:100,height:80,background:'rgba(13,13,20,.95)',backdropFilter:'blur(20px)',borderBottom:`1px solid ${C.border}`,padding:'0 5%',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <div style={{display:'flex',alignItems:'center',cursor:'pointer'}} onClick={()=>window.scrollTo({top:0,behavior:'smooth'})}>
           <ScenvyLogoFull height={70} />
         </div>
@@ -404,13 +392,13 @@ export default function Landing({ onOpenAuthModal }){
       {mobileMenuOpen && (
         <div style={{position:'fixed',top:66,left:0,right:0,bottom:0,background:'rgba(15,23,42,0.98)',backdropFilter:'blur(20px)',zIndex:995,padding:'24px 20px',display:'flex',flexDirection:'column',gap:16,overflowY:'auto'}}>
           <Link to="/board" onClick={()=>setMobileMenuOpen(false)} style={{color:'#3B82F6',fontSize:18,fontWeight:700,padding:'12px 0',borderBottom:`1px solid ${C.border}`,display:'flex',alignItems:'center',gap:10}}>
-            <Tv size={20} color="#3B82F6"/> SCENVY BOARD (board.sv.de)
+            <Tv size={20} color="#3B82F6"/> SCENVY BOARD
           </Link>
           <Link to="/flow" onClick={()=>setMobileMenuOpen(false)} style={{color:'#8B5CF6',fontSize:18,fontWeight:700,padding:'12px 0',borderBottom:`1px solid ${C.border}`,display:'flex',alignItems:'center',gap:10}}>
-            <Film size={20} color="#8B5CF6"/> SCENVY FLOW (flow.sv.de)
+            <Film size={20} color="#8B5CF6"/> SCENVY FLOW
           </Link>
           <Link to="/menu" onClick={()=>setMobileMenuOpen(false)} style={{color:'#F97316',fontSize:18,fontWeight:700,padding:'12px 0',borderBottom:`1px solid ${C.border}`,display:'flex',alignItems:'center',gap:10}}>
-            <Utensils size={20} color="#F97316"/> SCENVY MENU (menu.sv.de)
+            <Utensils size={20} color="#F97316"/> SCENVY MENU
           </Link>
           <div style={{display:'flex',flexDirection:'column',gap:12,marginTop:20}}>
             <Btn variant="outline" onClick={()=>{setMobileMenuOpen(false);handleOpenAuth()}} style={{width:'100%',textAlign:'center',padding:'12px 0'}}>{t.nav.login}</Btn>
@@ -448,17 +436,22 @@ export default function Landing({ onOpenAuthModal }){
             {/* 7 OFFICIAL APP ICONS ROW */}
             <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:24,flexWrap:'wrap',padding:'32px',borderRadius:28,background:'rgba(255,255,255,0.03)',border:'1px solid rgba(255,255,255,0.08)',maxWidth:1000,margin:'0 auto'}}>
               {[
-                { id: 'flow', name: 'Flow', status: 'active' },
-                { id: 'menu', name: 'Menu', status: 'active' },
-                { id: 'board', name: 'Board', status: 'planned' },
-                { id: 'host', name: 'Host', status: 'planned' },
-                { id: 'link', name: 'Link', status: 'planned' },
-                { id: 'store', name: 'Store', status: 'planned' },
-                { id: 'magic', name: 'Magic', status: 'planned' }
+                { id: 'flow', name: 'Flow', status: 'active', path: '/flow' },
+                { id: 'menu', name: 'Menu', status: 'active', path: '/menu' },
+                { id: 'board', name: 'Board', status: 'active', path: '/board' },
+                { id: 'host', name: 'Host', status: 'planned', path: '/host' },
+                { id: 'link', name: 'Link', status: 'planned', path: '/link' },
+                { id: 'store', name: 'Store', status: 'planned', path: '/store' },
+                { id: 'magic', name: 'Magic', status: 'planned', path: '/magic' }
               ].map((item) => (
-                <div key={item.id} style={{display:'flex',flexDirection:'column',alignItems:'center',position:'relative'}}>
-                  <div style={{position:'relative', transition: 'transform 0.2s', cursor: 'pointer'}} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
-                    <ScenvyAppIcon module={item.id} size={189} style={{opacity: item.status === 'planned' ? 0.6 : 1, filter: item.status === 'planned' ? 'grayscale(0.6)' : 'none' }} />
+                <div 
+                  key={item.id} 
+                  onClick={() => nav(item.path)}
+                  style={{display:'flex',flexDirection:'column',alignItems:'center',position:'relative',cursor:'pointer'}}
+                  title={`SCENVY ${item.name} öffnen`}
+                >
+                  <div style={{position:'relative', transition: 'transform 0.2s'}} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
+                    <ScenvyAppIcon module={item.id} size={189} style={{opacity: item.status === 'planned' ? 0.75 : 1}} />
                     {item.status === 'active' ? (
                       <div style={{position:'absolute',bottom:2,right:2,background:C.green,borderRadius:'50%',width:28,height:28,display:'flex',alignItems:'center',justifyContent:'center',border:`3px solid #0F172A`,boxShadow:'0 4px 12px rgba(0,0,0,0.5)'}} title="Aktiv">
                         <Check size={16} color={C.white} strokeWidth={3} />
@@ -469,6 +462,9 @@ export default function Landing({ onOpenAuthModal }){
                       </div>
                     )}
                   </div>
+                  <span style={{fontSize:11,fontWeight:800,color:item.status==='active'?C.white:C.dim,marginTop:6,textTransform:'uppercase',letterSpacing:0.5}}>
+                    {item.name}
+                  </span>
                 </div>
               ))}
             </div>
@@ -608,10 +604,10 @@ export default function Landing({ onOpenAuthModal }){
               </div>
 
               <div style={{display:'flex',gap:12}}>
-                <button onClick={()=>nav('/reels-addon')} style={{flex:1,padding:'12px 0',borderRadius:12,border:'1px solid rgba(139,92,246,0.5)',background:'rgba(139,92,246,0.15)',color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',textAlign:'center'}}>
+                <button onClick={()=>nav('/flow')} style={{flex:1,padding:'12px 0',borderRadius:12,border:'1px solid rgba(139,92,246,0.5)',background:'rgba(139,92,246,0.15)',color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',textAlign:'center'}}>
                   {lang === 'de' ? 'Details ansehen →' : 'View details →'}
                 </button>
-                <button onClick={()=>nav('/auth?mode=register')} style={{flex:1.2,padding:'12px 0',borderRadius:12,border:'none',background:'linear-gradient(135deg, #8B5CF6, #EC4899)',color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',textAlign:'center'}}>
+                <button onClick={handleOpenAuth} style={{flex:1.2,padding:'12px 0',borderRadius:12,border:'none',background:'linear-gradient(135deg, #8B5CF6, #EC4899)',color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',textAlign:'center'}}>
                   {lang === 'de' ? 'Scan the Flow starten' : 'Start Scan the Flow'}
                 </button>
               </div>
@@ -656,53 +652,58 @@ export default function Landing({ onOpenAuthModal }){
               </div>
 
               <div style={{display:'flex',gap:12}}>
-                <button onClick={()=>nav('/menu-addon')} style={{flex:1,padding:'12px 0',borderRadius:12,border:'1px solid rgba(249,115,22,0.5)',background:'rgba(249,115,22,0.15)',color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',textAlign:'center'}}>
+                <button onClick={()=>nav('/menu')} style={{flex:1,padding:'12px 0',borderRadius:12,border:'1px solid rgba(249,115,22,0.5)',background:'rgba(249,115,22,0.15)',color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',textAlign:'center'}}>
                   {lang === 'de' ? 'Details ansehen →' : 'View details →'}
                 </button>
-                <button onClick={()=>nav('/auth?mode=register')} style={{flex:1.2,padding:'12px 0',borderRadius:12,border:'none',background:'linear-gradient(135deg, #F97316, #8B5CF6)',color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',textAlign:'center'}}>
+                <button onClick={handleOpenAuth} style={{flex:1.2,padding:'12px 0',borderRadius:12,border:'none',background:'linear-gradient(135deg, #F97316, #8B5CF6)',color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',textAlign:'center'}}>
                   {lang === 'de' ? 'Jetzt Speisekarte starten' : 'Start Menu Now'}
                 </button>
               </div>
             </div>
 
             {/* MODULE 3: BOARD (Blau #3B82F6) */}
-            <div style={{background:C.card,border:'1px solid rgba(59,130,246,0.3)',borderRadius:24,padding:32,position:'relative',display:'flex',flexDirection:'column',justify:'space-between'}}>
+            <div style={{background:C.card,border:'2px solid rgba(59,130,246,0.6)',borderRadius:24,padding:32,position:'relative',display:'flex',flexDirection:'column',justify:'space-between',boxShadow:'0 10px 40px rgba(59,130,246,0.15)'}}>
               <div>
                 <div style={{display:'flex',justify:'space-between',alignItems:'center',marginBottom:16}}>
                   <span style={{fontSize:11,fontWeight:800,color:'#3B82F6',background:'rgba(59,130,246,0.15)',padding:'4px 12px',borderRadius:20,border:'1px solid rgba(59,130,246,0.3)',letterSpacing:1}}>
-                    {lang === 'de' ? 'SCENVY BOARD · IN VORBEREITUNG (board.scenvy.de)' : 'SCENVY BOARD · COMING SOON (board.scenvy.de)'}
+                    {lang === 'de' ? 'SCENVY BOARD · AKTIV (board.scenvy.de)' : 'SCENVY BOARD · ACTIVE (board.scenvy.de)'}
                   </span>
                   <ScenvyAppIcon module="board" size={56} style={{borderRadius:14,boxShadow:'0 4px 16px rgba(59,130,246,0.4)'}} />
                 </div>
                 <h3 style={{fontSize:24,fontWeight:900,color:C.white,marginBottom:10}}>SCENVY BOARD</h3>
                 <p style={{fontSize:15,color:C.muted,lineHeight:1.6,marginBottom:20}}>
                   {lang === 'de'
-                    ? 'Steuere jeden Bildschirm von einem Ort aus. Digital Signage in Gastronomie, Hotels & Retail mit dynamischen Playlists.'
-                    : 'Control every screen from one place. Manage digital signage in restaurants, hotels and retail with dynamic playlists.'}
+                    ? 'Steuere jeden Bildschirm ohne Hardware-Zwangsplayer. Digital Signage in Gastronomie, Hotels & Retail mit dynamischen Playlists.'
+                    : 'Control every screen without hardware player lock-in. Manage digital signage in restaurants, hotels and retail with dynamic playlists.'}
                 </p>
                 <div style={{display:'flex',flexDirection:'column',gap:12,marginBottom:32}}>
                   {(lang === 'de' ? [
-                    'Multi-Screen CMS Verwaltung',
-                    'Drag & Drop Playlist Builder',
-                    'Zeitgesteuerte Inhaltsplaner',
-                    'Hardware & Player Integration'
+                    'Multi-Screen Digital Signage CMS',
+                    'Google Sheets Live Preis-Sync in 2s',
+                    'RSS Feeds & Flugtafeln Integration',
+                    '100% Web-URL basiert — Jeder Smart TV'
                   ] : [
-                    'Multi-Screen CMS Management',
-                    'Drag & Drop Playlist Builder',
-                    'Time-based Content Scheduling',
-                    'Hardware & Player Integration'
+                    'Multi-Screen Digital Signage CMS',
+                    'Google Sheets Live Price Sync in 2s',
+                    'RSS Feeds & Flight Board Integration',
+                    '100% Web-URL based — Any Smart TV'
                   ]).map((feat,idx)=>(
-                    <div key={idx} style={{display:'flex',alignItems:'center',gap:8,fontSize:13,color:C.muted}}>
-                      <div style={{width:16,height:16,borderRadius:'50%',background:'rgba(59,130,246,0.15)',display:'flex',alignItems:'center',justifyContent:'center',color:'#3B82F6',fontSize:10,fontWeight:900}}>•</div>
+                    <div key={idx} style={{display:'flex',alignItems:'center',gap:8,fontSize:13,color:C.white}}>
+                      <div style={{width:16,height:16,borderRadius:'50%',background:'rgba(59,130,246,0.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'#3B82F6',fontSize:10,fontWeight:900}}>✓</div>
                       {feat}
                     </div>
                   ))}
                 </div>
               </div>
 
-              <button disabled style={{width:'100%',padding:'12px 0',borderRadius:12,border:'1px solid rgba(59,130,246,0.3)',background:'rgba(59,130,246,0.08)',color:'#3B82F6',fontWeight:700,fontSize:13,cursor:'not-allowed',textAlign:'center'}}>
-                {lang === 'de' ? 'In Vorbereitung 2026 (board.scenvy.de)' : 'Coming Q3 2026 (board.scenvy.de)'}
-              </button>
+              <div style={{display:'flex',gap:12}}>
+                <button onClick={()=>nav('/board')} style={{flex:1,padding:'12px 0',borderRadius:12,border:'1px solid rgba(59,130,246,0.5)',background:'rgba(59,130,246,0.15)',color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',textAlign:'center'}}>
+                  {lang === 'de' ? 'Details ansehen →' : 'View details →'}
+                </button>
+                <button onClick={handleOpenAuth} style={{flex:1.2,padding:'12px 0',borderRadius:12,border:'none',background:'linear-gradient(135deg, #3B82F6, #8B5CF6)',color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',textAlign:'center'}}>
+                  {lang === 'de' ? 'Scenvy Board starten' : 'Start Scenvy Board'}
+                </button>
+              </div>
             </div>
 
           </div>
@@ -1063,7 +1064,7 @@ export default function Landing({ onOpenAuthModal }){
                 <ScenvyLogoFull height={70} />
               </div>
               <p style={{fontSize:13,color:C.muted,lineHeight:1.65,marginBottom:12}}>{t.footerTag}</p>
-              <div style={{fontSize:12,color:C.dim}}>app.scenvy.de</div>
+              <div style={{fontSize:12,color:C.dim}}>app.sv.de</div>
             </div>
             {[['Company',['About','Blog','Careers','Press']],['Legal',['Privacy','Terms','GDPR','Imprint']]].map(([title,links])=>(
               <div key={title}>

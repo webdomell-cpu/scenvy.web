@@ -1,85 +1,109 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { MODULE_COLORS, ScenvyAppIcon, ScenvyPhoneMockup } from '@/components/ScenvyBrandShowcase'
 import { ScenvyLogoIcon } from '@/components/ScenvyLogo'
-import { ArrowRight, CheckCircle, Sparkles, Globe, Layers, ShieldCheck, Zap } from 'lucide-react'
+import { EcosystemHeaderBar } from '@/components/EcosystemHeaderBar'
+import { 
+  ArrowRight, CheckCircle, Sparkles, Globe, Layers, ShieldCheck, Zap, 
+  ShoppingBag, Hotel, Utensils, Calendar, Scissors, Plane, Compass, FileText
+} from 'lucide-react'
 
 export default function ScenvyProductPage({ module = 'flow', onOpenAuthModal }) {
-  const [lang, setLang] = useState('de')
+  const [lang, setLang] = useState(() => localStorage.getItem('scenvy_lang') || 'de')
   const m = module.toLowerCase()
   const config = MODULE_COLORS[m] || MODULE_COLORS.flow
+
+  useEffect(() => {
+    const syncLang = () => setLang(localStorage.getItem('scenvy_lang') || 'de')
+    window.addEventListener('scenvy_lang_changed', syncLang)
+    return () => window.removeEventListener('scenvy_lang_changed', syncLang)
+  }, [])
 
   const details = {
     flow: {
       name: 'SCENVY FLOW',
-      tagline: 'Vertikale TikTok-Reels für Hospitality',
-      sub: 'Verwandle statische Speisekarten und QR-Codes in fesselnde Vollbild-Videos. Entdecken, swipen, bestellen.',
-      subdomain: 'flow.sv.de',
+      tagline: lang === 'de' ? 'Vertikale Video-Reels & Stories für alle Branchen' : 'Vertical Video Reels & Stories for All Industries',
+      sub: lang === 'de' 
+        ? 'Verwandle statische Flyer, Papier-Angebote & Schaufenster in fesselnde Vollbild-Videos. Perfekt für Gastronomie, Retail, Event, Tourismus & Dienstleister.'
+        : 'Turn static flyers, paper catalogs & window displays into engaging full-screen video reels. Built for dining, retail, events, tourism & services.',
+      subdomain: 'flow.scenvy.de',
       features: [
-        'Vollbild TikTok-artige Story Reels im mobilen Web-Browser',
-        'Live Happy Hour Countdown Push-Deals in Echtzeit',
-        'KI-generierte Reels in unter 60 Sekunden aus Foto oder Text',
-        'Multi-Standort Dashboard für Gruppen & Restaurantketten'
+        'Vollbild TikTok-artige Story Reels im mobilen Web-Browser ohne App-Download',
+        'Multi-Industry: Gastro-Angebote, Fashion-Lookbooks, Hotel-Amenities & Event-Highlights',
+        'Live Countdown Deals & Flash-Sales in Echtzeit pushen',
+        'KI-generierte Video-Reels in unter 60 Sekunden aus Foto oder Textbefehl',
+        'Multi-Standort Dashboard für Filialen, Ketten & Franchise-Partner'
       ]
     },
     menu: {
       name: 'SCENVY MENU',
-      tagline: 'Interaktive Digitale Speisekarten & Scan-to-Order',
-      sub: 'Die nächste Generation digitaler Menüs mit Allergen-Filtern, Mehrsprachigkeit und visuellen Food-Videos.',
-      subdomain: 'menu.sv.de',
+      tagline: lang === 'de' ? 'Die universelle Digitale Preisliste & Web-App' : 'The Universal Digital Price List & Web App',
+      sub: lang === 'de'
+        ? 'Verwandle JEDE bisherige Papier-Preisliste in eine interaktive Web-App. Für Speisen, Kosmetik-Behandlungen, SPA-Services, Mietpreise & Retail-Kataloge.'
+        : 'Transform ANY paper price list into a interactive web application. For menus, salon treatments, spa services, rental rates & retail catalogs.',
+      subdomain: 'menu.scenvy.de',
       features: [
-        'Echtzeit-Aktualisierung von Preisen und Speisen ohne Nachdruck',
-        'Interaktive Video-Menüs mit Allergen- & Nährwertfiltern',
-        'Direkte Tischnummer-Kopplung und Scan-to-Order Integration',
-        'Mehrsprachig (DE, EN, FR, ES, AR) mit KI-Übersetzung'
+        'Echtzeit-Aktualisierung von Preisen, Angeboten & Verfügbarkeiten ohne Nachdruck',
+        'Allergen-, Filter- & Inhaltsstoff-Suche per Klick',
+        'Interaktive Video-Präsentation aller Produkte & Dienstleistungen',
+        'Direkte Tischnummer- oder Stand-Kopplung für Scan-to-Order & Anfragen',
+        'Automatische Übersetzung in über 10 Sprachen (DE, EN, FR, ES, IT, AR, etc.)'
       ]
     },
     magic: {
       name: 'SCENVY MAGIC',
-      tagline: 'KI-Content & Automation Suite',
-      sub: 'Generiere Bildschirminhalte, Social Media Posts, Promo-Videos & Speisekarten automatisch mit Gemini AI.',
-      subdomain: 'magic.sv.de',
+      tagline: lang === 'de' ? 'KI-Content & Automation Suite' : 'AI Content & Automation Suite',
+      sub: lang === 'de'
+        ? 'Generiere Bildschirminhalte, Social Media Posts, Promo-Videos & Preislisten automatisch mit Gemini AI.'
+        : 'Generate screen content, social posts, promo videos & price lists automatically with Gemini AI.',
+      subdomain: 'magic.scenvy.de',
       features: [
         'KI-generierte Video-Reels aus einfachen Text-Prompts',
-        'Automatische Speisekarten-Erfassung per Foto-Upload',
+        'Automatische Erfassung von Papier-Dokumenten per Foto-Upload',
         'Intelligente Angebotsempfehlungen & Preis-Optimierung',
-        'Mehrsprachige Übersetzung aller Venue-Inhalte auf Knopfdruck'
+        'Mehrsprachige Übersetzung aller Inhalte auf Knopfdruck'
       ]
     },
     link: {
       name: 'SCENVY LINK',
-      tagline: 'NFC & Smart QR Connect Solutions',
-      sub: 'Intelligente Tischaufsteller, NFC-Karten & QR-Code-Lösungen für jeden Tisch und Tresen.',
-      subdomain: 'link.sv.de',
+      tagline: lang === 'de' ? 'NFC & Smart QR Connect Solutions' : 'NFC & Smart QR Connect Solutions',
+      sub: lang === 'de'
+        ? 'Intelligente Tischaufsteller, NFC-Karten & QR-Code-Lösungen für Tische, Tresen, Schaufenster & Verkaufsflächen.'
+        : 'Smart table displays, NFC cards & QR code solutions for tables, counters, shop windows & retail areas.',
+      subdomain: 'link.scenvy.de',
       features: [
-        'Hochwertige Acryl & Holz Tischaufsteller mit Gravur',
-        'Integrierte NFC-Chips für instant Tap-to-Open ohne Kamera',
-        'Dynamische Ziel-URLs: Jederzeit auf Reels, Menü oder WiFi umschaltbar',
-        'Wasserdicht & Gastro-erprobt für den Außen- & Innenbereich'
+        'Hochwertige Acryl, Metall & Holz Tischaufsteller mit Gravur',
+        'Integrierte NFC-Chips für instant Tap-to-Open ohne Kamera-App',
+        'Dynamische Ziel-URLs: Jederzeit auf Reels, Menü, WiFi oder Bewertung umschaltbar',
+        'Wasserdicht & erprobt für Innen- und Außenbereich'
       ]
     },
     store: {
       name: 'SCENVY STORE',
-      tagline: 'Hardware, Kioske & Display Zubehör',
-      sub: 'Hardware-Komponenten, Stele-Displays, POS Kioske und Zubehör maßgeschneidert für Gastronomie & Hotels.',
-      subdomain: 'store.sv.de',
+      tagline: lang === 'de' ? 'Hardware, Kioske & Display Zubehör' : 'Hardware, Kiosks & Display Accessories',
+      sub: lang === 'de'
+        ? 'Hardware-Komponenten, Stele-Displays, POS Kioske und Zubehör maßgeschneidert für Venues, Retail & Hotels.'
+        : 'Hardware components, totem displays, POS kiosks & accessories tailored for venues, retail & hotels.',
+      subdomain: 'store.scenvy.de',
       features: [
-        'Vorkonfigurierte Smart TV Displays & Stelen',
+        'Vorkonfigurierte Smart TV Displays & Outdoor Stelen',
         'NFC & QR Tischaufsteller in Premium Metall- & Holzausführung',
-        'Self-Service Bestellkioske für Fast Casual Restaurants',
-        'Plug & Play Einrichtung mit 24/7 Vor-Ort-Garantie'
+        'Self-Service Bestellkioske für Fast Casual & Retail',
+        'Plug & Play Einrichtung mit Garantie'
       ]
     },
     host: {
       name: 'SCENVY HOST',
-      tagline: 'Guest Experience & Hotel In-Room Portal',
-      sub: 'Das digitale Gästeerlebnis für Hotels, Resorts & VIP Lounges. Digitale Gästemappe, Room-Service & Concierge.',
-      subdomain: 'host.sv.de',
+      tagline: lang === 'de' ? 'Guest Experience & Hotel In-Room Portal' : 'Guest Experience & Hotel In-Room Portal',
+      sub: lang === 'de'
+        ? 'Das digitale Gästeerlebnis für Hotels, Resorts, VIP Lounges & Ferienwohnungen. Digitale Gästemappe, Room-Service & Concierge.'
+        : 'Digital guest experience for hotels, resorts, VIP lounges & vacation rentals. Digital guest binder, room service & concierge.',
+      subdomain: 'host.scenvy.de',
       features: [
         'Digitale Gästemappe auf dem Zimmer-TV oder Smartphone',
-        'In-Room Dining Bestellungen direkt in die Hotelküche',
+        'In-Room Dining Bestellungen direkt in die Küche',
         'SPA & Ausflugs-Buchungen ohne Rezeptionswartezeit',
-        'Smart Check-Out & Bewertungssystem für maximale Kundenzufriedenheit'
+        'Smart Check-Out & Bewertungssystem'
       ]
     }
   }
@@ -87,35 +111,63 @@ export default function ScenvyProductPage({ module = 'flow', onOpenAuthModal }) 
   const pData = details[m] || details.flow
 
   const handleAuthClick = (e) => {
-    e.preventDefault()
+    if (e) e.preventDefault()
     if (onOpenAuthModal) {
       onOpenAuthModal()
     } else {
-      window.location.href = 'https://app.sv.de'
+      window.location.href = 'https://app.scenvy.de'
     }
   }
+
+  // Multi-Industry Showcase
+  const industries = [
+    {
+      icon: Utensils,
+      color: '#F97316',
+      title: lang === 'de' ? 'Gastronomie & Nightlife' : 'Dining & Nightlife',
+      desc: lang === 'de' 
+        ? 'Speisekarten, Food-Videos, Happy Hour Countdowns & Scan-to-Order am Tisch.'
+        : 'Digital menus, food video reels, Happy Hour deals & scan-to-order at the table.'
+    },
+    {
+      icon: ShoppingBag,
+      color: '#3B82F6',
+      title: lang === 'de' ? 'Retail & Einzelhandel' : 'Retail & Fashion',
+      desc: lang === 'de'
+        ? 'Digitale Produktkataloge, Schaufenster-Lookbooks & Verwandlung von Preislisten in Web-Apps.'
+        : 'Digital product catalogs, window lookbooks & turning print prices into dynamic web apps.'
+    },
+    {
+      icon: Hotel,
+      color: '#10B981',
+      title: lang === 'de' ? 'Hotels & Tourismus' : 'Hotels & Tourism',
+      desc: lang === 'de'
+        ? 'Digitale Gästemappen, SPA-Behandlungsmenüs, Ausflugsbuchungen & Room-Service.'
+        : 'Digital guest folders, SPA treatment menus, excursion booking & in-room dining.'
+    },
+    {
+      icon: Calendar,
+      color: '#A855F7',
+      title: lang === 'de' ? 'Events, Messen & Kultur' : 'Events & Festivals',
+      desc: lang === 'de'
+        ? 'Bühnenprogramme, Line-Up Reels, VIP-Pass Führungen & digitale Festival-Pläne.'
+        : 'Stage schedules, lineup reels, VIP guides & interactive digital festival maps.'
+    },
+    {
+      icon: Scissors,
+      color: '#EC4899',
+      title: lang === 'de' ? 'Salons, Beauty & Services' : 'Salons, Beauty & Wellness',
+      desc: lang === 'de'
+        ? 'Ersetze gedruckte Behandlungs- & Preislisten durch interaktive Vorher/Nachher-Reels.'
+        : 'Replace printed service lists with interactive before/after video showcases.'
+    }
+  ]
 
   return (
     <div style={{ minHeight: '100vh', background: '#090818', color: '#F3F4F6', fontFamily: 'Inter, system-ui, sans-serif' }}>
       
       {/* Ecosystem Subdomain Bar */}
-      <div style={{ background: 'rgba(15, 23, 42, 0.95)', borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '8px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 12 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, overflowX: 'auto' }}>
-          <span style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 700 }}>ECOSYSTEM:</span>
-          <Link to="/" style={{ color: '#94A3B8', textDecoration: 'none', fontWeight: 600 }}>scenvy.de</Link>
-          <Link to="/board" style={{ color: '#94A3B8', textDecoration: 'none', fontWeight: 600 }}>board.sv.de</Link>
-          <Link to="/flow" style={{ color: m === 'flow' ? config.primary : '#94A3B8', textDecoration: 'none', fontWeight: m === 'flow' ? 800 : 600 }}>flow.sv.de</Link>
-          <Link to="/menu" style={{ color: m === 'menu' ? config.primary : '#94A3B8', textDecoration: 'none', fontWeight: m === 'menu' ? 800 : 600 }}>menu.sv.de</Link>
-          <Link to="/magic" style={{ color: m === 'magic' ? config.primary : '#94A3B8', textDecoration: 'none', fontWeight: m === 'magic' ? 800 : 600 }}>magic.sv.de</Link>
-          <Link to="/link" style={{ color: m === 'link' ? config.primary : '#94A3B8', textDecoration: 'none', fontWeight: m === 'link' ? 800 : 600 }}>link.sv.de</Link>
-          <Link to="/store" style={{ color: m === 'store' ? config.primary : '#94A3B8', textDecoration: 'none', fontWeight: m === 'store' ? 800 : 600 }}>store.sv.de</Link>
-          <Link to="/host" style={{ color: m === 'host' ? config.primary : '#94A3B8', textDecoration: 'none', fontWeight: m === 'host' ? 800 : 600 }}>host.sv.de</Link>
-        </div>
-
-        <Link to="/" style={{ textDecoration: 'none', color: config.primary, fontWeight: 700, fontSize: 12 }}>
-          ← Hauptseite
-        </Link>
-      </div>
+      <EcosystemHeaderBar onOpenAuthModal={onOpenAuthModal} lang={lang} setLang={setLang} />
 
       {/* Main Header */}
       <header style={{ padding: '16px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(16px)', position: 'sticky', top: 0, zIndex: 50, background: 'rgba(9,8,24,0.85)' }}>
@@ -131,7 +183,7 @@ export default function ScenvyProductPage({ module = 'flow', onOpenAuthModal }) 
           onClick={handleAuthClick}
           style={{ padding: '10px 22px', borderRadius: 10, border: 'none', background: config.primary, color: '#FFF', fontWeight: 800, fontSize: 14, cursor: 'pointer', boxShadow: `0 4px 20px ${config.primary}66` }}
         >
-          {pData.name} Starten (app.sv.de) →
+          {lang === 'de' ? 'Jetzt Starten →' : 'Get Started →'}
         </button>
       </header>
 
@@ -152,8 +204,8 @@ export default function ScenvyProductPage({ module = 'flow', onOpenAuthModal }) 
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 36 }}>
             {pData.features.map((feat, idx) => (
-              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 15, fontWeight: 600, color: '#E2E8F0' }}>
-                <CheckCircle size={18} color={config.primary} />
+              <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 15, fontWeight: 600, color: '#E2E8F0', lineHeight: 1.4 }}>
+                <CheckCircle size={18} color={config.primary} style={{ flexShrink: 0, marginTop: 2 }} />
                 <span>{feat}</span>
               </div>
             ))}
@@ -163,7 +215,7 @@ export default function ScenvyProductPage({ module = 'flow', onOpenAuthModal }) 
             onClick={handleAuthClick}
             style={{ padding: '16px 36px', borderRadius: 14, border: 'none', background: config.primary, color: '#FFF', fontWeight: 900, fontSize: 16, cursor: 'pointer', boxShadow: `0 8px 30px ${config.primary}55`, display: 'inline-flex', alignItems: 'center', gap: 10 }}
           >
-            Jetzt {pData.name} Nutzen <ArrowRight size={18} />
+            {lang === 'de' ? `Jetzt ${pData.name} Nutzen` : `Use ${pData.name} Now`} <ArrowRight size={18} />
           </button>
         </div>
 
@@ -173,16 +225,55 @@ export default function ScenvyProductPage({ module = 'flow', onOpenAuthModal }) 
         </div>
       </section>
 
+      {/* Multi-Industry Capabilities Section */}
+      <section style={{ padding: '70px 20px', background: '#0D0C22', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 40 }}>
+            <div style={{ fontSize: 12, color: config.primary, fontWeight: 900, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>
+              {lang === 'de' ? 'EINSATZ IN ALLEN BRANCHEN' : 'FOR ALL INDUSTRIES'}
+            </div>
+            <h2 style={{ fontSize: 32, fontWeight: 900 }}>
+              {lang === 'de' 
+                ? 'Jede Papier-Preisliste wird zur interaktiven Web-App' 
+                : 'Turn Any Paper Price List into an Interactive Web App'}
+            </h2>
+            <p style={{ color: '#94A3B8', fontSize: 16, maxWidth: 650, margin: '10px auto 0' }}>
+              {lang === 'de'
+                ? 'Egal ob Restaurant-Speisekarte, Beauty-Behandlungen, Retail-Angebote oder Event-Programm: SCENVY bringt Ihre Inhalte direkt aufs Smartphone der Kunden.'
+                : 'Whether restaurant menus, beauty treatments, retail catalogs, or event schedules: SCENVY brings your content straight to customer smartphones.'}
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20 }}>
+            {industries.map((ind, i) => (
+              <div key={i} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: 22 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 10, background: `${ind.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
+                  <ind.icon size={20} color={ind.color} />
+                </div>
+                <h3 style={{ fontSize: 17, fontWeight: 800, color: '#FFF', marginBottom: 8 }}>{ind.title}</h3>
+                <p style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.5 }}>{ind.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Footer Banner */}
       <section style={{ padding: '60px 20px', background: '#070612', borderTop: '1px solid rgba(255,255,255,0.08)', textAlign: 'center' }}>
         <ScenvyAppIcon module={m} size={48} style={{ marginBottom: 16 }} />
-        <h2 style={{ fontSize: 28, fontWeight: 900, marginBottom: 12 }}>Bereit für das {pData.name} Erlebnis?</h2>
-        <p style={{ color: '#94A3B8', fontSize: 15, marginBottom: 24 }}>Melde dich an und verbinde dein Venue in unter 5 Minuten.</p>
+        <h2 style={{ fontSize: 28, fontWeight: 900, marginBottom: 12 }}>
+          {lang === 'de' ? `Bereit für das ${pData.name} Erlebnis?` : `Ready for ${pData.name}?`}
+        </h2>
+        <p style={{ color: '#94A3B8', fontSize: 15, marginBottom: 24 }}>
+          {lang === 'de' 
+            ? 'Melde dich an und verbinde dein Business in unter 5 Minuten.'
+            : 'Sign up and connect your business in under 5 minutes.'}
+        </p>
         <button 
           onClick={handleAuthClick}
           style={{ padding: '14px 32px', borderRadius: 12, border: 'none', background: config.primary, color: '#FFF', fontWeight: 800, fontSize: 15, cursor: 'pointer' }}
         >
-          Kostenlos auf app.sv.de starten →
+          {lang === 'de' ? 'Kostenlos Registrieren →' : 'Register Free →'}
         </button>
       </section>
 

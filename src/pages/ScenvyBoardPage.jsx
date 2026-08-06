@@ -3,20 +3,28 @@ import { Link, useNavigate } from 'react-router-dom'
 import { C, grad } from '@/tokens'
 import { ScenvyLogoFull, ScenvyLogoIcon } from '@/components/ScenvyLogo'
 import { MODULE_COLORS, ScenvyAppIcon } from '@/components/ScenvyBrandShowcase'
+import { EcosystemHeaderBar } from '@/components/EcosystemHeaderBar'
 import { 
   Tv, Rss, Table, Image as ImageIcon, Video, Sparkles, Sun, Plane, Utensils, 
   CheckCircle, ArrowRight, Monitor, Layers, ShieldCheck, Zap, Globe, Smartphone,
-  Clock, RefreshCw, BarChart, Sliders, Play, ExternalLink, HelpCircle, Building, Hotel
+  Clock, RefreshCw, BarChart, Sliders, Play, ExternalLink, HelpCircle, Building, Hotel,
+  ShoppingBag, Calendar
 } from 'lucide-react'
 
 export default function ScenvyBoardPage({ onOpenAuthModal }) {
   const navigate = useNavigate()
-  const [lang, setLang] = useState('de')
+  const [lang, setLang] = useState(() => localStorage.getItem('scenvy_lang') || 'de')
   const [activeBoardTab, setActiveBoardTab] = useState('menu') // 'menu' | 'rss' | 'flight' | 'weather' | 'ai'
   const [dayTime, setDayTime] = useState('lunch') // 'breakfast' | 'lunch' | 'happyhour' | 'dinner'
   const [tickerSpeed, setTickerSpeed] = useState('normal')
 
   const boardColor = MODULE_COLORS.board.primary // #3B82F6
+
+  useEffect(() => {
+    const syncLang = () => setLang(localStorage.getItem('scenvy_lang') || 'de')
+    window.addEventListener('scenvy_lang_changed', syncLang)
+    return () => window.removeEventListener('scenvy_lang_changed', syncLang)
+  }, [])
 
   // Simulated live data feed
   const menuItems = {
@@ -43,40 +51,19 @@ export default function ScenvyBoardPage({ onOpenAuthModal }) {
   }
 
   const handleAuthClick = (e) => {
-    e.preventDefault()
+    if (e) e.preventDefault()
     if (onOpenAuthModal) {
       onOpenAuthModal()
     } else {
-      window.location.href = 'https://app.sv.de'
+      window.location.href = 'https://app.scenvy.de'
     }
   }
 
   return (
     <div style={{ minHeight: '100vh', background: '#070B14', color: '#F3F4F6', fontFamily: 'Inter, system-ui, sans-serif' }}>
       
-      {/* Ecosystem Top Bar (Subdomain Navigation) */}
-      <div style={{ background: 'rgba(15, 23, 42, 0.95)', borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '8px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 12 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, overflowX: 'auto' }}>
-          <span style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 700, letterSpacing: 1 }}>ECOSYSTEM:</span>
-          <Link to="/" style={{ color: '#94A3B8', textDecoration: 'none', fontWeight: 600, transition: 'color 0.2s' }}>scenvy.de</Link>
-          <span style={{ color: '#38BDF8', fontWeight: 800, background: 'rgba(56,189,248,0.15)', padding: '2px 8px', borderRadius: 6, border: '1px solid rgba(56,189,248,0.3)' }}>board.sv.de</span>
-          <Link to="/flow" style={{ color: '#94A3B8', textDecoration: 'none', fontWeight: 600 }}>flow.sv.de</Link>
-          <Link to="/menu" style={{ color: '#94A3B8', textDecoration: 'none', fontWeight: 600 }}>menu.sv.de</Link>
-          <Link to="/magic" style={{ color: '#94A3B8', textDecoration: 'none', fontWeight: 600 }}>magic.sv.de</Link>
-          <Link to="/link" style={{ color: '#94A3B8', textDecoration: 'none', fontWeight: 600 }}>link.sv.de</Link>
-          <Link to="/store" style={{ color: '#94A3B8', textDecoration: 'none', fontWeight: 600 }}>store.sv.de</Link>
-          <Link to="/host" style={{ color: '#94A3B8', textDecoration: 'none', fontWeight: 600 }}>host.sv.de</Link>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <button onClick={() => setLang(l => l === 'de' ? 'en' : 'de')} style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: '#FFF', padding: '3px 8px', borderRadius: 6, fontSize: 11, cursor: 'pointer', fontWeight: 700 }}>
-            {lang === 'de' ? '🇩🇪 DE' : '🇬🇧 EN'}
-          </button>
-          <Link to="/" style={{ textDecoration: 'none', color: '#38BDF8', fontWeight: 700, fontSize: 12 }}>
-            ← Zur Hauptseite
-          </Link>
-        </div>
-      </div>
+      {/* Ecosystem Top Bar */}
+      <EcosystemHeaderBar onOpenAuthModal={onOpenAuthModal} lang={lang} setLang={setLang} />
 
       {/* Main Product Header */}
       <header style={{ padding: '16px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(16px)', position: 'sticky', top: 0, zIndex: 50, background: 'rgba(7,11,20,0.85)' }}>
@@ -88,7 +75,9 @@ export default function ScenvyBoardPage({ onOpenAuthModal }) {
               <span style={{ fontSize: 20, fontWeight: 900, color: boardColor, letterSpacing: -0.5 }}>BOARD</span>
               <span style={{ fontSize: 10, background: 'rgba(59,130,246,0.2)', color: '#60A5FA', padding: '2px 8px', borderRadius: 12, fontWeight: 800, border: '1px solid rgba(59,130,246,0.3)' }}>SaaS Signage</span>
             </div>
-            <div style={{ fontSize: 12, color: '#94A3B8' }}>Digitales Zahlensystem & Digital Menu Board Software</div>
+            <div style={{ fontSize: 12, color: '#94A3B8' }}>
+              {lang === 'de' ? 'Digitales Menu Board & Signage Software' : 'Digital Menu Board & Signage Software'}
+            </div>
           </div>
         </div>
 
@@ -102,7 +91,7 @@ export default function ScenvyBoardPage({ onOpenAuthModal }) {
             onClick={handleAuthClick}
             style={{ padding: '10px 22px', borderRadius: 10, border: 'none', background: 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)', color: '#FFF', fontWeight: 800, fontSize: 14, cursor: 'pointer', boxShadow: '0 4px 20px rgba(59,130,246,0.4)', transition: 'transform 0.2s' }}
           >
-            {lang === 'de' ? 'App Login (app.sv.de) →' : 'App Sign In →'}
+            {lang === 'de' ? 'Jetzt Starten →' : 'Get Started →'}
           </button>
         </nav>
       </header>
@@ -449,55 +438,109 @@ export default function ScenvyBoardPage({ onOpenAuthModal }) {
             <h2 style={{ fontSize: 32, fontWeight: 900 }}>Einsatzbereiche für Scenvy Board</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 30 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20 }}>
             {/* Gastronomie */}
-            <div style={{ background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', padding: 32, borderRadius: 20 }}>
+            <div style={{ background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', padding: 24, borderRadius: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
                 <div style={{ width: 42, height: 42, borderRadius: 10, background: 'rgba(249,115,22,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Utensils size={22} color="#F97316" />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: 22, fontWeight: 900 }}>Gastronomie & Bars</h3>
+                  <h3 style={{ fontSize: 18, fontWeight: 900 }}>Gastronomie & Bars</h3>
                   <div style={{ fontSize: 12, color: '#94A3B8' }}>Restaurants, Cafés, Rooftops, Fast Casual</div>
                 </div>
               </div>
 
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {[
                   'Digitale Speisekarte über der Theke mit dynamischen Preisen',
                   'Happy Hour Countdown Banner mit automatischer Ausblendung',
                   'High-Res Food-Videos zur Steigerung von Dessert- & Cocktail-Verkäufen',
-                  'Allergen- und Zusatzstoff-Kennzeichnung per Gesetzkonformer Anzeige'
+                  'Allergen- und Zusatzstoff-Anzeige nach Verordnung'
                 ].map((item, idx) => (
-                  <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 14, color: '#CBD5E1', lineHeight: 1.5 }}>
-                    <CheckCircle size={16} color="#10B981" style={{ flexShrink: 0, marginTop: 3 }} />
+                  <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 13, color: '#CBD5E1', lineHeight: 1.4 }}>
+                    <CheckCircle size={15} color="#10B981" style={{ flexShrink: 0, marginTop: 2 }} />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Hotels & Resorts */}
-            <div style={{ background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', padding: 32, borderRadius: 20 }}>
+            {/* Retail & Einzelhandel */}
+            <div style={{ background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', padding: 24, borderRadius: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                <div style={{ width: 42, height: 42, borderRadius: 10, background: 'rgba(59,130,246,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <ShoppingBag size={22} color="#3B82F6" />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: 18, fontWeight: 900 }}>Retail & Einzelhandel</h3>
+                  <div style={{ fontSize: 12, color: '#94A3B8' }}>Boutiquen, Pop-Up Stores, Showrooms</div>
+                </div>
+              </div>
+
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {[
+                  'Digitale Schaufenster-Displays mit wechselnden Promo-Aktionen',
+                  'Live Google Sheets Preisauszeichnung für Angebote & Flash Sales',
+                  'Lookbook-Reels für Bekleidung, Produkte & Kundenbewertungen',
+                  'QR-Kopplung: Kunden scannen den Screen & kaufen im Online-Shop'
+                ].map((item, idx) => (
+                  <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 13, color: '#CBD5E1', lineHeight: 1.4 }}>
+                    <CheckCircle size={15} color="#10B981" style={{ flexShrink: 0, marginTop: 2 }} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Hotels, Tourismus & Travel */}
+            <div style={{ background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', padding: 24, borderRadius: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
                 <div style={{ width: 42, height: 42, borderRadius: 10, background: 'rgba(16,185,129,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Hotel size={22} color="#10B981" />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: 22, fontWeight: 900 }}>Hotels & Resorts</h3>
-                  <div style={{ fontSize: 12, color: '#94A3B8' }}>Lobby, Rezeption, SPA, Tagungsräume</div>
+                  <h3 style={{ fontSize: 18, fontWeight: 900 }}>Hotels & Tourismus</h3>
+                  <div style={{ fontSize: 12, color: '#94A3B8' }}>Lobby, Rezeption, SPA & Ausflüge</div>
                 </div>
               </div>
 
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {[
                   'Willkommens-Screens in der Lobby mit Gast-Namensbegrüßung',
                   'Live Flug- und Zugtafeln an der Rezeption für abreisende Gäste',
-                  'SPA-Angebote & Massage-Freizeiten auf In-House Displays buchen',
-                  'Digitale Raum-Beschilderung für Tagungen und Konferenzen'
+                  'Digitale SPA-Preislisten & Ausflugspakete buchen',
+                  'Aktuelle Wetterberichte & Veranstaltungshinweise der Region'
                 ].map((item, idx) => (
-                  <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 14, color: '#CBD5E1', lineHeight: 1.5 }}>
-                    <CheckCircle size={16} color="#10B981" style={{ flexShrink: 0, marginTop: 3 }} />
+                  <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 13, color: '#CBD5E1', lineHeight: 1.4 }}>
+                    <CheckCircle size={15} color="#10B981" style={{ flexShrink: 0, marginTop: 2 }} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Events, Salons & Dienstleister */}
+            <div style={{ background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', padding: 24, borderRadius: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                <div style={{ width: 42, height: 42, borderRadius: 10, background: 'rgba(168,85,247,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Calendar size={22} color="#A855F7" />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: 18, fontWeight: 900 }}>Events & Dienstleister</h3>
+                  <div style={{ fontSize: 12, color: '#94A3B8' }}>Messen, Salons, Praxen, Fitness</div>
+                </div>
+              </div>
+
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {[
+                  'Bühnenprogramm- & Speaker-Pläne in Echtzeit aktualisieren',
+                  'Behandlungs- & Preislisten in Friseur- & Beauty-Salons',
+                  'Aufruf- & Wartezimmer-Signage mit Infotainment',
+                  'Kurspläne & Trainer-Specials in Fitness- & Wellness-Clubs'
+                ].map((item, idx) => (
+                  <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 13, color: '#CBD5E1', lineHeight: 1.4 }}>
+                    <CheckCircle size={15} color="#10B981" style={{ flexShrink: 0, marginTop: 2 }} />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -550,7 +593,7 @@ export default function ScenvyBoardPage({ onOpenAuthModal }) {
             onClick={handleAuthClick}
             style={{ padding: '16px 40px', borderRadius: 14, border: 'none', background: 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)', color: '#FFF', fontWeight: 900, fontSize: 16, cursor: 'pointer', boxShadow: '0 8px 30px rgba(59,130,246,0.4)', display: 'inline-flex', alignItems: 'center', gap: 10 }}
           >
-            Kostenlos Auf App.sv.de Registrieren <ArrowRight size={18} />
+            Kostenlos Auf App.scenvy.de Registrieren <ArrowRight size={18} />
           </button>
         </div>
       </section>

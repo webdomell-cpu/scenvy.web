@@ -44,7 +44,7 @@ const INITIAL_TEMPLATES = [
         title: 'Verwandle jeden Ort in ein scrollbares Erlebnis.',
         subtitle: 'SCENVY verwandelt QR-Codes in TikTok-artige vertikale Reels. Echtzeit-Angebote & KI-Inhalte ohne App-Download.',
         ctaText: 'Jetzt Kostenlos Ausprobieren →',
-        ctaLink: 'https://app.sv.de',
+        ctaLink: 'https://app.scenvy.de',
         secondaryCtaText: 'Live Demo Ansehen',
         secondaryCtaLink: '#demo',
         fontSize: 32,
@@ -70,7 +70,7 @@ const INITIAL_TEMPLATES = [
         title: 'Bereit deinen Umsatz zu steigern?',
         subtitle: 'Über 2.000 Venues vertrauen bereits auf das SCENVY Ecosystem.',
         ctaText: 'Jetzt Standort Registrieren →',
-        ctaLink: 'https://app.sv.de',
+        ctaLink: 'https://app.scenvy.de',
         fontSize: 28,
         paddingY: 40
       }
@@ -98,8 +98,8 @@ const INITIAL_TEMPLATES = [
         kicker: '100% URL-BASIERT · KEIN HARDWARE-PLAYER ZWANG',
         title: 'SCENVY Board — Intelligente Digital Signage & Menu Board Software',
         subtitle: 'Verwandle jeden Smart TV, Monitor oder Screen per Web-URL in eine dynamische Speisekarte & Werbetafel mit Google Sheets Sync, RSS Feeds & Flugtafeln.',
-        ctaText: 'Scenvy Board Starten (app.sv.de) →',
-        ctaLink: 'https://app.sv.de',
+        ctaText: 'Scenvy Board Starten →',
+        ctaLink: 'https://app.scenvy.de',
         fontSize: 34,
         paddingY: 50,
         bgGradient: 'linear-gradient(135deg, rgba(59,130,246,0.2) 0%, rgba(29,78,216,0.3) 100%)'
@@ -134,7 +134,7 @@ const INITIAL_TEMPLATES = [
         title: 'SCENVY Flow — TikTok-Stories für dein Venue',
         subtitle: 'Gäste scannen den QR-Code und swipen durch dein Angebot in atemberaubenden Vollbild-Videos.',
         ctaText: 'Jetzt Flow Testen →',
-        ctaLink: 'https://app.sv.de',
+        ctaLink: 'https://app.scenvy.de',
         fontSize: 32,
         paddingY: 44
       }
@@ -155,7 +155,7 @@ const INITIAL_TEMPLATES = [
         title: 'SCENVY Menu — Speisekarte der Zukunft',
         subtitle: 'Kein Nachdrucken mehr. Speisen, Allergenfilter & Tischnummer-Bestellung per QR-Code.',
         ctaText: 'Digitales Menü Erstellen →',
-        ctaLink: 'https://app.sv.de',
+        ctaLink: 'https://app.scenvy.de',
         fontSize: 32,
         paddingY: 44
       }
