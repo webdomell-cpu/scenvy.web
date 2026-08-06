@@ -5,6 +5,7 @@ import { queryClient }                            from '@/lib/query-client'
 import { AuthProvider, useAuth }                  from '@/lib/AuthContext'
 import { ErrorBoundary }                          from '@/components/ErrorBoundary'
 import Landing           from './pages/Landing.jsx'
+import SolutionsPage     from './pages/SolutionsPage.jsx'
 import ScenvyBoardPage   from './pages/ScenvyBoardPage.jsx'
 import ScenvyProductPage from './pages/ScenvyProductPage.jsx'
 import ScenvyAuth        from './pages/ScenvyAuth.jsx'
@@ -94,6 +95,8 @@ function AppRoutes({ onOpenAuthModal, onOpenCmsPasscode }) {
   return (
     <Routes>
       <Route path="/"              element={<SmartRoot onOpenAuthModal={onOpenAuthModal} />} />
+      <Route path="/loesungen"     element={<SolutionsPage />} />
+      <Route path="/solutions"     element={<SolutionsPage />} />
       <Route path="/board"         element={<ScenvyBoardPage onOpenAuthModal={onOpenAuthModal} />} />
       <Route path="/flow"          element={<ScenvyProductPage module="flow" onOpenAuthModal={onOpenAuthModal} />} />
       <Route path="/menu"          element={<ScenvyProductPage module="menu" onOpenAuthModal={onOpenAuthModal} />} />

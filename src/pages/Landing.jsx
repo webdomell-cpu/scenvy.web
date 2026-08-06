@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { C, grad } from '@/tokens'
 import { ScenvyLogoFull, ScenvyLogoIcon, ScenvyLogoBadge } from '@/components/ScenvyLogo'
 import { ScenvyAppIcon, ScenvyPhoneMockup, ScenvyHeroShowcase, MODULE_COLORS } from '@/components/ScenvyBrandShowcase'
-import { Check, Clock, Star, Play, Video, Zap, Sparkles, MapPin, BarChart2, QrCode, X, Send, Menu, Film, Utensils, Tv, Building, ShoppingBag, Tag, Heart, MessageCircle, Share2 } from 'lucide-react'
+import { Check, Clock, Star, Play, Video, Zap, Sparkles, MapPin, BarChart2, QrCode, X, Send, Menu, Film, Utensils, Tv, Building, ShoppingBag, Tag, Heart, MessageCircle, Share2, Volume2, VolumeX, ChevronDown, ChevronUp, ArrowRight, ShieldCheck, Award, TrendingUp, Smartphone, Layers, Eye, Pause, Repeat, Flame } from 'lucide-react'
 import CmsPasscodeModal from '@/components/CmsPasscodeModal'
 import { EcosystemHeaderBar } from '@/components/EcosystemHeaderBar'
 
@@ -130,6 +130,739 @@ function Phone({size='large', lang='de'}){
       {L&&<div style={{position:'absolute',right:10,bottom:100,display:'flex',flexDirection:'column',gap:14,alignItems:'center'}}>{[<Heart size={18} fill="#fff"/>, <MessageCircle size={18}/>, <Share2 size={18}/>, <QrCode size={18}/>].map((ic,i)=><div key={i} style={{width:38,height:38,borderRadius:'50%',background:'rgba(255,255,255,.2)',backdropFilter:'blur(8px)',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff'}}>{ic}</div>)}</div>}
       <div style={{position:'absolute',bottom:L?20:12,left:10,right:10}}><div style={{padding:`${L?12:8}px 0`,borderRadius:L?14:10,textAlign:'center',background:grad(r.accent,C.pink),fontWeight:700,fontSize:L?14:11,opacity:fade?1:0,transition:'background .8s, opacity .3s'}}>{r.cta} →</div></div>
     </div>
+  )
+}
+
+function Hero3DSmartphone({ lang = 'de' }) {
+  const [activeReel, setActiveReel] = useState(0)
+  const [progress, setProgress] = useState(0)
+  const [isLiked, setIsLiked] = useState(false)
+  const [likeCount, setLikeCount] = useState(148)
+
+  const reels = [
+    {
+      title: lang === 'de' ? 'Sunset Signature Cocktail 🍹' : 'Sunset Signature Cocktail 🍹',
+      tag: lang === 'de' ? 'HAPPY HOUR 50% OFF' : 'HAPPY HOUR 50% OFF',
+      sub: lang === 'de' ? 'Rooftop Bar 21 · Live bis 20:00 Uhr' : 'Rooftop Bar 21 · Live until 8:00 PM',
+      cta: lang === 'de' ? 'Jetzt Cocktail bestellen' : 'Order Cocktail Now',
+      bg: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&q=80',
+      accent: '#8B5CF6'
+    },
+    {
+      title: lang === 'de' ? 'Tomahawk Dry-Aged Steak 🥩' : 'Tomahawk Dry-Aged Steak 🥩',
+      tag: lang === 'de' ? 'CHEF\'S SPECIAL' : 'CHEF\'S SPECIAL',
+      sub: lang === 'de' ? 'Serviert mit Trüffel-Pommes' : 'Served with Truffle Fries',
+      cta: lang === 'de' ? 'Tisch reservieren' : 'Reserve Table',
+      bg: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80',
+      accent: '#F97316'
+    },
+    {
+      title: lang === 'de' ? 'Deep House Sunset Session 🎧' : 'Deep House Sunset Session 🎧',
+      tag: lang === 'de' ? 'LIVE EVENT' : 'LIVE EVENT',
+      sub: lang === 'de' ? 'DJ Alex & Saxophonist Live' : 'DJ Alex & Live Saxophone',
+      cta: lang === 'de' ? 'Gästeliste RSVP' : 'RSVP Guestlist',
+      bg: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80',
+      accent: '#EC4899'
+    }
+  ]
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((old) => {
+        if (old >= 100) {
+          setActiveReel((r) => (r + 1) % reels.length)
+          return 0
+        }
+        return old + 2
+      })
+    }, 100)
+    return () => clearInterval(timer)
+  }, [reels.length])
+
+  const r = reels[activeReel]
+
+  return (
+    <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 30, marginBottom: 40, width: '100%' }}>
+      {/* Background Violet Radial Glow */}
+      <div
+        style={{
+          position: 'absolute',
+          width: 500,
+          height: 500,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(139,92,246,0.35) 0%, rgba(236,72,153,0.15) 50%, transparent 75%)',
+          filter: 'blur(50px)',
+          pointerEvents: 'none',
+          zIndex: 0
+        }}
+      />
+
+      {/* Floating 3D Smartphone Container */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          animation: 'float 5s ease-in-out infinite',
+          perspective: '1000px',
+          transformStyle: 'preserve-3d'
+        }}
+      >
+        <div
+          style={{
+            width: 310,
+            height: 600,
+            borderRadius: 44,
+            background: '#0D0E1A',
+            border: '8px solid #1E2036',
+            boxShadow: '0 30px 90px rgba(139,92,246,0.45), 0 0 0 1px rgba(255,255,255,0.15), inset 0 0 20px rgba(0,0,0,0.8)',
+            position: 'relative',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+            justify: 'space-between',
+            padding: '16px 14px 18px',
+            transform: 'rotateY(-6deg) rotateX(4deg)'
+          }}
+        >
+          {/* Dynamic Notch */}
+          <div style={{ position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)', width: 90, height: 20, borderRadius: 12, background: '#000000', zIndex: 30, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 10px' }}>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981' }} />
+            <div style={{ fontSize: 9, color: '#64748B', fontFamily: 'monospace' }}>SCENVY</div>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'rgba(255,255,255,0.2)' }} />
+          </div>
+
+          {/* Background Reel Image */}
+          <img
+            src={r.bg}
+            alt={r.title}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              zIndex: 1,
+              transition: 'opacity 0.5s ease-in-out'
+            }}
+          />
+
+          {/* Dark Gradient Overlay */}
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.88) 100%)', zIndex: 2 }} />
+
+          {/* Top Sequential Story Progress Bars */}
+          <div style={{ position: 'relative', zIndex: 10, marginTop: 22, display: 'flex', gap: 4 }}>
+            {reels.map((_, idx) => (
+              <div key={idx} style={{ flex: 1, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.3)', overflow: 'hidden' }}>
+                <div
+                  style={{
+                    height: '100%',
+                    background: '#FFFFFF',
+                    width: idx < activeReel ? '100%' : idx === activeReel ? `${progress}%` : '0%',
+                    transition: idx === activeReel ? 'none' : 'width 0.2s'
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Top Header Tag */}
+          <div style={{ position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <ScenvyLogoIcon size={24} />
+              <div style={{ fontSize: 12, fontWeight: 800, color: '#FFF' }}>Rooftop 21</div>
+            </div>
+            <span style={{ background: r.accent, color: '#FFF', padding: '3px 10px', borderRadius: 12, fontSize: 10, fontWeight: 900, letterSpacing: 0.5, boxShadow: '0 4px 12px rgba(0,0,0,0.4)' }}>
+              {r.tag}
+            </span>
+          </div>
+
+          {/* Floating Right Action Sidebar */}
+          <div style={{ position: 'relative', zIndex: 10, alignSelf: 'flex-end', display: 'flex', flexDirection: 'column', gap: 14, alignItems: 'center', marginRight: 4, marginBottom: 70 }}>
+            <button
+              onClick={() => { setIsLiked(!isLiked); setLikeCount(c => isLiked ? c - 1 : c + 1) }}
+              style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.3)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: isLiked ? '#EF4444' : '#FFF', cursor: 'pointer' }}
+            >
+              <Heart size={18} fill={isLiked ? '#EF4444' : 'none'} />
+              <span style={{ fontSize: 9, fontWeight: 800, marginTop: 2, color: '#FFF' }}>{likeCount}</span>
+            </button>
+            <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF' }}>
+              <MessageCircle size={18} />
+            </div>
+            <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF' }}>
+              <Share2 size={18} />
+            </div>
+            <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(139,92,246,0.8)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF' }}>
+              <QrCode size={18} />
+            </div>
+          </div>
+
+          {/* Bottom Content & CTA */}
+          <div style={{ position: 'relative', zIndex: 10 }}>
+            <div style={{ fontSize: 17, fontWeight: 900, color: '#FFFFFF', lineHeight: 1.2, textShadow: '0 2px 10px rgba(0,0,0,0.9)', marginBottom: 4 }}>
+              {r.title}
+            </div>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.85)', marginBottom: 12 }}>
+              {r.sub}
+            </div>
+            <button
+              style={{
+                width: '100%',
+                padding: '13px 0',
+                borderRadius: 14,
+                border: 'none',
+                background: `linear-gradient(135deg, ${r.accent}, #EC4899)`,
+                color: '#FFFFFF',
+                fontWeight: 800,
+                fontSize: 13,
+                cursor: 'pointer',
+                boxShadow: `0 6px 20px ${r.accent}66`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8
+              }}
+            >
+              <span>{r.cta}</span>
+              <ArrowRight size={15} />
+            </button>
+          </div>
+
+          {/* Home Bar */}
+          <div style={{ position: 'relative', zIndex: 10, width: 120, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.5)', alignSelf: 'center', marginTop: 10 }} />
+        </div>
+
+        {/* Live Badge Float Overlay */}
+        <div style={{ position: 'absolute', top: 30, left: -20, zIndex: 20, background: '#1B1C2E', border: '1px solid rgba(139,92,246,0.4)', borderRadius: 16, padding: '10px 16px', boxShadow: '0 10px 30px rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 10px #10B981' }} />
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 900, color: '#FFF' }}>Sequential Reel Stream</div>
+            <div style={{ fontSize: 9, color: '#10B981', fontWeight: 700 }}>● 100% Web-URL · Kein App-Download</div>
+          </div>
+        </div>
+
+        <div style={{ position: 'absolute', bottom: 50, right: -20, zIndex: 20, background: '#1B1C2E', border: '1px solid rgba(249,115,22,0.4)', borderRadius: 16, padding: '10px 16px', boxShadow: '0 10px 30px rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <Flame size={18} color="#F97316" />
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 900, color: '#FFF' }}>3.4x Scan-to-Order CTR</div>
+            <div style={{ fontSize: 9, color: '#94A3B8' }}>Inkl. Countdown & Live Deals</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function TrustPartnerSection({ lang = 'de' }) {
+  const partners = [
+    { name: 'Marina Lounge Group', category: 'Luxury Restaurant & Beach Club', scans: '120k+ Scans', rating: '4.9 ★' },
+    { name: 'Grand Hotel Ritz', category: '5-Star Boutique Hotel', scans: '85k+ Scans', rating: '5.0 ★' },
+    { name: 'Rooftop Bar 21', category: 'Cocktail Lounge & Nightlife', scans: '210k+ Scans', rating: '4.8 ★' },
+    { name: 'Urban Bistro & Co', category: 'Gastronomie & Cafe Chain', scans: '65k+ Scans', rating: '4.9 ★' },
+    { name: 'The Palm Resort', category: 'Hospitality Group Dubai', scans: '340k+ Scans', rating: '5.0 ★' },
+    { name: 'Gourmet Plaza', category: 'Retail & Food Hall', scans: '95k+ Scans', rating: '4.9 ★' }
+  ]
+
+  return (
+    <section style={{ padding: '50px 5%', background: '#1B1C2E', borderTop: '1px solid rgba(255,255,255,0.08)', borderBottom: '1px solid rgba(255,255,255,0.08)', position: 'relative', zIndex: 2 }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+          <div style={{ fontSize: 11, color: '#8B5CF6', fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>
+            {lang === 'de' ? 'VERTRAUEN IN 40+ LÄNDERN' : 'TRUSTED IN 40+ COUNTRIES'}
+          </div>
+          <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', fontWeight: 900, color: '#FFFFFF' }}>
+            {lang === 'de' ? 'Vertrauen von über 2.000 führenden Venues' : 'Trusted by 2,000+ leading venues'}
+          </h2>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 16 }}>
+          {partners.map((p, idx) => (
+            <div
+              key={idx}
+              style={{
+                background: '#12131F',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: 16,
+                padding: '16px 14px',
+                textAlign: 'center',
+                transition: 'border-color 0.2s, transform 0.2s'
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = '#8B5CF6'; e.currentTarget.style.transform = 'translateY(-2px)' }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'none' }}
+            >
+              <div style={{ fontSize: 14, fontWeight: 900, color: '#FFFFFF', marginBottom: 4 }}>{p.name}</div>
+              <div style={{ fontSize: 11, color: '#94A3B8', marginBottom: 8 }}>{p.category}</div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 8, fontSize: 10, fontWeight: 800 }}>
+                <span style={{ color: '#10B981', background: 'rgba(16,185,129,0.15)', padding: '2px 8px', borderRadius: 8 }}>{p.scans}</span>
+                <span style={{ color: '#F59E0B', background: 'rgba(245,158,11,0.15)', padding: '2px 8px', borderRadius: 8 }}>{p.rating}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function InteractiveReelPlayer({ lang = 'de' }) {
+  const [currentReel, setCurrentReel] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [muted, setMuted] = useState(true)
+
+  const reelList = [
+    {
+      id: 1,
+      tag: '1. REEL · SPEED DEAL',
+      title: lang === 'de' ? 'Happy Hour: 50% auf alle Cocktails 🍹' : 'Happy Hour: 50% Off All Cocktails 🍹',
+      desc: lang === 'de' ? 'Spontan aktiviert für die nächsten 60 Minuten. Zeige diesen Screen an der Bar.' : 'Activated instantly for the next 60 minutes. Show this screen at the bar.',
+      time: '00:45:12 verbleibend',
+      cta: lang === 'de' ? 'Gutschein an der Bar einlösen' : 'Redeem Coupon at Bar',
+      bg: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=800&q=80',
+      color: '#8B5CF6',
+      badge: 'HAPPY HOUR'
+    },
+    {
+      id: 2,
+      tag: '2. REEL · SPEISEKARTE',
+      title: lang === 'de' ? 'Chef\'s Special: Dry Aged Tomahawk 🥩' : 'Chef\'s Special: Dry Aged Tomahawk 🥩',
+      desc: lang === 'de' ? '45 Tage gereiftes Premium Beef mit hausgemachter Kräuterbutter & Süßkartoffel-Fries.' : '45-day aged premium beef served with house truffle butter & sweet potato fries.',
+      time: 'Aus der Tageskarte',
+      cta: lang === 'de' ? 'Tisch direkt am Platz bestellen' : 'Order Table-side',
+      bg: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80',
+      color: '#F97316',
+      badge: 'SPEISEKARTE'
+    },
+    {
+      id: 3,
+      tag: '3. REEL · EVENT & MUSIC',
+      title: lang === 'de' ? 'Rooftop Sunset Session mit DJ Alex 🎧' : 'Rooftop Sunset Session featuring DJ Alex 🎧',
+      desc: lang === 'de' ? 'Jeden Donnerstag ab 19:00 Uhr. Deep House, Live Saxophon & Panorama-Blick.' : 'Every Thursday from 7:00 PM. Deep House, live saxophone & panoramic views.',
+      time: 'Heute 19:00 Uhr',
+      cta: lang === 'de' ? 'Gästeliste RSVP eintragen' : 'RSVP Guestlist',
+      bg: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80',
+      color: '#EC4899',
+      badge: 'EVENT'
+    },
+    {
+      id: 4,
+      tag: '4. REEL · HOTEL & STAY',
+      title: lang === 'de' ? 'Executive Spa & Infinity Pool Access 🏊' : 'Executive Spa & Infinity Pool Access 🏊',
+      desc: lang === 'de' ? 'Exklusiver Zugang für Hotelgäste & Tagesbesucher. Massage-Termine noch verfügbar.' : 'Exclusive access for hotel guests & day visitors. Massage slots available today.',
+      time: 'Täglich 08:00 - 22:00',
+      cta: lang === 'de' ? 'Spa Behandlung buchen' : 'Book Spa Treatment',
+      bg: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+      color: '#10B981',
+      badge: 'SPA & HOTEL'
+    }
+  ]
+
+  useEffect(() => {
+    if (!isPlaying) return
+    const interval = setInterval(() => {
+      setCurrentReel((prev) => (prev + 1) % reelList.length)
+    }, 4500)
+    return () => clearInterval(interval)
+  }, [isPlaying, reelList.length])
+
+  const item = reelList[currentReel]
+
+  return (
+    <section id="demo" style={{ padding: '90px 5%', background: '#12131F', position: 'relative', zIndex: 2 }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        
+        {/* Section Header */}
+        <div style={{ textAlign: 'center', marginBottom: 48 }}>
+          <div style={{ fontSize: 11, color: '#EC4899', fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>
+            {lang === 'de' ? 'INTERAKTIVES VORFUHR-ELEMENT' : 'INTERACTIVE REEL SHOWROOM'}
+          </div>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 900, color: '#FFFFFF', marginBottom: 12 }}>
+            {lang === 'de' ? 'So sieht das fortlaufende Reel-Format aus.' : 'Experience the sequential reel format live.'}
+          </h2>
+          <p style={{ fontSize: 16, color: '#E1E1E6', maxWidth: 700, margin: '0 auto', lineHeight: 1.6 }}>
+            {lang === 'de'
+              ? 'Keine verstaubte Speisekarte, keine starre Kachelwand: Gäste scannen den QR-Code/NFC-Chip und swipen durch aufeinanderfolgende, hochauflösende Reels mit direkter Bestell- und Buchungsfunktion.'
+              : 'No static PDFs or rigid grids: Guests scan the QR/NFC tag and swipe through continuous high-impact reels with instant action buttons.'}
+          </p>
+        </div>
+
+        {/* Reel Player Box */}
+        <div
+          style={{
+            background: '#1B1C2E',
+            border: `2px solid ${item.color}`,
+            borderRadius: 28,
+            padding: '24px',
+            boxShadow: `0 20px 60px ${item.color}33`,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: 32,
+            alignItems: 'center'
+          }}
+        >
+          {/* Left: Phone Screen Mockup */}
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div
+              style={{
+                width: 290,
+                height: 510,
+                borderRadius: 36,
+                background: '#090812',
+                border: '4px solid #23253B',
+                position: 'relative',
+                overflow: 'hidden',
+                boxShadow: '0 15px 40px rgba(0,0,0,0.8)',
+                display: 'flex',
+                flexDirection: 'column',
+                justify: 'space-between',
+                padding: '16px 14px 16px'
+              }}
+            >
+              {/* Background Image */}
+              <img
+                src={item.bg}
+                alt={item.title}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  zIndex: 1,
+                  transition: 'opacity 0.4s ease'
+                }}
+              />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.9) 100%)', zIndex: 2 }} />
+
+              {/* Top Story Bars */}
+              <div style={{ position: 'relative', zIndex: 10, display: 'flex', gap: 4 }}>
+                {reelList.map((r, idx) => (
+                  <button
+                    key={r.id}
+                    onClick={() => { setCurrentReel(idx); setIsPlaying(false) }}
+                    style={{ flex: 1, height: 4, borderRadius: 2, background: idx === currentReel ? '#FFFFFF' : 'rgba(255,255,255,0.3)', border: 'none', cursor: 'pointer', padding: 0 }}
+                  />
+                ))}
+              </div>
+
+              {/* Top Bar Controls */}
+              <div style={{ position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
+                <span style={{ background: item.color, color: '#FFF', fontSize: 10, fontWeight: 900, padding: '3px 10px', borderRadius: 12 }}>
+                  {item.badge}
+                </span>
+                <button
+                  onClick={() => setMuted(!muted)}
+                  style={{ background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.2)', color: '#FFF', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                >
+                  {muted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                </button>
+              </div>
+
+              {/* Bottom Info inside phone */}
+              <div style={{ position: 'relative', zIndex: 10 }}>
+                <div style={{ fontSize: 10, color: item.color, fontWeight: 800, textTransform: 'uppercase', marginBottom: 2 }}>
+                  {item.tag}
+                </div>
+                <div style={{ fontSize: 15, fontWeight: 900, color: '#FFF', lineHeight: 1.25, marginBottom: 4 }}>
+                  {item.title}
+                </div>
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.85)', marginBottom: 12, lineHeight: 1.4 }}>
+                  {item.desc}
+                </div>
+                <button
+                  style={{
+                    width: '100%',
+                    padding: '12px 0',
+                    borderRadius: 12,
+                    border: 'none',
+                    background: item.color,
+                    color: '#FFF',
+                    fontWeight: 800,
+                    fontSize: 13,
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.5)'
+                  }}
+                >
+                  {item.cta} →
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Controls & Feature Explainer */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+              <span style={{ background: `${item.color}22`, color: item.color, border: `1px solid ${item.color}44`, fontSize: 12, fontWeight: 800, padding: '4px 12px', borderRadius: 20 }}>
+                {lang === 'de' ? `Reel ${currentReel + 1} von ${reelList.length}` : `Reel ${currentReel + 1} of ${reelList.length}`}
+              </span>
+              <button
+                onClick={() => setIsPlaying(!isPlaying)}
+                style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', color: '#FFF', padding: '4px 12px', borderRadius: 20, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+              >
+                {isPlaying ? <Pause size={12} /> : <Play size={12} />}
+                <span>{isPlaying ? (lang === 'de' ? 'Auto-Play an' : 'Auto-Play On') : (lang === 'de' ? 'Pausiert' : 'Paused')}</span>
+              </button>
+            </div>
+
+            <h3 style={{ fontSize: 26, fontWeight: 900, color: '#FFFFFF', marginBottom: 12 }}>
+              {item.title}
+            </h3>
+
+            <p style={{ fontSize: 15, color: '#E1E1E6', lineHeight: 1.6, marginBottom: 20 }}>
+              {item.desc}
+            </p>
+
+            {/* Reel Navigation Buttons */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10, marginBottom: 24 }}>
+              {reelList.map((r, idx) => (
+                <button
+                  key={r.id}
+                  onClick={() => { setCurrentReel(idx); setIsPlaying(false) }}
+                  style={{
+                    padding: '12px 14px',
+                    borderRadius: 14,
+                    border: idx === currentReel ? `2px solid ${r.color}` : '1px solid rgba(255,255,255,0.1)',
+                    background: idx === currentReel ? `${r.color}22` : '#12131F',
+                    color: '#FFFFFF',
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  <div style={{ fontSize: 10, fontWeight: 800, color: r.color, marginBottom: 2 }}>
+                    REEL {idx + 1}
+                  </div>
+                  <div style={{ fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {r.badge}
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <div style={{ background: '#12131F', borderRadius: 16, padding: 16, border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <QrCode size={24} color={item.color} />
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 800, color: '#FFF' }}>app.scenvy.de/l/marina-lounge</div>
+                  <div style={{ fontSize: 11, color: '#94A3B8' }}>{lang === 'de' ? 'QR-Code & NFC-Tag fertig bereitgestellt' : 'QR-Code & NFC-Tag ready to scan'}</div>
+                </div>
+              </div>
+              <a
+                href="/l/demo"
+                target="_blank"
+                rel="noreferrer"
+                style={{ padding: '8px 16px', borderRadius: 10, background: item.color, color: '#FFF', fontSize: 12, fontWeight: 800, textDecoration: 'none' }}
+              >
+                {lang === 'de' ? 'In neuem Tab testen →' : 'Test in new tab →'}
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+function BentoGridSection({ lang = 'de', onOpenAuth }) {
+  return (
+    <section id="features" style={{ padding: '90px 5%', background: '#12131F', position: 'relative', zIndex: 2 }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        
+        <div style={{ textAlign: 'center', marginBottom: 52 }}>
+          <div style={{ fontSize: 11, color: '#8B5CF6', fontWeight: 800, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 8 }}>
+            {lang === 'de' ? 'DAS MODUL-ÖKOSYSTEM' : 'THE MODULE ECOSYSTEM'}
+          </div>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 900, color: '#FFFFFF', marginBottom: 12 }}>
+            {lang === 'de' ? 'Das Bento-Grid deiner digitalen Touchpoints' : 'The Bento-Grid of your digital touchpoints'}
+          </h2>
+          <p style={{ fontSize: 16, color: '#E1E1E6', maxWidth: 680, margin: '0 auto' }}>
+            {lang === 'de'
+              ? 'Kombiniere unsere Spezialmodule nahtlos in einem zentralen Dashboard. Steuere Screens, Speisekarten und Gäste-Erlebnisse in Echtzeit.'
+              : 'Seamlessly combine modular components in one centralized dashboard. Control screens, menus and guest experiences in real time.'}
+          </p>
+        </div>
+
+        {/* Bento Grid Layout */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 20 }}>
+          
+          {/* Card 1: SCENVY FLOW (Col 1 to 7) */}
+          <div
+            style={{
+              gridColumn: 'span 7',
+              background: '#1B1C2E',
+              border: '1px solid rgba(139,92,246,0.3)',
+              borderRadius: 24,
+              padding: 32,
+              position: 'relative',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              justify: 'space-between',
+              boxShadow: '0 10px 30px rgba(139,92,246,0.1)'
+            }}
+            className="bento-card"
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                <span style={{ background: 'rgba(139,92,246,0.2)', color: '#8B5CF6', fontSize: 11, fontWeight: 800, padding: '4px 12px', borderRadius: 20, border: '1px solid rgba(139,92,246,0.3)' }}>
+                  SCENVY FLOW · VERTIKALE REELS
+                </span>
+                <ScenvyAppIcon module="flow" size={44} />
+              </div>
+              <h3 style={{ fontSize: 24, fontWeight: 900, color: '#FFFFFF', marginBottom: 10 }}>
+                {lang === 'de' ? 'TikTok-Style Sequential Reels' : 'TikTok-Style Sequential Reels'}
+              </h3>
+              <p style={{ fontSize: 14, color: '#E1E1E6', lineHeight: 1.6, marginBottom: 20 }}>
+                {lang === 'de'
+                  ? 'Verwandle passive QR-Code-Scans in fortlaufende, hochkonvertierende Story-Reels. Mit Countdown-Timer, Live-Aktionen & KI-Generator.'
+                  : 'Turn passive QR scans into continuous, high-converting story reels with countdown timers, live actions & AI video generation.'}
+              </p>
+            </div>
+
+            {/* Visual UI Snippet */}
+            <div style={{ background: '#12131F', borderRadius: 16, padding: 16, border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: 16 }}>
+              <div style={{ width: 48, height: 48, borderRadius: 12, background: 'linear-gradient(135deg, #8B5CF6, #EC4899)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Video size={24} color="#FFF" />
+              </div>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 800, color: '#FFF' }}>{lang === 'de' ? '3.4x Höhere Conversion Rate' : '3.4x Higher Conversion Rate'}</div>
+                <div style={{ fontSize: 11, color: '#94A3B8' }}>{lang === 'de' ? 'Durchschnittliche Verweildauer: 80% Watch-Rate' : 'Average watch-rate: 80%'}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: SCENVY MENU (Col 8 to 12) */}
+          <div
+            style={{
+              gridColumn: 'span 5',
+              background: '#1B1C2E',
+              border: '1px solid rgba(249,115,22,0.3)',
+              borderRadius: 24,
+              padding: 32,
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+              justify: 'space-between',
+              boxShadow: '0 10px 30px rgba(249,115,22,0.1)'
+            }}
+            className="bento-card"
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                <span style={{ background: 'rgba(249,115,22,0.2)', color: '#F97316', fontSize: 11, fontWeight: 800, padding: '4px 12px', borderRadius: 20, border: '1px solid rgba(249,115,22,0.3)' }}>
+                  SCENVY MENU & SNAP
+                </span>
+                <ScenvyAppIcon module="menu" size={44} />
+              </div>
+              <h3 style={{ fontSize: 22, fontWeight: 900, color: '#FFFFFF', marginBottom: 10 }}>
+                {lang === 'de' ? 'KI Speisekarten-Import' : 'AI Menu Import'}
+              </h3>
+              <p style={{ fontSize: 14, color: '#E1E1E6', lineHeight: 1.6, marginBottom: 20 }}>
+                {lang === 'de'
+                  ? 'PDF oder Foto hochladen — unsere KI liest Speisen, Preise & Allergene automatisch aus und baut deine digitale Speisekarte auf.'
+                  : 'Upload PDF or photo — our AI extracts dishes, prices & allergens automatically to build your interactive digital menu.'}
+              </p>
+            </div>
+
+            <div style={{ background: '#12131F', borderRadius: 16, padding: 14, border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: 10 }}>
+              <Zap size={20} color="#F97316" />
+              <div style={{ fontSize: 12, fontWeight: 800, color: '#FFF' }}>{lang === 'de' ? 'PDF → Speisekarte in 10 Sek' : 'PDF → Menu in 10 sec'}</div>
+            </div>
+          </div>
+
+          {/* Card 3: SCENVY BOARD (Col 1 to 5) */}
+          <div
+            style={{
+              gridColumn: 'span 5',
+              background: '#1B1C2E',
+              border: '1px solid rgba(59,130,246,0.3)',
+              borderRadius: 24,
+              padding: 32,
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+              justify: 'space-between',
+              boxShadow: '0 10px 30px rgba(59,130,246,0.1)'
+            }}
+            className="bento-card"
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                <span style={{ background: 'rgba(59,130,246,0.2)', color: '#3B82F6', fontSize: 11, fontWeight: 800, padding: '4px 12px', borderRadius: 20, border: '1px solid rgba(59,130,246,0.3)' }}>
+                  SCENVY BOARD
+                </span>
+                <ScenvyAppIcon module="board" size={44} />
+              </div>
+              <h3 style={{ fontSize: 22, fontWeight: 900, color: '#FFFFFF', marginBottom: 10 }}>
+                {lang === 'de' ? 'Digital Signage & Menü-Boards' : 'Digital Signage & Menu Boards'}
+              </h3>
+              <p style={{ fontSize: 14, color: '#E1E1E6', lineHeight: 1.6, marginBottom: 20 }}>
+                {lang === 'de'
+                  ? 'Steuere jeden Smart TV per Web-URL. Inkl. Google Sheets Live Price Sync (2s), RSS Feeds & Flugtafeln.'
+                  : 'Control every Smart TV via web URL. Incl. Google Sheets Live Price Sync (2s), RSS Feeds & Flight Boards.'}
+              </p>
+            </div>
+
+            <div style={{ background: '#12131F', borderRadius: 16, padding: 14, border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: 10 }}>
+              <Tv size={20} color="#3B82F6" />
+              <div style={{ fontSize: 12, fontWeight: 800, color: '#FFF' }}>{lang === 'de' ? 'Kein Hardware-Player Zwang' : 'No Hardware Player Lock-in'}</div>
+            </div>
+          </div>
+
+          {/* Card 4: SCENVY HOST & LINK & MAGIC (Col 6 to 12) */}
+          <div
+            style={{
+              gridColumn: 'span 7',
+              background: '#1B1C2E',
+              border: '1px solid rgba(16,185,129,0.3)',
+              borderRadius: 24,
+              padding: 32,
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+              justify: 'space-between',
+              boxShadow: '0 10px 30px rgba(16,185,129,0.1)'
+            }}
+            className="bento-card"
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                <span style={{ background: 'rgba(16,185,129,0.2)', color: '#10B981', fontSize: 11, fontWeight: 800, padding: '4px 12px', borderRadius: 20, border: '1px solid rgba(16,185,129,0.3)' }}>
+                  HOST · LINK · MAGIC
+                </span>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <ScenvyAppIcon module="host" size={32} />
+                  <ScenvyAppIcon module="link" size={32} />
+                  <ScenvyAppIcon module="magic" size={32} />
+                </div>
+              </div>
+              <h3 style={{ fontSize: 24, fontWeight: 900, color: '#FFFFFF', marginBottom: 10 }}>
+                {lang === 'de' ? 'Gästeerlebnis, NFC & KI-Automatisierung' : 'Guest Experience, NFC & AI Automation'}
+              </h3>
+              <p style={{ fontSize: 14, color: '#E1E1E6', lineHeight: 1.6, marginBottom: 20 }}>
+                {lang === 'de'
+                  ? 'Digitaler Concierge, physikalische NFC-Tischaufsteller & automatische Content-Erstellung für Events, Angebote und Tageskarten.'
+                  : 'Digital concierge, physical NFC table displays & automated content generation for events, promotions and daily specials.'}
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <span style={{ background: '#12131F', color: '#10B981', padding: '6px 14px', borderRadius: 12, fontSize: 12, fontWeight: 800, border: '1px solid rgba(255,255,255,0.08)' }}>
+                {lang === 'de' ? '🏨 Guest Stay Concierge' : '🏨 Guest Stay Concierge'}
+              </span>
+              <span style={{ background: '#12131F', color: '#06B6D4', padding: '6px 14px', borderRadius: 12, fontSize: 12, fontWeight: 800, border: '1px solid rgba(255,255,255,0.08)' }}>
+                {lang === 'de' ? '⚡ NFC Touch & Scan' : '⚡ NFC Touch & Scan'}
+              </span>
+              <span style={{ background: '#12131F', color: '#A855F7', padding: '6px 14px', borderRadius: 12, fontSize: 12, fontWeight: 800, border: '1px solid rgba(255,255,255,0.08)' }}>
+                {lang === 'de' ? '✨ Claude 3.5 Sonnet KI' : '✨ Claude 3.5 Sonnet AI'}
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
   )
 }
 
@@ -353,6 +1086,9 @@ export default function Landing({ onOpenAuthModal }){
 
         {/* Desktop Navigation Links */}
         <div className="desktop-nav-links" style={{display:'flex',gap:12,alignItems:'center'}}>
+          <Link to="/loesungen" style={{color:'#A78BFA',fontSize:13,fontWeight:800,background:'rgba(139,92,246,0.18)',border:'1px solid rgba(139,92,246,0.4)',padding:'6px 12px',borderRadius:20,display:'inline-flex',alignItems:'center',gap:6}}>
+            <Sparkles size={14} color="#A78BFA"/> {lang === 'de' ? 'Branchenlösungen' : 'Solutions'}
+          </Link>
           <Link to="/board" style={{color:'#3B82F6',fontSize:13,fontWeight:700,background:'rgba(59,130,246,0.12)',border:'1px solid rgba(59,130,246,0.3)',padding:'6px 12px',borderRadius:20,display:'inline-flex',alignItems:'center',gap:6}}>
             <Tv size={14} color="#3B82F6"/> SCENVY BOARD
           </Link>
@@ -391,6 +1127,9 @@ export default function Landing({ onOpenAuthModal }){
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
         <div style={{position:'fixed',top:66,left:0,right:0,bottom:0,background:'rgba(15,23,42,0.98)',backdropFilter:'blur(20px)',zIndex:995,padding:'24px 20px',display:'flex',flexDirection:'column',gap:16,overflowY:'auto'}}>
+          <Link to="/loesungen" onClick={()=>setMobileMenuOpen(false)} style={{color:'#A78BFA',fontSize:18,fontWeight:800,padding:'12px 0',borderBottom:`1px solid ${C.border}`,display:'flex',alignItems:'center',gap:10}}>
+            <Sparkles size={20} color="#A78BFA"/> {lang === 'de' ? 'Branchenlösungen' : 'Solutions'}
+          </Link>
           <Link to="/board" onClick={()=>setMobileMenuOpen(false)} style={{color:'#3B82F6',fontSize:18,fontWeight:700,padding:'12px 0',borderBottom:`1px solid ${C.border}`,display:'flex',alignItems:'center',gap:10}}>
             <Tv size={20} color="#3B82F6"/> SCENVY BOARD
           </Link>
@@ -420,8 +1159,8 @@ export default function Landing({ onOpenAuthModal }){
               <span style={{background:'linear-gradient(135deg, #8B5CF6, #EC4899)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>{getLangText('hero_title_highlight', 'Moderne Gastronomie', 'Modern Hospitality')}</span>
             </h1>
 
-            <p style={{fontSize:'clamp(16px,2vw,20px)',color:C.muted,lineHeight:1.6,marginBottom:32,maxWidth:740,margin:'0 auto 32px'}}>
-              {getLangText('hero_subtitle', 'Erstelle, verwalte und verteile digitale Erlebnisse an jedem Berührungspunkt.', 'Create, manage and distribute digital experiences across every touchpoint.')}
+            <p style={{fontSize:'clamp(16px,2vw,20px)',color:C.muted,lineHeight:1.6,marginBottom:32,maxWidth:780,margin:'0 auto 32px'}}>
+              {getLangText('hero_subtitle', 'Verwandle QR-Codes & NFC-Tags in TikTok-artige vertikale Story-Reels. Live-Angebote, KI-Content & Speisekarten — 100% Web-URL, kein App-Download.', 'Transform QR-Codes & NFC-Tags into TikTok-style vertical story reels. Live deals, AI content & menus — 100% web-based, no app install.')}
             </p>
 
             <div style={{display:'flex',gap:14,justifyContent:'center',flexWrap:'wrap',alignItems:'center',marginBottom:32}}>
@@ -433,8 +1172,11 @@ export default function Landing({ onOpenAuthModal }){
               </Btn>
             </div>
 
+            {/* 3D SMARTPHONE MOCKUP WITH VERTICAL REELS & VIOLET GLOW */}
+            <Hero3DSmartphone lang={lang} />
+
             {/* 7 OFFICIAL APP ICONS ROW */}
-            <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:24,flexWrap:'wrap',padding:'32px',borderRadius:28,background:'rgba(255,255,255,0.03)',border:'1px solid rgba(255,255,255,0.08)',maxWidth:1000,margin:'0 auto'}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:24,flexWrap:'wrap',padding:'28px',borderRadius:28,background:'rgba(255,255,255,0.03)',border:'1px solid rgba(255,255,255,0.08)',maxWidth:1000,margin:'20px auto 0'}}>
               {[
                 { id: 'flow', name: 'Flow', status: 'active', path: '/flow' },
                 { id: 'menu', name: 'Menu', status: 'active', path: '/menu' },
@@ -469,11 +1211,17 @@ export default function Landing({ onOpenAuthModal }){
               ))}
             </div>
           </div>
-
-          {/* FULL SCENVY HERO SHOWCASE COMPOSITION (Laptop + Kiosk + Phone + 7-Module Bar) */}
-          
         </div>
       </section>
+
+      {/* TRUST & PARTNER LOGOS */}
+      <TrustPartnerSection lang={lang} />
+
+      {/* INTERACTIVE REEL PLAYER SHOWCASE */}
+      <InteractiveReelPlayer lang={lang} />
+
+      {/* BENTO GRID MODULE OVERVIEW */}
+      <BentoGridSection lang={lang} onOpenAuth={handleOpenAuth} />
 
       {/* PROBLEM / SOLUTION SECTION */}
       <section style={{padding:'100px 5%',position:'relative',zIndex:2}}>

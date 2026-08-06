@@ -1,8 +1,8 @@
 export const C = {
-  bg: '#0B0F14',
-  card: '#121821',
-  card2: '#1A2230',
-  border: 'rgba(255,255,255,0.08)',
+  bg: '#12131F',
+  card: '#1B1C2E',
+  card2: '#23253B',
+  border: 'rgba(255,255,255,0.1)',
   flow: '#8B5CF6',
   purple: '#8B5CF6',
   purpleL: '#A78BFA',
@@ -17,18 +17,18 @@ export const C = {
   link: '#06B6D4',
   magic: '#F59E0B',
   white: '#FFFFFF',
-  muted: '#A0A8B8',
-  dim: '#64748B',
+  muted: '#E1E1E6',
+  dim: '#94A3B8',
 }
 
 export const SG_TOKENS = {
-  bgPrimary: '#0B0F14',
-  bgSecondary: '#121821',
+  bgPrimary: '#12131F',
+  bgSecondary: '#1B1C2E',
   textPrimary: '#FFFFFF',
-  textMuted: '#A0A8B8',
-  borderSoft: 'rgba(255,255,255,0.08)',
-  gradPrimary: 'linear-gradient(135deg, #4F8CFF 0%, #7A5CFF 100%)',
-  gradAccent: 'linear-gradient(135deg, #FF4FD8 0%, #FF8A4F 100%)',
+  textMuted: '#E1E1E6',
+  borderSoft: 'rgba(255,255,255,0.1)',
+  gradPrimary: 'linear-gradient(135deg, #7C3AED 0%, #3B82F6 100%)',
+  gradAccent: 'linear-gradient(135deg, #EC4899 0%, #F97316 100%)',
 }
 
 export const grad  = (a,b) => `linear-gradient(135deg,${a},${b})`
