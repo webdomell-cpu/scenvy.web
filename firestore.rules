@@ -1,0 +1,104 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isDefaultAdminEmail() {
+      return isAuthenticated() && (
+        request.auth.token.email.lower() == 'admin@scenvy.de' ||
+        request.auth.token.email.lower() == 'web.domell@gmail.com' || request.auth.token.email.lower() == 'web.domain@gmail.com'
+      );
+    }
+
+    function hasUserDoc() {
+      return isAuthenticated() && exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        isDefaultAdminEmail() ||
+        (hasUserDoc() && getUserData().role == 'admin')
+      );
+    }
+
+    function getUserTenantId() {
+      return hasUserDoc() && ('tenant_id' in getUserData())
+        ? getUserData().tenant_id
+        : ('tenant_' + request.auth.uid);
+    }
+
+    function isTenantMember(tenantId) {
+      return isAuthenticated() && (
+        isAdmin() ||
+        tenantId == getUserTenantId()
+      );
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    // Tenants
+    match /tenants/{tenantId} {
+      allow read, write: if true;
+    }
+
+    // Reels
+    match /reels/{reelId} {
+      allow read, write: if true;
+    }
+
+    // Locations
+    match /locations/{locationId} {
+      allow read, write: if true;
+    }
+
+    // Digital Menus
+    match /menus/{menuId} {
+      allow read, write: if true;
+    }
+
+    // Media Library
+    match /media/{mediaId} {
+      allow read, write: if true;
+    }
+
+    // Analytics (Scans & Clicks)
+    match /scans/{scanId} {
+      allow read, write: if true;
+    }
+
+    match /clicks/{clickId} {
+      allow read, write: if true;
+    }
+
+    // System & Platform Configuration
+    match /system_config/{configId} {
+      allow read, write: if true;
+    }
+
+    // Email Templates
+    match /email_templates/{templateId} {
+      allow read, write: if true;
+    }
+
+    // Domains
+    match /domains/{domainId} {
+      allow read, write: if true;
+    }
+
+    // Default deny all other paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
