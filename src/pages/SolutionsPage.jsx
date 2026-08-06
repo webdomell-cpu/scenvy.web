@@ -361,9 +361,6 @@ export default function SolutionsPage() {
 
         {/* Desktop Links */}
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }} className="desktop-links">
-          <Link to="/loesungen" style={{ color: '#A78BFA', fontSize: 13, fontWeight: 800, background: 'rgba(139,92,246,0.18)', border: '1px solid rgba(139,92,246,0.4)', padding: '6px 14px', borderRadius: 20, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-            <Sparkles size={14} color="#A78BFA" /> {lang === 'de' ? 'Branchenlösungen' : 'Solutions'}
-          </Link>
           <Link to="/board" style={{ color: '#3B82F6', fontSize: 13, fontWeight: 700, padding: '6px 12px', borderRadius: 20 }}>
             SCENVY BOARD
           </Link>
@@ -372,6 +369,9 @@ export default function SolutionsPage() {
           </Link>
           <Link to="/menu" style={{ color: '#F97316', fontSize: 13, fontWeight: 700, padding: '6px 12px', borderRadius: 20 }}>
             SCENVY MENU
+          </Link>
+          <Link to="/loesungen" style={{ color: '#A78BFA', fontSize: 13, fontWeight: 800, background: 'rgba(139,92,246,0.18)', border: '1px solid rgba(139,92,246,0.4)', padding: '6px 14px', borderRadius: 20, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <Sparkles size={14} color="#A78BFA" /> {lang === 'de' ? 'Branchenlösungen' : 'Solutions'}
           </Link>
         </div>
 

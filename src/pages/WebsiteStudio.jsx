@@ -5,17 +5,21 @@ import { useAuth } from '@/lib/AuthContext'
 import { 
   Globe, Layout, Code, Sparkles, Plus, Save, Trash2, Eye, ExternalLink, 
   Settings, Type, Palette, MoveUp, MoveDown, Check, ArrowLeft, RefreshCw, 
-  Sliders, Copy, Monitor, Smartphone, Layers, Play, Zap, FileText, CheckCircle, LogOut, User
+  Sliders, Copy, Monitor, Smartphone, Layers, Play, Zap, FileText, CheckCircle, LogOut, User,
+  Image as ImageIcon, Upload, List, AlignLeft, HelpCircle, Star, MessageSquare
 } from 'lucide-react'
 import { db } from '@/lib/firebase'
-import { collection, doc, setDoc, getDocs, deleteDoc, serverTimestamp } from 'firebase/firestore'
+import { collection, doc, setDoc, getDocs, deleteDoc } from 'firebase/firestore'
 
-// Default template pages if firestore is empty
+// Default template pages with Company & Legal pages pre-populated
 const INITIAL_TEMPLATES = [
   {
     id: 'page_main_landing',
     slug: 'hauptseite',
     title: 'SCENVY Ecosystem Haupt-Seite',
+    navLabel: 'Hauptseite',
+    inNav: false,
+    navOrder: 0,
     description: 'Offizielle Landingpage für Gäste, Venues und Partner mit Video-Reel Showcase.',
     isPublished: true,
     theme: {
@@ -42,13 +46,13 @@ const INITIAL_TEMPLATES = [
         kicker: 'DIE ZUKUNFT DES VENUE-MARKETINGS',
         title: 'Verwandle jeden Ort in ein scrollbares Erlebnis.',
         subtitle: 'SCENVY verwandelt QR-Codes in TikTok-artige vertikale Reels. Echtzeit-Angebote & KI-Inhalte ohne App-Download.',
+        imageUrl: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=1000&q=80',
         ctaText: 'Jetzt Kostenlos Ausprobieren →',
         ctaLink: 'https://app.scenvy.de',
         secondaryCtaText: 'Live Demo Ansehen',
         secondaryCtaLink: '#demo',
-        fontSize: 32,
-        paddingY: 48,
-        bgGradient: 'linear-gradient(135deg, rgba(124,58,237,0.2) 0%, rgba(255,45,141,0.1) 100%)'
+        fontSize: 34,
+        paddingY: 48
       },
       {
         id: 'b2',
@@ -79,29 +83,29 @@ const INITIAL_TEMPLATES = [
     id: 'page_scenvy_board',
     slug: 'board',
     title: 'SCENVY Board — Digital Signage & Menu Board SaaS',
+    navLabel: 'Board',
+    inNav: true,
+    navOrder: 1,
     description: 'Digitales Zahlensystem & Digital Menu Board Software ohne Player-Hardware.',
     isPublished: true,
     theme: {
       bg: '#070B14',
       text: '#F8FAFC',
       accent: '#3B82F6',
-      fontFamily: 'Inter, sans-serif',
-      fontSizeScale: 1.0,
-      customCss: `/* Scenvy Board Accent Glow */
-.board-glow { box-shadow: 0 10px 40px rgba(59,130,246,0.3); }`
+      fontFamily: 'Inter, sans-serif'
     },
     blocks: [
       {
         id: 'board_b1',
         type: 'hero',
         kicker: '100% URL-BASIERT · KEIN HARDWARE-PLAYER ZWANG',
-        title: 'SCENVY Board — Intelligente Digital Signage & Menu Board Software',
-        subtitle: 'Verwandle jeden Smart TV, Monitor oder Screen per Web-URL in eine dynamische Speisekarte & Werbetafel mit Google Sheets Sync, RSS Feeds & Flugtafeln.',
+        title: 'SCENVY Board — Intelligente Digital Signage Software',
+        subtitle: 'Verwandle jeden Smart TV, Monitor oder Screen per Web-URL in eine dynamische Speisekarte & Werbetafel mit Google Sheets Sync, RSS Feeds & Live-Animationen.',
+        imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=1000&q=80',
         ctaText: 'Scenvy Board Starten →',
         ctaLink: 'https://app.scenvy.de',
         fontSize: 34,
-        paddingY: 50,
-        bgGradient: 'linear-gradient(135deg, rgba(59,130,246,0.2) 0%, rgba(29,78,216,0.3) 100%)'
+        paddingY: 50
       },
       {
         id: 'board_b2',
@@ -122,6 +126,9 @@ const INITIAL_TEMPLATES = [
     id: 'page_scenvy_flow',
     slug: 'flow',
     title: 'SCENVY Flow — Vertikale Video Reels',
+    navLabel: 'Flow',
+    inNav: true,
+    navOrder: 2,
     description: 'Vertikale TikTok-artige Story Reels für Restaurants, Bars und Venues.',
     isPublished: true,
     theme: { bg: '#1E1035', text: '#FFFFFF', accent: '#8B5CF6', fontFamily: 'Inter, sans-serif' },
@@ -132,6 +139,7 @@ const INITIAL_TEMPLATES = [
         kicker: 'VERTIKALE CONTENT REELS',
         title: 'SCENVY Flow — TikTok-Stories für dein Venue',
         subtitle: 'Gäste scannen den QR-Code und swipen durch dein Angebot in atemberaubenden Vollbild-Videos.',
+        imageUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1000&q=80',
         ctaText: 'Jetzt Flow Testen →',
         ctaLink: 'https://app.scenvy.de',
         fontSize: 32,
@@ -143,6 +151,9 @@ const INITIAL_TEMPLATES = [
     id: 'page_scenvy_menu',
     slug: 'menu',
     title: 'SCENVY Menu — Interaktives Digitales Menü',
+    navLabel: 'Menu',
+    inNav: true,
+    navOrder: 3,
     description: 'Digitale Speisekarte mit Scan-to-Order & Allergen-Filtern.',
     isPublished: true,
     theme: { bg: '#2A1208', text: '#FFFFFF', accent: '#F97316', fontFamily: 'Inter, sans-serif' },
@@ -153,10 +164,196 @@ const INITIAL_TEMPLATES = [
         kicker: 'DIGITALES MENÜ BOARD & ORDERING',
         title: 'SCENVY Menu — Speisekarte der Zukunft',
         subtitle: 'Kein Nachdrucken mehr. Speisen, Allergenfilter & Tischnummer-Bestellung per QR-Code.',
+        imageUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1000&q=80',
         ctaText: 'Digitales Menü Erstellen →',
         ctaLink: 'https://app.scenvy.de',
         fontSize: 32,
         paddingY: 44
+      }
+    ]
+  },
+  {
+    id: 'page_about',
+    slug: 'about',
+    title: 'Über Uns — SCENVY Enterprise',
+    navLabel: 'Über Uns',
+    inNav: false,
+    navOrder: 10,
+    description: 'Erfahre mehr über die Vision hinter SCENVY Digital Signage & Mobile Reels.',
+    isPublished: true,
+    theme: { bg: '#0F172A', text: '#F8FAFC', accent: '#38BDF8', fontFamily: 'Inter, sans-serif' },
+    blocks: [
+      {
+        id: 'about_b1',
+        type: 'hero',
+        kicker: 'UNSERE VISION',
+        title: 'Wir revolutionieren die Gastronomie & Point of Sale Experience.',
+        subtitle: 'SCENVY verbindet vertikale Videowelten mit intelligenter Bildschirmsteuerung.',
+        fontSize: 32,
+        paddingY: 44
+      },
+      {
+        id: 'about_b2',
+        type: 'text_block',
+        title: 'Die Geschichte hinter SCENVY',
+        subtitle: 'Gegründet um statische Plakatwände in lebendige Stories zu verwandeln.',
+        content: 'Moderne Gastronomie braucht flexible digitale Lösungen statt verstaubter PDF-Dateien. Mit SCENVY steuern Betreiber ihre Screens, Speisekarten und Promo-Reels in Echtzeit aus dem Browser.',
+        fontSize: 22,
+        paddingY: 32
+      }
+    ]
+  },
+  {
+    id: 'page_blog',
+    slug: 'blog',
+    title: 'Blog & Digital Signage News',
+    navLabel: 'Blog',
+    inNav: false,
+    navOrder: 11,
+    description: 'Aktuelle Guides, Tipps und Trends für Gastronomie & Retail.',
+    isPublished: true,
+    theme: { bg: '#0B0F19', text: '#F8FAFC', accent: '#A855F7', fontFamily: 'Inter, sans-serif' },
+    blocks: [
+      {
+        id: 'blog_b1',
+        type: 'hero',
+        kicker: 'MAGAZIN & INSIGHTS',
+        title: 'SCENVY Digital Signage & Content Blog',
+        subtitle: 'Trends, Best Practices und Tipps für mehr Umsatz am Point of Sale.',
+        fontSize: 32,
+        paddingY: 40
+      }
+    ]
+  },
+  {
+    id: 'page_careers',
+    slug: 'careers',
+    title: 'Karriere & Jobs bei SCENVY',
+    navLabel: 'Karriere',
+    inNav: false,
+    navOrder: 12,
+    description: 'Werde Teil unseres Teams und baue die Zukunft des POS Marketings.',
+    isPublished: true,
+    theme: { bg: '#0F172A', text: '#F8FAFC', accent: '#10B981', fontFamily: 'Inter, sans-serif' },
+    blocks: [
+      {
+        id: 'careers_b1',
+        type: 'hero',
+        kicker: 'WIR SUCHEN TALENTE',
+        title: 'Gestalte die Zukunft der Gastronomie mit uns.',
+        subtitle: 'Offene Stellen in Engineering, Product & Growth Sales.',
+        fontSize: 32,
+        paddingY: 40
+      }
+    ]
+  },
+  {
+    id: 'page_press',
+    slug: 'press',
+    title: 'Presse & Medien Kit',
+    navLabel: 'Presse',
+    inNav: false,
+    navOrder: 13,
+    description: 'Pressemitteilungen, Branding Logos und Ansprechpartner.',
+    isPublished: true,
+    theme: { bg: '#0B0F19', text: '#F8FAFC', accent: '#F43F5E', fontFamily: 'Inter, sans-serif' },
+    blocks: [
+      {
+        id: 'press_b1',
+        type: 'hero',
+        kicker: 'MEDIA KIT',
+        title: 'Presse-Informationen & Logo Assets',
+        subtitle: 'Download von hochauflösenden Visuals, Logos und Fact Sheets.',
+        fontSize: 32,
+        paddingY: 40
+      }
+    ]
+  },
+  {
+    id: 'page_privacy',
+    slug: 'privacy',
+    title: 'Datenschutzerklärung',
+    navLabel: 'Datenschutz',
+    inNav: false,
+    navOrder: 20,
+    description: 'Informationen zur Datenverarbeitung nach DSGVO.',
+    isPublished: true,
+    theme: { bg: '#0A0A10', text: '#E2E8F0', accent: '#8B5CF6', fontFamily: 'Inter, sans-serif' },
+    blocks: [
+      {
+        id: 'priv_b1',
+        type: 'text_block',
+        title: 'Datenschutzerklärung',
+        subtitle: 'Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO).',
+        content: 'Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Personenbezogene Daten werden auf dieser Webseite nur im technisch notwendigen Umfang verarbeitet.',
+        fontSize: 24,
+        paddingY: 36
+      }
+    ]
+  },
+  {
+    id: 'page_terms',
+    slug: 'terms',
+    title: 'Allgemeine Geschäftsbedingungen (AGB)',
+    navLabel: 'AGB',
+    inNav: false,
+    navOrder: 21,
+    description: 'Nutzungsbedingungen für das SCENVY Ecosystem.',
+    isPublished: true,
+    theme: { bg: '#0A0A10', text: '#E2E8F0', accent: '#8B5CF6', fontFamily: 'Inter, sans-serif' },
+    blocks: [
+      {
+        id: 'terms_b1',
+        type: 'text_block',
+        title: 'Allgemeine Geschäftsbedingungen',
+        subtitle: 'Rechtliche Rahmenbedingungen für die Nutzung der SCENVY Plattform.',
+        content: '§ 1 Geltungsbereich: Diese AGB gelten für alle Verträge zwischen SCENVY und Geschäftskunden zur Bereitstellung der Softwarelösungen SCENVY Board, Flow und Menu.',
+        fontSize: 24,
+        paddingY: 36
+      }
+    ]
+  },
+  {
+    id: 'page_gdpr',
+    slug: 'gdpr',
+    title: 'DSGVO Konformität',
+    navLabel: 'DSGVO',
+    inNav: false,
+    navOrder: 22,
+    description: 'Unsere Sicherheits- und Datenschutzstandards im Detail.',
+    isPublished: true,
+    theme: { bg: '#0A0A10', text: '#E2E8F0', accent: '#8B5CF6', fontFamily: 'Inter, sans-serif' },
+    blocks: [
+      {
+        id: 'gdpr_b1',
+        type: 'text_block',
+        title: 'DSGVO & Data Privacy Standards',
+        subtitle: '100% Hosted in der Europäischen Union.',
+        content: 'Sämtliche Cloud-Infrastrukturen und Datenbanken von SCENVY befinden sich in nach ISO-27001 zertifizierten Rechenzentren innerhalb der EU.',
+        fontSize: 24,
+        paddingY: 36
+      }
+    ]
+  },
+  {
+    id: 'page_imprint',
+    slug: 'imprint',
+    title: 'Impressum',
+    navLabel: 'Impressum',
+    inNav: false,
+    navOrder: 23,
+    description: 'Gesetzliche Anbieterkennzeichnung nach § 5 DDG.',
+    isPublished: true,
+    theme: { bg: '#0A0A10', text: '#E2E8F0', accent: '#8B5CF6', fontFamily: 'Inter, sans-serif' },
+    blocks: [
+      {
+        id: 'imp_b1',
+        type: 'text_block',
+        title: 'Impressum',
+        subtitle: 'Angaben gemäß § 5 DDG',
+        content: 'SCENVY Digital Technologies GmbH\nVertreten durch die Geschäftsführung\nE-Mail: kontakt@scenvy.de\nWeb: https://scenvy.de',
+        fontSize: 24,
+        paddingY: 36
       }
     ]
   }
@@ -164,7 +361,7 @@ const INITIAL_TEMPLATES = [
 
 export default function WebsiteStudio() {
   const nav = useNavigate()
-  const { user, logout, tenant } = useAuth()
+  const { user, logout } = useAuth()
 
   const handleLogout = async () => {
     sessionStorage.removeItem('scenvy_cms_unlocked')
@@ -178,7 +375,7 @@ export default function WebsiteStudio() {
   
   const [pages, setPages] = useState([])
   const [selectedPageId, setSelectedPageId] = useState(null)
-  const [activeTab, setActiveTab] = useState('editor') // 'editor' | 'code' | 'settings' | 'preview'
+  const [activeTab, setActiveTab] = useState('editor') // 'editor' | 'nav' | 'code' | 'settings' | 'preview'
   const [previewDevice, setPreviewDevice] = useState('desktop') // 'desktop' | 'mobile'
   const [isSaving, setIsSaving] = useState(false)
   const [notifyMsg, setNotifyMsg] = useState('')
@@ -247,15 +444,16 @@ export default function WebsiteStudio() {
       id: 'page_' + Date.now(),
       slug: slug || 'seite-' + Date.now(),
       title: newPageTitle,
+      navLabel: newPageTitle,
+      inNav: false,
+      navOrder: pages.length + 1,
       description: 'Neue benutzerdefinierte Landing-Page.',
       isPublished: true,
       theme: {
         bg: '#0A0A10',
         text: '#F3F4F6',
         accent: '#7C3AED',
-        fontFamily: 'Inter, sans-serif',
-        fontSizeScale: 1.0,
-        customCss: `/* Neue Custom CSS Styles */\n`
+        fontFamily: 'Inter, sans-serif'
       },
       blocks: [
         {
@@ -263,12 +461,11 @@ export default function WebsiteStudio() {
           type: 'hero',
           kicker: 'WILLKOMMEN',
           title: newPageTitle,
-          subtitle: 'Bearbeite diesen Text direkt im Live-Editor oder füge Custom Animationen hinzu.',
+          subtitle: 'Bearbeite diesen Text direkt im Live-Editor.',
           ctaText: 'Aktion Starten',
           ctaLink: '#',
           fontSize: 30,
-          paddingY: 40,
-          bgGradient: 'linear-gradient(135deg, rgba(124,58,237,0.2) 0%, rgba(236,72,153,0.15) 100%)'
+          paddingY: 40
         }
       ]
     }
@@ -280,6 +477,26 @@ export default function WebsiteStudio() {
     setNewPageTitle('')
     setNewPageSlug('')
     await savePagesToBackend(nextList)
+  }
+
+  const handleDuplicatePage = async (pageId) => {
+    const pageToDup = pages.find(p => p.id === pageId)
+    if (!pageToDup) return
+    const newSlug = `${pageToDup.slug}-kopie-${Date.now().toString().slice(-4)}`
+    const duplicatedObj = {
+      ...JSON.parse(JSON.stringify(pageToDup)),
+      id: 'page_' + Date.now(),
+      title: `${pageToDup.title} (Kopie)`,
+      navLabel: `${pageToDup.navLabel || pageToDup.title} (Kopie)`,
+      slug: newSlug,
+      createdAt: new Date().toISOString()
+    }
+
+    const nextList = [duplicatedObj, ...pages]
+    setPages(nextList)
+    setSelectedPageId(duplicatedObj.id)
+    await savePagesToBackend(nextList)
+    triggerNotify('📄 Seite erfolgreich dupliziert!')
   }
 
   const handleDeletePage = async (pageId) => {
@@ -308,6 +525,49 @@ export default function WebsiteStudio() {
   }
 
   // Block management
+  const [copiedBlock, setCopiedBlock] = useState(null)
+
+  const handleCopyBlockToPage = async (block, targetPageId) => {
+    const targetPage = pages.find(p => p.id === targetPageId)
+    if (!targetPage) return
+    const duplicatedBlock = {
+      ...JSON.parse(JSON.stringify(block)),
+      id: 'b_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4)
+    }
+
+    const updatedPages = pages.map(p => {
+      if (p.id === targetPageId) {
+        return {
+          ...p,
+          blocks: [...p.blocks, duplicatedBlock]
+        }
+      }
+      return p
+    })
+
+    setPages(updatedPages)
+    await savePagesToBackend(updatedPages)
+    triggerNotify(`📋 Block in Seite "${targetPage.title}" kopiert!`)
+  }
+
+  const handleCopyBlockToClipboard = (block) => {
+    setCopiedBlock(JSON.parse(JSON.stringify(block)))
+    triggerNotify('📋 Block in Zwischenablage kopiert!')
+  }
+
+  const handlePasteBlockFromClipboard = () => {
+    if (!copiedBlock || !currentPage) return
+    const pastedBlock = {
+      ...JSON.parse(JSON.stringify(copiedBlock)),
+      id: 'b_' + Date.now()
+    }
+    updateCurrentPage(prev => ({
+      ...prev,
+      blocks: [...prev.blocks, pastedBlock]
+    }))
+    triggerNotify('📋 Block aus Zwischenablage eingefügt!')
+  }
+
   const updateBlock = (blockId, field, value) => {
     updateCurrentPage(prev => ({
       ...prev,
@@ -315,17 +575,32 @@ export default function WebsiteStudio() {
     }))
   }
 
+  const handleFileUploadForBlock = (blockId, field, e) => {
+    const file = e.target.files && e.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (uploadEvent) => {
+      updateBlock(blockId, field, uploadEvent.target.result)
+      triggerNotify('🖼️ Bild erfolgreich hochgeladen!')
+    }
+    reader.readAsDataURL(file)
+  }
+
   const addBlockToPage = (type) => {
     if (!currentPage) return
     let newB = { id: 'b_' + Date.now(), type, fontSize: 24, paddingY: 32 }
     if (type === 'hero') {
       newB = { ...newB, kicker: 'NEUE SEKTION', title: 'Beeindruckender Titel', subtitle: 'Beschreibung der Aktion hier eingeben.', ctaText: 'Mehr Erfahren', ctaLink: '#' }
+    } else if (type === 'text_block') {
+      newB = { ...newB, title: 'Inhaltliche Überschrift', subtitle: 'Untertitel des Fließtextes', content: 'Dies ist ein bearbeitbarer Textabschnitt. Du kannst hier beliebig lange Beschreibungen, Erklärungen oder Artikel eingeben.' }
+    } else if (type === 'image_banner') {
+      newB = { ...newB, imageUrl: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=1000&q=80', caption: 'Atmosphärisches Bild', altText: 'Banner Bild' }
     } else if (type === 'features') {
       newB = { ...newB, title: 'Unsere Highlights', subtitle: 'Drei starke Argumente', items: [{ title: 'Punkt 1', desc: 'Vorteil A' }, { title: 'Punkt 2', desc: 'Vorteil B' }] }
     } else if (type === 'cta') {
       newB = { ...newB, title: 'Jetzt Starten', subtitle: 'Verpasse keine Angebote mehr.', ctaText: 'Hier Klicken', ctaLink: '#' }
     } else if (type === 'code_embed') {
-      newB = { ...newB, title: 'Custom Code / Animation Block', htmlContent: '<div class="custom-widget" style="padding: 20px; background: rgba(124,58,237,0.1); border-radius: 12px; text-align: center; border: 1px solid rgba(124,58,237,0.3);">⚡ Interaktiver Custom Widget Block</div>' }
+      newB = { ...newB, title: 'Custom Code / Animation Block', htmlContent: '<div style="padding: 20px; background: rgba(124,58,237,0.1); border-radius: 12px; text-align: center; border: 1px solid rgba(124,58,237,0.3);">⚡ Interaktiver Custom Widget Block</div>' }
     }
 
     updateCurrentPage(prev => ({
@@ -384,7 +659,7 @@ export default function WebsiteStudio() {
               SCENVY WEBSTUDIO CMS
             </div>
             <div style={{ fontSize: 20, fontWeight: 900, color: C.white, display: 'flex', alignItems: 'center', gap: 10 }}>
-              Visual Web & Landing-Page Studio
+              Visual WYSIWYG Web Studio
             </div>
           </div>
         </div>
@@ -401,7 +676,7 @@ export default function WebsiteStudio() {
             onClick={() => setShowNewPageModal(true)}
             style={{ padding: '9px 16px', borderRadius: 10, background: C.bg, border: `1px solid ${C.purple}`, color: C.purple, fontSize: 13, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
           >
-            <Plus size={15} /> Neue Seite Erstellen
+            <Plus size={15} /> Neue Seite
           </button>
 
           <button
@@ -412,46 +687,33 @@ export default function WebsiteStudio() {
             <Save size={16} /> {isSaving ? 'Speichere...' : 'Änderungen Speichern'}
           </button>
 
-          {/* User Account Info & Logout Button */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginLeft: 8, paddingLeft: 16, borderLeft: `1px solid ${C.border}` }}>
-            {user && (
-              <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right', display: 'none' /* hidden on small, flex on md */ }}>
-                <span style={{ fontSize: 12, fontWeight: 800, color: C.white }}>{user.name || user.email}</span>
-                <span style={{ fontSize: 10, color: C.muted }}>CMS Administrator</span>
-              </div>
-            )}
-
-            <button
-              onClick={handleLogout}
-              style={{
-                padding: '9px 16px',
-                borderRadius: 10,
-                background: 'rgba(239,68,68,0.15)',
-                border: '1px solid rgba(239,68,68,0.4)',
-                color: '#EF4444',
-                fontSize: 13,
-                fontWeight: 800,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                transition: 'all 0.15s ease'
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.25)'}
-              onMouseLeave={e => e.currentTarget.style.background = 'rgba(239,68,68,0.15)'}
-              title="Sicher aus dem WebStudio abmelden"
-            >
-              <LogOut size={15} /> Abmelden
-            </button>
-          </div>
+          <button
+            onClick={handleLogout}
+            style={{
+              padding: '9px 16px',
+              borderRadius: 10,
+              background: 'rgba(239,68,68,0.15)',
+              border: '1px solid rgba(239,68,68,0.4)',
+              color: '#EF4444',
+              fontSize: 13,
+              fontWeight: 800,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6
+            }}
+            title="Sicher aus dem WebStudio abmelden"
+          >
+            <LogOut size={15} /> Abmelden
+          </button>
         </div>
       </header>
 
       {/* Main Studio Workspace Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', minHeight: 'calc(100vh - 120px)' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', minHeight: 'calc(100vh - 80px)' }}>
         
         {/* Left Sidebar: Page List & Selector */}
-        <aside style={{ background: C.card, borderRight: `1px solid ${C.border}`, padding: 20, display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <aside style={{ background: C.card, borderRight: `1px solid ${C.border}`, padding: 20, display: 'flex', flexDirection: 'column', gap: 20, maxHeight: 'calc(100vh - 80px)', overflowY: 'auto' }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 800, color: C.muted, letterSpacing: 1, marginBottom: 12 }}>
               VERFÜGBARE LANDING-PAGES ({pages.length})
@@ -473,7 +735,7 @@ export default function WebsiteStudio() {
                       display: 'flex',
                       flexDirection: 'column',
                       gap: 4,
-                      transition: 'all 0.15s ease'
+                      position: 'relative'
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -484,64 +746,70 @@ export default function WebsiteStudio() {
                         {p.isPublished ? 'LIVE' : 'ENTWURF'}
                       </span>
                     </div>
-                    <div style={{ fontSize: 11, color: C.dim, fontFamily: 'monospace' }}>
-                      /p/{p.slug}
+                    
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2 }}>
+                      <div style={{ fontSize: 11, color: C.dim, fontFamily: 'monospace' }}>
+                        /{p.slug === 'hauptseite' ? '' : p.slug}
+                      </div>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleDuplicatePage(p.id)
+                        }}
+                        title="Seite kopieren / duplizieren"
+                        style={{ background: 'transparent', border: 'none', color: C.purple, cursor: 'pointer', padding: 2, display: 'flex', alignItems: 'center' }}
+                      >
+                        <Copy size={13} />
+                      </button>
                     </div>
                   </div>
                 )
               })}
             </div>
           </div>
-
-          {/* Quick Info Box */}
-          <div style={{ marginTop: 'auto', background: C.bg, padding: 14, borderRadius: 12, border: `1px solid ${C.border}`, fontSize: 12, color: C.muted }}>
-            <div style={{ fontSize: 13, fontWeight: 800, color: C.white, marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
-              <Zap size={14} color={C.purple} /> Direkt-Publishing & SEO
-            </div>
-            Jede hier gespeicherte Landing-Page ist sofort unter <code style={{ color: C.purple }}>/p/{currentPage?.slug}</code> erreichbar und für Suchmaschinen optimiert.
-          </div>
         </aside>
 
-        {/* Right Workspace: Editor Tabs & Live Preview */}
-        <main style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 20, overflowY: 'auto' }}>
+        {/* Right Main Content Area */}
+        <main style={{ padding: 28, overflowY: 'auto' }}>
           
           {currentPage && (
             <>
-              {/* Toolbar Header for Current Page */}
-              <div style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, padding: '14px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div>
-                    <div style={{ fontSize: 16, fontWeight: 900, color: C.white }}>{currentPage.title}</div>
-                    <div style={{ fontSize: 12, color: C.muted, display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <span>Slug: <code style={{ color: C.purple }}>/p/{currentPage.slug}</code></span>
-                      <span>•</span>
-                      <button
-                        onClick={() => updateCurrentPage(p => ({ ...p, isPublished: !p.isPublished }))}
-                        style={{ background: 'none', border: 'none', color: currentPage.isPublished ? C.green : C.orange, cursor: 'pointer', fontWeight: 800, fontSize: 12, padding: 0 }}
-                      >
-                        {currentPage.isPublished ? '● Veröffentlicht (Aktiv)' : '○ Entwurf (Inaktiv)'}
-                      </button>
-                    </div>
+              {/* Top Page Header Bar */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, background: C.card, padding: 16, borderRadius: 14, border: `1px solid ${C.border}` }}>
+                <div>
+                  <div style={{ fontSize: 18, fontWeight: 900, color: C.white, display: 'flex', alignItems: 'center', gap: 10 }}>
+                    {currentPage.title}
+                    <button
+                      onClick={() => handleDuplicatePage(currentPage.id)}
+                      style={{ background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, borderRadius: 6, padding: '4px 10px', fontSize: 11, fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
+                    >
+                      <Copy size={12} /> Seite Duplizieren
+                    </button>
+                  </div>
+                  <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>
+                    URL: <span style={{ fontFamily: 'monospace', color: C.purple }}>https://scenvy.de/{currentPage.slug === 'hauptseite' ? '' : currentPage.slug}</span>
                   </div>
                 </div>
 
-                {/* Editor Tab Switcher */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: C.bg, padding: 4, borderRadius: 10, border: `1px solid ${C.border}` }}>
+                {/* Editor Mode Tabs */}
+                <div style={{ display: 'flex', background: C.bg, padding: 4, borderRadius: 10, border: `1px solid ${C.border}` }}>
                   {[
-                    { id: 'editor', label: '🎨 Visueller Editor', icon: <Layout size={14} /> },
-                    { id: 'code', label: '💻 Code & Animationen', icon: <Code size={14} /> },
-                    { id: 'settings', label: '⚙️ Einstellungen', icon: <Settings size={14} /> },
-                    { id: 'preview', label: '👁️ Live Vorschau', icon: <Eye size={14} /> }
-                  ].map(tab => (
+                    ['editor', '✏️ Visual Editor', Layout],
+                    ['nav', '📌 Menü & Reihenfolge', List],
+                    ['code', '💻 Custom CSS', Code],
+                    ['settings', '⚙️ SEO & Settings', Settings],
+                    ['preview', '👁️ Live Preview', Eye]
+                  ].map(([tabKey, label, Icon]) => (
                     <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
+                      key={tabKey}
+                      onClick={() => setActiveTab(tabKey)}
                       style={{
-                        padding: '6px 14px',
+                        padding: '8px 16px',
                         borderRadius: 8,
                         border: 'none',
-                        background: activeTab === tab.id ? C.purple : 'transparent',
-                        color: activeTab === tab.id ? C.white : C.muted,
+                        background: activeTab === tabKey ? C.purple : 'transparent',
+                        color: activeTab === tabKey ? C.white : C.muted,
                         fontSize: 12,
                         fontWeight: 700,
                         cursor: 'pointer',
@@ -550,51 +818,83 @@ export default function WebsiteStudio() {
                         gap: 6
                       }}
                     >
-                      {tab.icon} {tab.label}
+                      <Icon size={14} />
+                      {label}
                     </button>
                   ))}
                 </div>
-
-                {/* Live Link */}
-                <a
-                  href={`/p/${currentPage.slug}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ textDecoration: 'none', padding: '8px 14px', borderRadius: 8, background: C.bg, border: `1px solid ${C.border}`, color: C.blue, fontSize: 12, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}
-                >
-                  <ExternalLink size={13} /> Landing-Page Aufrufen
-                </a>
               </div>
 
-              {/* TAB 1: VISUELLER EDITOR (WYSIWYG & BLOCKS) */}
+              {/* TAB 1: VISUAL BLOCK EDITOR */}
               {activeTab === 'editor' && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 20 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 24 }}>
                   
-                  {/* Left Column: Visual Blocks List */}
+                  {/* Left Column: Form Controls for Blocks */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <div style={{ fontSize: 14, fontWeight: 800, color: C.white }}>Seiten-Struktur & Inhaltselemente</div>
-                      
-                      {/* Add Block Dropdown */}
-                      <div style={{ display: 'flex', gap: 8 }}>
-                        <button onClick={() => addBlockToPage('hero')} style={{ padding: '6px 12px', borderRadius: 8, background: `${C.purple}22`, border: `1px solid ${C.purple}`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Hero Sektion</button>
-                        <button onClick={() => addBlockToPage('features')} style={{ padding: '6px 12px', borderRadius: 8, background: `${C.blue}22`, border: `1px solid ${C.blue}`, color: C.blue, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Features Grid</button>
-                        <button onClick={() => addBlockToPage('cta')} style={{ padding: '6px 12px', borderRadius: 8, background: `${C.pink}22`, border: `1px solid ${C.pink}`, color: C.pink, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Call-to-Action</button>
-                        <button onClick={() => addBlockToPage('code_embed')} style={{ padding: '6px 12px', borderRadius: 8, background: `${C.green}22`, border: `1px solid ${C.green}`, color: C.green, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Custom Code Block</button>
+                      <div style={{ fontSize: 14, fontWeight: 800, color: C.white, display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <Layers size={16} color={C.purple} /> Sektionen & Inhalt Blöcke ({currentPage.blocks.length})
+                      </div>
+
+                      {/* Add Block Selector */}
+                      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+                        {copiedBlock && (
+                          <button
+                            onClick={handlePasteBlockFromClipboard}
+                            style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(16,185,129,0.2)', border: '1px solid #10B981', color: '#10B981', fontSize: 11, fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
+                          >
+                            <Copy size={12} /> Block Einfügen
+                          </button>
+                        )}
+                        <button onClick={() => addBlockToPage('hero')} style={{ padding: '6px 10px', borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Hero</button>
+                        <button onClick={() => addBlockToPage('text_block')} style={{ padding: '6px 10px', borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Text / Artikel</button>
+                        <button onClick={() => addBlockToPage('image_banner')} style={{ padding: '6px 10px', borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Bild Banner</button>
+                        <button onClick={() => addBlockToPage('features')} style={{ padding: '6px 10px', borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Features Grid</button>
+                        <button onClick={() => addBlockToPage('cta')} style={{ padding: '6px 10px', borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ CTA</button>
+                        <button onClick={() => addBlockToPage('code_embed')} style={{ padding: '6px 10px', borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Custom HTML</button>
                       </div>
                     </div>
 
-                    {/* Render Each Editable Block */}
+                    {/* Render Block List */}
                     {currentPage.blocks.map((block, idx) => (
-                      <div key={block.id} style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
-                        {/* Block Header */}
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${C.border}`, paddingBottom: 10 }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, fontWeight: 800, color: C.purple }}>
-                            <Layers size={16} /> Block #{idx + 1}: {block.type.toUpperCase()}
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                            <button onClick={() => moveBlock(idx, -1)} disabled={idx === 0} style={{ padding: '4px 8px', borderRadius: 6, background: C.bg, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer' }}><MoveUp size={12} /></button>
-                            <button onClick={() => moveBlock(idx, 1)} disabled={idx === currentPage.blocks.length - 1} style={{ padding: '4px 8px', borderRadius: 6, background: C.bg, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer' }}><MoveDown size={12} /></button>
+                      <div key={block.id} style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, padding: 18, display: 'grid', gap: 14 }}>
+                        {/* Block Header Toolbar */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${C.border}`, paddingBottom: 10, flexWrap: 'wrap', gap: 8 }}>
+                          <span style={{ fontSize: 12, fontWeight: 900, color: C.purple, textTransform: 'uppercase', letterSpacing: 1 }}>
+                            #{idx + 1} {block.type} BLOCK
+                          </span>
+
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                            {/* Copy to Clipboard */}
+                            <button
+                              onClick={() => handleCopyBlockToClipboard(block)}
+                              title="Block kopieren (Zwischenablage)"
+                              style={{ padding: '4px 8px', borderRadius: 6, background: C.bg, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
+                            >
+                              <Copy size={11} /> Kopieren
+                            </button>
+
+                            {/* Copy to specific target page selector */}
+                            <select
+                              defaultValue=""
+                              onChange={(e) => {
+                                if (e.target.value) {
+                                  handleCopyBlockToPage(block, e.target.value)
+                                  e.target.value = ""
+                                }
+                              }}
+                              style={{ background: C.bg, border: `1px solid ${C.purple}88`, color: C.purple, fontSize: 11, fontWeight: 700, padding: '4px 6px', borderRadius: 6, cursor: 'pointer' }}
+                            >
+                              <option value="" disabled>📋 Kopieren in Seite...</option>
+                              {pages.map(p => (
+                                <option key={p.id} value={p.id} disabled={p.id === currentPage.id}>
+                                  {p.title} {p.id === currentPage.id ? '(Aktuell)' : ''}
+                                </option>
+                              ))}
+                            </select>
+
+                            <button onClick={() => moveBlock(idx, -1)} disabled={idx === 0} style={{ padding: '4px 8px', borderRadius: 6, background: C.bg, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer', opacity: idx === 0 ? 0.3 : 1 }}><MoveUp size={12} /></button>
+                            <button onClick={() => moveBlock(idx, 1)} disabled={idx === currentPage.blocks.length - 1} style={{ padding: '4px 8px', borderRadius: 6, background: C.bg, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer', opacity: idx === currentPage.blocks.length - 1 ? 0.3 : 1 }}><MoveDown size={12} /></button>
                             <button onClick={() => removeBlock(block.id)} style={{ padding: '4px 8px', borderRadius: 6, background: `${C.pink}22`, border: `1px solid ${C.pink}`, color: C.pink, cursor: 'pointer' }}><Trash2 size={12} /></button>
                           </div>
                         </div>
@@ -611,9 +911,22 @@ export default function WebsiteStudio() {
                               <input type="text" value={block.title || ''} onChange={e => updateBlock(block.id, 'title', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 15, fontWeight: 800 }} />
                             </div>
                             <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>UNTERTITEL / DESCRIPTION</label>
+                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>UNTERTITEL / BESCHREIBUNG</label>
                               <textarea rows={2} value={block.subtitle || ''} onChange={e => updateBlock(block.id, 'subtitle', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 13, resize: 'vertical' }} />
                             </div>
+                            
+                            {/* Image Field & Local File Upload */}
+                            <div>
+                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BILD URL ODER FILE UPLOAD</label>
+                              <div style={{ display: 'flex', gap: 8 }}>
+                                <input type="text" placeholder="https://..." value={block.imageUrl || ''} onChange={e => updateBlock(block.id, 'imageUrl', e.target.value)} style={{ flex: 1, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
+                                <label style={{ padding: '8px 12px', background: `${C.purple}22`, border: `1px solid ${C.purple}`, borderRadius: 8, color: C.purple, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+                                  <Upload size={13} /> Upload
+                                  <input type="file" accept="image/*" onChange={e => handleFileUploadForBlock(block.id, 'imageUrl', e)} style={{ display: 'none' }} />
+                                </label>
+                              </div>
+                            </div>
+
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                               <div>
                                 <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>CTA BUTTON TEXT</label>
@@ -623,6 +936,42 @@ export default function WebsiteStudio() {
                                 <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>CTA LINK (URL)</label>
                                 <input type="text" value={block.ctaLink || ''} onChange={e => updateBlock(block.id, 'ctaLink', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
                               </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {block.type === 'text_block' && (
+                          <div style={{ display: 'grid', gap: 12 }}>
+                            <div>
+                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>TITEL</label>
+                              <input type="text" value={block.title || ''} onChange={e => updateBlock(block.id, 'title', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 14, fontWeight: 800 }} />
+                            </div>
+                            <div>
+                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>UNTERTITEL</label>
+                              <input type="text" value={block.subtitle || ''} onChange={e => updateBlock(block.id, 'subtitle', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 13 }} />
+                            </div>
+                            <div>
+                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>FLIESSTEXT / ARTIKEL INHALT</label>
+                              <textarea rows={5} value={block.content || ''} onChange={e => updateBlock(block.id, 'content', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 12px', color: C.white, fontSize: 13, resize: 'vertical', lineHeight: 1.6 }} />
+                            </div>
+                          </div>
+                        )}
+
+                        {block.type === 'image_banner' && (
+                          <div style={{ display: 'grid', gap: 12 }}>
+                            <div>
+                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BILD URL ODER FILE UPLOAD</label>
+                              <div style={{ display: 'flex', gap: 8 }}>
+                                <input type="text" placeholder="https://..." value={block.imageUrl || ''} onChange={e => updateBlock(block.id, 'imageUrl', e.target.value)} style={{ flex: 1, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
+                                <label style={{ padding: '8px 12px', background: `${C.purple}22`, border: `1px solid ${C.purple}`, borderRadius: 8, color: C.purple, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+                                  <Upload size={13} /> Upload
+                                  <input type="file" accept="image/*" onChange={e => handleFileUploadForBlock(block.id, 'imageUrl', e)} style={{ display: 'none' }} />
+                                </label>
+                              </div>
+                            </div>
+                            <div>
+                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BILD-UNTERSCHRIFT (CAPTION)</label>
+                              <input type="text" value={block.caption || ''} onChange={e => updateBlock(block.id, 'caption', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 13 }} />
                             </div>
                           </div>
                         )}
@@ -661,71 +1010,128 @@ export default function WebsiteStudio() {
                             <textarea rows={4} value={block.htmlContent || ''} onChange={e => updateBlock(block.id, 'htmlContent', e.target.value)} style={{ width: '100%', background: '#05070B', border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px', color: C.green, fontSize: 12, fontFamily: 'monospace' }} />
                           </div>
                         )}
-
-                        {/* Size & Padding Adjuster (Ding Größe / Abstände ändern) */}
-                        <div style={{ background: C.bg, padding: 12, borderRadius: 10, border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                            <Type size={14} color={C.blue} />
-                            <span style={{ fontSize: 11, fontWeight: 700, color: C.muted }}>Schriftgröße (Titel):</span>
-                            <button onClick={() => updateBlock(block.id, 'fontSize', Math.max(16, (block.fontSize || 24) - 2))} style={{ padding: '2px 8px', borderRadius: 4, background: C.card, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer' }}>-</button>
-                            <span style={{ fontSize: 12, fontWeight: 800, color: C.white }}>{block.fontSize || 24}px</span>
-                            <button onClick={() => updateBlock(block.id, 'fontSize', Math.min(60, (block.fontSize || 24) + 2))} style={{ padding: '2px 8px', borderRadius: 4, background: C.card, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer' }}>+</button>
-                          </div>
-
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                            <Sliders size={14} color={C.purple} />
-                            <span style={{ fontSize: 11, fontWeight: 700, color: C.muted }}>Sektions-Abstand (Padding):</span>
-                            <button onClick={() => updateBlock(block.id, 'paddingY', Math.max(10, (block.paddingY || 32) - 10))} style={{ padding: '2px 8px', borderRadius: 4, background: C.card, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer' }}>-</button>
-                            <span style={{ fontSize: 12, fontWeight: 800, color: C.white }}>{block.paddingY || 32}px</span>
-                            <button onClick={() => updateBlock(block.id, 'paddingY', Math.min(120, (block.paddingY || 32) + 10))} style={{ padding: '2px 8px', borderRadius: 4, background: C.card, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer' }}>+</button>
-                          </div>
-                        </div>
-
                       </div>
                     ))}
                   </div>
 
-                  {/* Right Column: Style & Theme Controls */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                    <div style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, padding: 20 }}>
-                      <div style={{ fontSize: 14, fontWeight: 800, color: C.white, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <Palette size={16} color={C.pink} /> Design & Farb-Schema
-                      </div>
+                  {/* Right Column: Live Side Preview */}
+                  <div style={{ background: C.card, borderRadius: 16, border: `1px solid ${C.border}`, padding: 20, position: 'sticky', top: 20, alignSelf: 'start' }}>
+                    <div style={{ fontSize: 13, fontWeight: 800, color: C.white, marginBottom: 14, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Eye size={15} color={C.purple} /> Echtzeit-Vorschau</span>
+                      <span style={{ fontSize: 10, color: C.green, background: `${C.green}22`, padding: '2px 8px', borderRadius: 10, fontWeight: 800 }}>LIVE SYNC</span>
+                    </div>
 
-                      <div style={{ display: 'grid', gap: 14 }}>
-                        <div>
-                          <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>HINTERGRUNDFARBE</label>
-                          <input type="color" value={currentPage.theme?.bg || '#0A0A10'} onChange={e => updateCurrentPage(p => ({ ...p, theme: { ...p.theme, bg: e.target.value } }))} style={{ width: '100%', height: 38, borderRadius: 8, border: `1px solid ${C.border}`, background: C.bg, cursor: 'pointer' }} />
+                    <div style={{
+                      background: currentPage.theme?.bg || '#0A0A10',
+                      color: currentPage.theme?.text || '#F3F4F6',
+                      borderRadius: 12,
+                      border: `1px solid ${C.border}`,
+                      padding: 20,
+                      maxHeight: '70vh',
+                      overflowY: 'auto'
+                    }}>
+                      <style>{currentPage.theme?.customCss || ''}</style>
+                      {currentPage.blocks.map(b => (
+                        <div key={b.id} style={{ padding: `${b.paddingY || 24}px 0`, borderBottom: `1px solid rgba(255,255,255,0.05)` }}>
+                          {b.kicker && <div style={{ fontSize: 11, color: currentPage.theme?.accent || C.purple, fontWeight: 800, letterSpacing: 1.5, marginBottom: 6 }}>{b.kicker}</div>}
+                          {b.title && <div style={{ fontSize: b.fontSize || 24, fontWeight: 900, marginBottom: 8 }}>{b.title}</div>}
+                          {b.subtitle && <div style={{ fontSize: 13, opacity: 0.8, marginBottom: 14, lineHeight: 1.5 }}>{b.subtitle}</div>}
+                          {b.content && <div style={{ fontSize: 13, opacity: 0.9, lineHeight: 1.6, marginBottom: 14, whitespace: 'pre-line' }}>{b.content}</div>}
+                          {b.imageUrl && (
+                            <img src={b.imageUrl} alt="Uploaded preview" style={{ width: '100%', maxHeight: 220, objectFit: 'cover', borderRadius: 10, marginBottom: 14 }} />
+                          )}
+                          {b.ctaText && (
+                            <a href={b.ctaLink || '#'} style={{ display: 'inline-block', padding: '8px 20px', borderRadius: 8, background: currentPage.theme?.accent || C.purple, color: '#FFF', fontWeight: 800, fontSize: 12, textDecoration: 'none' }}>
+                              {b.ctaText}
+                            </a>
+                          )}
+                          {b.htmlContent && <div dangerouslySetInnerHTML={{ __html: b.htmlContent }} />}
                         </div>
-
-                        <div>
-                          <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>AKZENTFARBE (BUTTONS & GLOW)</label>
-                          <input type="color" value={currentPage.theme?.accent || '#7C3AED'} onChange={e => updateCurrentPage(p => ({ ...p, theme: { ...p.theme, accent: e.target.value } }))} style={{ width: '100%', height: 38, borderRadius: 8, border: `1px solid ${C.border}`, background: C.bg, cursor: 'pointer' }} />
-                        </div>
-
-                        <div>
-                          <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>TEXTFARBE</label>
-                          <input type="color" value={currentPage.theme?.text || '#F3F4F6'} onChange={e => updateCurrentPage(p => ({ ...p, theme: { ...p.theme, text: e.target.value } }))} style={{ width: '100%', height: 38, borderRadius: 8, border: `1px solid ${C.border}`, background: C.bg, cursor: 'pointer' }} />
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
 
                 </div>
               )}
 
-              {/* TAB 2: CODE & ANIMATIONS EDITOR */}
+              {/* TAB 2: MENU & NAVIGATION ORDER MANAGER */}
+              {activeTab === 'nav' && (
+                <div style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, padding: 24, display: 'grid', gap: 20 }}>
+                  <div>
+                    <div style={{ fontSize: 18, fontWeight: 900, color: C.white, display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <List size={18} color={C.purple} /> Menü-Reihenfolge & Navigation Manager
+                    </div>
+                    <div style={{ fontSize: 12, color: C.muted, marginTop: 4 }}>
+                      Lege fest, welche Seiten in der oberen Menüleiste sichtbar sind und in welcher Reihenfolge sie erscheinen.
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gap: 10 }}>
+                    {pages.map((p, pIdx) => (
+                      <div key={p.id} style={{ background: C.bg, padding: 14, borderRadius: 10, border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                          <span style={{ fontSize: 12, fontWeight: 900, color: C.purple, width: 24 }}>#{pIdx + 1}</span>
+                          <div>
+                            <div style={{ fontSize: 14, fontWeight: 800, color: C.white }}>{p.title}</div>
+                            <div style={{ fontSize: 11, color: C.dim, fontFamily: 'monospace' }}>/{p.slug}</div>
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                          <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: p.inNav ? C.green : C.muted, cursor: 'pointer' }}>
+                            <input
+                              type="checkbox"
+                              checked={!!p.inNav}
+                              onChange={e => {
+                                const nextList = pages.map(item => item.id === p.id ? { ...item, inNav: e.target.checked } : item)
+                                setPages(nextList)
+                              }}
+                            />
+                            Im Hauptmenü anzeigen
+                          </label>
+
+                          <div style={{ display: 'flex', gap: 4 }}>
+                            <button
+                              onClick={() => {
+                                if (pIdx === 0) return
+                                const nextPages = [...pages]
+                                const temp = nextPages[pIdx]
+                                nextPages[pIdx] = nextPages[pIdx - 1]
+                                nextPages[pIdx - 1] = temp
+                                setPages(nextPages)
+                              }}
+                              disabled={pIdx === 0}
+                              style={{ padding: '4px 8px', borderRadius: 6, background: C.card, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer', opacity: pIdx === 0 ? 0.3 : 1 }}
+                            >
+                              <MoveUp size={12} />
+                            </button>
+                            <button
+                              onClick={() => {
+                                if (pIdx === pages.length - 1) return
+                                const nextPages = [...pages]
+                                const temp = nextPages[pIdx]
+                                nextPages[pIdx] = nextPages[pIdx + 1]
+                                nextPages[pIdx + 1] = temp
+                                setPages(nextPages)
+                              }}
+                              disabled={pIdx === pages.length - 1}
+                              style={{ padding: '4px 8px', borderRadius: 6, background: C.card, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer', opacity: pIdx === pages.length - 1 ? 0.3 : 1 }}
+                            >
+                              <MoveDown size={12} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 3: CODE & ANIMATIONS EDITOR */}
               {activeTab === 'code' && (
                 <div style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, padding: 24, display: 'grid', gap: 16 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div>
-                      <div style={{ fontSize: 16, fontWeight: 800, color: C.white, display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <Code size={18} color={C.green} /> Custom CSS & Animationen Editor
-                      </div>
-                      <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>
-                        Füge individuelle Keyframe-Animationen, Hover-Effekte oder globale CSS-Regeln für diese Landing-Page ein.
-                      </div>
-                    </div>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: C.white, display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Code size={18} color={C.green} /> Custom CSS & Animationen Editor
                   </div>
 
                   <textarea
@@ -748,7 +1154,7 @@ export default function WebsiteStudio() {
                 </div>
               )}
 
-              {/* TAB 3: EINSTELLUNGEN & SEO */}
+              {/* TAB 4: EINSTELLUNGEN & SEO */}
               {activeTab === 'settings' && (
                 <div style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, padding: 24, display: 'grid', gap: 16, maxWidth: 640 }}>
                   <div style={{ fontSize: 16, fontWeight: 800, color: C.white }}>Seiteneinstellungen & SEO Meta-Daten</div>
@@ -763,11 +1169,6 @@ export default function WebsiteStudio() {
                     <input type="text" value={currentPage.slug || ''} onChange={e => updateCurrentPage(p => ({ ...p, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]+/g, '') }))} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 14px', color: C.white, fontSize: 14, fontFamily: 'monospace' }} />
                   </div>
 
-                  <div>
-                    <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>SEO BESCHREIBUNG (META DESCRIPTION)</label>
-                    <textarea rows={3} value={currentPage.description || ''} onChange={e => updateCurrentPage(p => ({ ...p, description: e.target.value }))} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 14px', color: C.white, fontSize: 13 }} />
-                  </div>
-
                   <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 16, marginTop: 10 }}>
                     <button
                       onClick={() => handleDeletePage(currentPage.id)}
@@ -779,16 +1180,14 @@ export default function WebsiteStudio() {
                 </div>
               )}
 
-              {/* TAB 4: LIVE PREVIEW MODE */}
+              {/* TAB 5: LIVE PREVIEW MODE */}
               {activeTab === 'preview' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
-                  {/* Device Switcher */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: C.card, padding: 6, borderRadius: 10, border: `1px solid ${C.border}` }}>
                     <button onClick={() => setPreviewDevice('desktop')} style={{ padding: '6px 14px', borderRadius: 6, border: 'none', background: previewDevice === 'desktop' ? C.purple : 'transparent', color: C.white, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}><Monitor size={14} /> Desktop (100%)</button>
                     <button onClick={() => setPreviewDevice('mobile')} style={{ padding: '6px 14px', borderRadius: 6, border: 'none', background: previewDevice === 'mobile' ? C.purple : 'transparent', color: C.white, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}><Smartphone size={14} /> Mobile View (375px)</button>
                   </div>
 
-                  {/* Render Page Preview Box */}
                   <div style={{
                     width: previewDevice === 'mobile' ? '375px' : '100%',
                     minHeight: '600px',
@@ -797,18 +1196,17 @@ export default function WebsiteStudio() {
                     borderRadius: 16,
                     border: `1px solid ${C.border}`,
                     padding: 32,
-                    boxShadow: '0 10px 40px rgba(0,0,0,0.6)',
-                    transition: 'all 0.3s ease'
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.6)'
                   }}>
                     <style>{currentPage.theme?.customCss || ''}</style>
-
                     {currentPage.blocks.map(b => (
-                      <div key={b.id} style={{ padding: `${b.paddingY || 32}px 0`, textContent: 'center' }}>
+                      <div key={b.id} style={{ padding: `${b.paddingY || 32}px 0` }}>
                         {b.kicker && <div style={{ fontSize: 12, color: currentPage.theme?.accent || C.purple, fontWeight: 800, letterSpacing: 2, marginBottom: 8 }}>{b.kicker}</div>}
-                        {b.title && <div className="animated-hero-title" style={{ fontSize: b.fontSize || 32, fontWeight: 900, marginBottom: 12 }}>{b.title}</div>}
-                        {b.subtitle && <div style={{ fontSize: 15, opacity: 0.8, maxWidth: 600, margin: '0 auto 20px', lineHeight: 1.6 }}>{b.subtitle}</div>}
+                        {b.title && <div style={{ fontSize: b.fontSize || 32, fontWeight: 900, marginBottom: 12 }}>{b.title}</div>}
+                        {b.subtitle && <div style={{ fontSize: 15, opacity: 0.8, maxWidth: 600, lineHeight: 1.6, marginBottom: 20 }}>{b.subtitle}</div>}
+                        {b.imageUrl && <img src={b.imageUrl} alt="Preview" style={{ width: '100%', borderRadius: 12, marginBottom: 20 }} />}
                         {b.ctaText && (
-                          <a href={b.ctaLink || '#'} className="pulse-cta" style={{ display: 'inline-block', padding: '12px 28px', borderRadius: 12, background: currentPage.theme?.accent || C.purple, color: '#FFF', fontWeight: 800, textDecoration: 'none' }}>
+                          <a href={b.ctaLink || '#'} style={{ display: 'inline-block', padding: '12px 28px', borderRadius: 12, background: currentPage.theme?.accent || C.purple, color: '#FFF', fontWeight: 800, textDecoration: 'none' }}>
                             {b.ctaText}
                           </a>
                         )}
@@ -831,7 +1229,7 @@ export default function WebsiteStudio() {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
           <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 18, padding: 28, width: '100%', maxWidth: 460 }}>
             <div style={{ fontSize: 18, fontWeight: 900, color: C.white, marginBottom: 6 }}>Neue Landing-Page Erstellen</div>
-            <div style={{ fontSize: 12, color: C.muted, marginBottom: 20 }}>Erstelle eine neue eigenständige Unterseite mit eigenem URL-Pfad.</div>
+            <div style={{ fontSize: 12, color: C.muted, marginBottom: 20 }}>Erstelle eine neue Unterseite mit eigenem URL-Pfad.</div>
 
             <form onSubmit={handleCreatePage} style={{ display: 'grid', gap: 14 }}>
               <div>

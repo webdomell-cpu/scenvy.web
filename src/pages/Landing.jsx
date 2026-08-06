@@ -6,6 +6,12 @@ import { ScenvyAppIcon, ScenvyPhoneMockup, ScenvyHeroShowcase, MODULE_COLORS } f
 import { Check, Clock, Star, Play, Video, Zap, Sparkles, MapPin, BarChart2, QrCode, X, Send, Menu, Film, Utensils, Tv, Building, ShoppingBag, Tag, Heart, MessageCircle, Share2, Volume2, VolumeX, ChevronDown, ChevronUp, ArrowRight, ShieldCheck, Award, TrendingUp, Smartphone, Layers, Eye, Pause, Repeat, Flame } from 'lucide-react'
 import CmsPasscodeModal from '@/components/CmsPasscodeModal'
 import { EcosystemHeaderBar } from '@/components/EcosystemHeaderBar'
+import { RoiCalculatorSection } from '@/components/RoiCalculatorSection'
+import { LiveDemoSandboxSection } from '@/components/LiveDemoSandboxSection'
+import { AiWorkflowSection } from '@/components/AiWorkflowSection'
+import { BuyerPersonaSection } from '@/components/BuyerPersonaSection'
+import { SocialProofAndHardwareSection } from '@/components/SocialProofAndHardwareSection'
+import { LiveActivityTicker } from '@/components/LiveActivityTicker'
 
 // i18n inline
 const T = {
@@ -1533,7 +1539,7 @@ export default function Landing({ onOpenAuthModal }){
 
       {/* TOP ECOSYSTEM HEADER BAR */}
       <div style={{ position: 'sticky', top: 0, zIndex: 110 }}>
-        <EcosystemHeaderBar onOpenAuthModal={handleOpenAuth} lang={lang} setLang={setLang} />
+        <EcosystemHeaderBar />
       </div>
 
       {/* TOP ANNOUNCEMENT BANNER */}
@@ -1550,11 +1556,8 @@ export default function Landing({ onOpenAuthModal }){
           <ScenvyLogoFull height={70} />
         </div>
 
-        {/* Desktop Navigation Links */}
+        {/* Desktop Navigation Links (Board -> Flow -> Menu -> Solutions) */}
         <div className="desktop-nav-links" style={{display:'flex',gap:12,alignItems:'center'}}>
-          <Link to="/loesungen" style={{color:'#A78BFA',fontSize:13,fontWeight:800,background:'rgba(139,92,246,0.18)',border:'1px solid rgba(139,92,246,0.4)',padding:'6px 12px',borderRadius:20,display:'inline-flex',alignItems:'center',gap:6}}>
-            <Sparkles size={14} color="#A78BFA"/> {lang === 'de' ? 'Branchenlösungen' : 'Solutions'}
-          </Link>
           <Link to="/board" style={{color:'#3B82F6',fontSize:13,fontWeight:700,background:'rgba(59,130,246,0.12)',border:'1px solid rgba(59,130,246,0.3)',padding:'6px 12px',borderRadius:20,display:'inline-flex',alignItems:'center',gap:6}}>
             <Tv size={14} color="#3B82F6"/> SCENVY BOARD
           </Link>
@@ -1563,6 +1566,9 @@ export default function Landing({ onOpenAuthModal }){
           </Link>
           <Link to="/menu" style={{color:'#F97316',fontSize:13,fontWeight:700,background:'rgba(249,115,22,0.12)',border:'1px solid rgba(249,115,22,0.3)',padding:'6px 12px',borderRadius:20,display:'inline-flex',alignItems:'center',gap:6}}>
             <Utensils size={14} color="#F97316"/> SCENVY MENU
+          </Link>
+          <Link to="/loesungen" style={{color:'#A78BFA',fontSize:13,fontWeight:800,background:'rgba(139,92,246,0.18)',border:'1px solid rgba(139,92,246,0.4)',padding:'6px 12px',borderRadius:20,display:'inline-flex',alignItems:'center',gap:6}}>
+            <Sparkles size={14} color="#A78BFA"/> {lang === 'de' ? 'Branchenlösungen' : 'Solutions'}
           </Link>
         </div>
 
@@ -1593,9 +1599,6 @@ export default function Landing({ onOpenAuthModal }){
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
         <div style={{position:'fixed',top:66,left:0,right:0,bottom:0,background:'rgba(15,23,42,0.98)',backdropFilter:'blur(20px)',zIndex:995,padding:'24px 20px',display:'flex',flexDirection:'column',gap:16,overflowY:'auto'}}>
-          <Link to="/loesungen" onClick={()=>setMobileMenuOpen(false)} style={{color:'#A78BFA',fontSize:18,fontWeight:800,padding:'12px 0',borderBottom:`1px solid ${C.border}`,display:'flex',alignItems:'center',gap:10}}>
-            <Sparkles size={20} color="#A78BFA"/> {lang === 'de' ? 'Branchenlösungen' : 'Solutions'}
-          </Link>
           <Link to="/board" onClick={()=>setMobileMenuOpen(false)} style={{color:'#3B82F6',fontSize:18,fontWeight:700,padding:'12px 0',borderBottom:`1px solid ${C.border}`,display:'flex',alignItems:'center',gap:10}}>
             <Tv size={20} color="#3B82F6"/> SCENVY BOARD
           </Link>
@@ -1604,6 +1607,9 @@ export default function Landing({ onOpenAuthModal }){
           </Link>
           <Link to="/menu" onClick={()=>setMobileMenuOpen(false)} style={{color:'#F97316',fontSize:18,fontWeight:700,padding:'12px 0',borderBottom:`1px solid ${C.border}`,display:'flex',alignItems:'center',gap:10}}>
             <Utensils size={20} color="#F97316"/> SCENVY MENU
+          </Link>
+          <Link to="/loesungen" onClick={()=>setMobileMenuOpen(false)} style={{color:'#A78BFA',fontSize:18,fontWeight:800,padding:'12px 0',borderBottom:`1px solid ${C.border}`,display:'flex',alignItems:'center',gap:10}}>
+            <Sparkles size={20} color="#A78BFA"/> {lang === 'de' ? 'Branchenlösungen' : 'Solutions'}
           </Link>
           <div style={{display:'flex',flexDirection:'column',gap:12,marginTop:20}}>
             <Btn variant="outline" onClick={()=>{setMobileMenuOpen(false);handleOpenAuth()}} style={{width:'100%',textAlign:'center',padding:'12px 0'}}>{t.nav.login}</Btn>
@@ -1644,9 +1650,9 @@ export default function Landing({ onOpenAuthModal }){
             {/* 7 OFFICIAL APP ICONS ROW */}
             <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:24,flexWrap:'wrap',padding:'28px',borderRadius:28,background:'rgba(255,255,255,0.03)',border:'1px solid rgba(255,255,255,0.08)',maxWidth:1000,margin:'20px auto 0'}}>
               {[
+                { id: 'board', name: 'Board', status: 'active', path: '/board' },
                 { id: 'flow', name: 'Flow', status: 'active', path: '/flow' },
                 { id: 'menu', name: 'Menu', status: 'active', path: '/menu' },
-                { id: 'board', name: 'Board', status: 'active', path: '/board' },
                 { id: 'host', name: 'Host', status: 'planned', path: '/host' },
                 { id: 'link', name: 'Link', status: 'planned', path: '/link' },
                 { id: 'store', name: 'Store', status: 'planned', path: '/store' },
@@ -2270,6 +2276,16 @@ export default function Landing({ onOpenAuthModal }){
       {/* FAQ ACCORDION SECTION */}
       <FaqAccordionSection lang={lang} />
 
+      {/* STRATEGIC CONVERSION MODULES */}
+      <RoiCalculatorSection onOpenAuth={handleOpenAuth} lang={lang} />
+      <LiveDemoSandboxSection lang={lang} />
+      <AiWorkflowSection lang={lang} />
+      <BuyerPersonaSection onOpenAuth={handleOpenAuth} lang={lang} />
+      <SocialProofAndHardwareSection onOpenAuth={handleOpenAuth} lang={lang} />
+
+      {/* LIVE ACTIVITY TICKER */}
+      <LiveActivityTicker />
+
       {/* FINAL CTA */}
       <section style={{padding:'120px 5%',position:'relative',overflow:'hidden',zIndex:2}}>
         <Glow color={C.purple} x="30%" y="50%" size={700}/><Glow color={C.pink} x="70%" y="50%" size={600}/>
@@ -2293,35 +2309,63 @@ export default function Landing({ onOpenAuthModal }){
                 <ScenvyLogoFull height={70} />
               </div>
               <p style={{fontSize:13,color:C.muted,lineHeight:1.65,marginBottom:12}}>{t.footerTag}</p>
-              <div style={{fontSize:12,color:C.dim}}>app.sv.de</div>
+              <div style={{fontSize:13,fontWeight:700,color:C.purple}}>scenvy.de • app.scenvy.de</div>
             </div>
-            {[['Company',['About','Blog','Careers','Press']],['Legal',['Privacy','Terms','GDPR','Imprint']]].map(([title,links])=>(
-              <div key={title}>
-                <div style={{fontSize:11,fontWeight:700,color:C.white,letterSpacing:1,marginBottom:14}}>{title.toUpperCase()}</div>
-                {links.map(l=><div key={l} style={{fontSize:13,color:C.muted,marginBottom:10,cursor:'pointer'}} onMouseEnter={e=>e.target.style.color=C.white} onMouseLeave={e=>e.target.style.color=C.muted}>{l}</div>)}
-              </div>
-            ))}
+
+            <div>
+              <div style={{fontSize:11,fontWeight:700,color:C.white,letterSpacing:1,marginBottom:14}}>COMPANY</div>
+              {[
+                { name: 'About', path: '/p/about' },
+                { name: 'Blog', path: '/p/blog' },
+                { name: 'Careers', path: '/p/careers' },
+                { name: 'Press', path: '/p/press' }
+              ].map(l => (
+                <div key={l.name} onClick={() => nav(l.path)} style={{fontSize:13,color:C.muted,marginBottom:10,cursor:'pointer'}} onMouseEnter={e=>e.target.style.color=C.white} onMouseLeave={e=>e.target.style.color=C.muted}>
+                  {l.name}
+                </div>
+              ))}
+            </div>
+
+            <div>
+              <div style={{fontSize:11,fontWeight:700,color:C.white,letterSpacing:1,marginBottom:14}}>LEGAL</div>
+              {[
+                { name: 'Privacy', path: '/p/privacy' },
+                { name: 'Terms', path: '/p/terms' },
+                { name: 'GDPR', path: '/p/gdpr' },
+                { name: 'Imprint', path: '/p/imprint' }
+              ].map(l => (
+                <div key={l.name} onClick={() => nav(l.path)} style={{fontSize:13,color:C.muted,marginBottom:10,cursor:'pointer'}} onMouseEnter={e=>e.target.style.color=C.white} onMouseLeave={e=>e.target.style.color=C.muted}>
+                  {l.name}
+                </div>
+              ))}
+            </div>
           </div>
-          <div style={{borderTop:`1px solid ${C.border}`,paddingTop:24,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:12}}>
+
+          <div style={{borderTop:`1px solid ${C.border}`,paddingTop:24,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:16}}>
             <div style={{fontSize:13,color:C.dim}}>{t.footerCopy}</div>
             
             <button 
               onClick={() => setShowCmsModal(true)} 
               style={{
-                background:'rgba(124,58,237,0.15)',
-                border:'1px solid rgba(124,58,237,0.4)',
-                color:'#A855F7',
-                fontSize:12,
-                fontWeight:700,
-                padding:'6px 14px',
-                borderRadius:8,
+                background:'linear-gradient(135deg, rgba(124,58,237,0.25) 0%, rgba(236,72,153,0.25) 100%)',
+                border:'1px solid rgba(168,85,247,0.6)',
+                color:'#E9D5FF',
+                fontSize:13,
+                fontWeight:800,
+                padding:'8px 18px',
+                borderRadius:10,
                 cursor:'pointer',
                 display:'inline-flex',
                 alignItems:'center',
-                gap:6
+                gap:8,
+                boxShadow:'0 4px 16px rgba(124,58,237,0.25)',
+                transition:'all 0.2s'
               }}
+              onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
             >
-              ⚙️ Webseiten-Designer (WYSIWYG Backend)
+              <Sparkles size={15} color="#A855F7" />
+              <span>Webseiten-Designer (WYSIWYG CMS)</span>
             </button>
 
             <div style={{fontSize:13,color:C.dim}}>{t.footerMade}</div>
@@ -2333,6 +2377,9 @@ export default function Landing({ onOpenAuthModal }){
       <div className="mobile-bottom-bar" style={{display:'none',position:'fixed',bottom:0,left:0,right:0,zIndex:990,background:'rgba(13,13,20,0.95)',backdropFilter:'blur(16px)',borderTop:`1px solid ${C.border}`,padding:'10px 16px',gap:10,alignItems:'center',boxShadow:'0 -10px 30px rgba(0,0,0,0.8)'}}>
         <button onClick={handleOpenAuth} style={{flex:1,padding:'12px 0',borderRadius:10,border:`1px solid ${C.border}`,background:C.card,color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',fontFamily:'inherit',textAlign:'center'}}>
           {t.nav.login}
+        </button>
+        <button onClick={() => setShowCmsModal(true)} style={{padding:'12px 14px',borderRadius:10,border:'1px solid rgba(168,85,247,0.5)',background:'rgba(124,58,237,0.2)',color:'#E9D5FF',fontWeight:800,fontSize:12,cursor:'pointer',fontFamily:'inherit',textAlign:'center',display:'flex',alignItems:'center',gap:4}}>
+          <Sparkles size={14} color="#A855F7"/> CMS
         </button>
         <button onClick={handleOpenAuth} style={{flex:1.5,padding:'12px 0',borderRadius:10,border:'none',background:grad(C.purple,C.pink),color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',fontFamily:'inherit',textAlign:'center',boxShadow:`0 4px 15px ${C.purple}55`}}>
           {t.nav.cta}
