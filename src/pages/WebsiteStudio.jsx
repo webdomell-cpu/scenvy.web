@@ -2,11 +2,10 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { C, grad } from '@/tokens'
 import { useAuth } from '@/lib/AuthContext'
-import { AppLauncherBar } from '@/components/AppLauncherBar'
 import { 
   Globe, Layout, Code, Sparkles, Plus, Save, Trash2, Eye, ExternalLink, 
   Settings, Type, Palette, MoveUp, MoveDown, Check, ArrowLeft, RefreshCw, 
-  Sliders, Copy, Monitor, Smartphone, Layers, Play, Zap, FileText, CheckCircle
+  Sliders, Copy, Monitor, Smartphone, Layers, Play, Zap, FileText, CheckCircle, LogOut, User
 } from 'lucide-react'
 import { db } from '@/lib/firebase'
 import { collection, doc, setDoc, getDocs, deleteDoc, serverTimestamp } from 'firebase/firestore'
@@ -165,7 +164,17 @@ const INITIAL_TEMPLATES = [
 
 export default function WebsiteStudio() {
   const nav = useNavigate()
-  const { user, tenant } = useAuth()
+  const { user, logout, tenant } = useAuth()
+
+  const handleLogout = async () => {
+    sessionStorage.removeItem('scenvy_cms_unlocked')
+    try {
+      await logout()
+    } catch (e) {
+      console.warn('Logout error:', e)
+    }
+    nav('/auth')
+  }
   
   const [pages, setPages] = useState([])
   const [selectedPageId, setSelectedPageId] = useState(null)
@@ -346,10 +355,7 @@ export default function WebsiteStudio() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#07090E', color: C.white, fontFamily: 'Inter, system-ui, sans-serif' }}>
-      {/* Top App Launcher */}
-      <AppLauncherBar user={user} tenant={tenant} activePage="website_studio" />
-
-      {/* Main Header Bar */}
+      {/* Main Studio Standalone Header Bar */}
       <header style={{
         background: C.card,
         borderBottom: `1px solid ${C.border}`,
@@ -360,24 +366,30 @@ export default function WebsiteStudio() {
         flexWrap: 'wrap',
         gap: 16
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <button
-            onClick={() => nav('/dashboard')}
-            style={{ padding: '8px 12px', borderRadius: 8, background: C.bg, border: `1px solid ${C.border}`, color: C.muted, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
-          >
-            <ArrowLeft size={14} /> Haupt-App
-          </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{
+            width: 42,
+            height: 42,
+            borderRadius: 12,
+            background: 'linear-gradient(135deg, #7C3AED 0%, #EC4899 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 14px rgba(124,58,237,0.4)'
+          }}>
+            <Globe size={22} color="#FFFFFF" />
+          </div>
           <div>
             <div style={{ fontSize: 11, color: C.purple, fontWeight: 800, letterSpacing: 1.5, display: 'flex', alignItems: 'center', gap: 6 }}>
-              <Globe size={14} /> SCENVY WEBSEITEN & LANDING-PAGE STUDIO
+              SCENVY WEBSTUDIO CMS
             </div>
-            <div style={{ fontSize: 22, fontWeight: 900, color: C.white, display: 'flex', alignItems: 'center', gap: 10 }}>
-              Live Visual CMS & Code Editor
+            <div style={{ fontSize: 20, fontWeight: 900, color: C.white, display: 'flex', alignItems: 'center', gap: 10 }}>
+              Visual Web & Landing-Page Studio
             </div>
           </div>
         </div>
 
-        {/* Action Controls */}
+        {/* Action Controls & User Account Logout */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           {notifyMsg && (
             <div style={{ fontSize: 12, fontWeight: 700, color: C.green, background: `${C.green}18`, padding: '6px 14px', borderRadius: 20, border: `1px solid ${C.green}44` }}>
@@ -397,8 +409,41 @@ export default function WebsiteStudio() {
             disabled={isSaving}
             style={{ padding: '10px 22px', borderRadius: 10, background: grad(C.purple, C.pink), border: 'none', color: C.white, fontSize: 13, fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: `0 4px 16px ${C.purple}44` }}
           >
-            <Save size={16} /> {isSaving ? 'Speichere...' : 'Alle Änderungen Speichern'}
+            <Save size={16} /> {isSaving ? 'Speichere...' : 'Änderungen Speichern'}
           </button>
+
+          {/* User Account Info & Logout Button */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginLeft: 8, paddingLeft: 16, borderLeft: `1px solid ${C.border}` }}>
+            {user && (
+              <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right', display: 'none' /* hidden on small, flex on md */ }}>
+                <span style={{ fontSize: 12, fontWeight: 800, color: C.white }}>{user.name || user.email}</span>
+                <span style={{ fontSize: 10, color: C.muted }}>CMS Administrator</span>
+              </div>
+            )}
+
+            <button
+              onClick={handleLogout}
+              style={{
+                padding: '9px 16px',
+                borderRadius: 10,
+                background: 'rgba(239,68,68,0.15)',
+                border: '1px solid rgba(239,68,68,0.4)',
+                color: '#EF4444',
+                fontSize: 13,
+                fontWeight: 800,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                transition: 'all 0.15s ease'
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.25)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'rgba(239,68,68,0.15)'}
+              title="Sicher aus dem WebStudio abmelden"
+            >
+              <LogOut size={15} /> Abmelden
+            </button>
+          </div>
         </div>
       </header>
 

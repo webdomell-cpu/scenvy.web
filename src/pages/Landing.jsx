@@ -663,6 +663,472 @@ function InteractiveReelPlayer({ lang = 'de' }) {
   )
 }
 
+function InfiniteMarqueeBanner() {
+  const items = [
+    'GASTRONOMIE', 'RETAIL & SHOPPING', 'HOTELLERIE & RESORTS', 'EVENTS & FESTIVALS',
+    'SHOWROOMS & POS', 'NIGHTLIFE & CLUBS', 'DIGITAL SIGNAGE REVOLUTION', 'SEQUENTIAL REELS 2.0',
+    '3.4X HIGHER CTR', 'KEIN APP-DOWNLOAD'
+  ]
+  return (
+    <div style={{ background: '#0D0E1A', borderTop: '1px solid rgba(139,92,246,0.3)', borderBottom: '1px solid rgba(139,92,246,0.3)', padding: '16px 0', overflow: 'hidden', position: 'relative', zIndex: 5 }}>
+      <style>{`
+        @keyframes marqueeScroll {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        .marquee-track-scroll {
+          display: flex;
+          white-space: nowrap;
+          animation: marqueeScroll 28s linear infinite;
+        }
+        .marquee-track-scroll:hover {
+          animation-play-state: paused;
+        }
+        @keyframes floatSlow {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+        .floating-mockup-anim {
+          animation: floatSlow 4s ease-in-out infinite;
+        }
+        .hover-glow-card {
+          transition: all 0.3s ease;
+        }
+        .hover-glow-card:hover {
+          border-color: #8B5CF6 !important;
+          box-shadow: 0 12px 35px rgba(139,92,246,0.3) !important;
+        }
+      `}</style>
+      <div className="marquee-track-scroll" style={{ gap: 40, width: 'max-content' }}>
+        {[...items, ...items, ...items, ...items].map((text, i) => (
+          <div key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: 20, color: i % 2 === 0 ? '#A78BFA' : '#E2E8F0', fontWeight: 900, fontSize: 13, letterSpacing: 1.5, textTransform: 'uppercase' }}>
+            <span>⚡ {text}</span>
+            <span style={{ color: '#8B5CF6', opacity: 0.6 }}>•</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function ReelVsStaticToggle({ lang = 'de' }) {
+  const [mode, setMode] = useState('reel') // 'static' or 'reel'
+
+  return (
+    <section style={{ padding: '80px 5%', background: '#12131F', position: 'relative', zIndex: 2, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+      <div style={{ maxWidth: 1150, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 36 }}>
+          <span style={{ background: 'rgba(236,72,153,0.15)', border: '1px solid rgba(236,72,153,0.3)', color: '#EC4899', fontSize: 11, fontWeight: 900, padding: '4px 14px', borderRadius: 20, letterSpacing: 1, textTransform: 'uppercase', display: 'inline-block', marginBottom: 12 }}>
+            INTERAKTIVER POS-VERGLEICH
+          </span>
+          <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 900, color: '#FFF', marginBottom: 12 }}>
+            Der „Reel vs. Static“ Unterschied am POS
+          </h2>
+          <p style={{ fontSize: 16, color: '#E1E1E6', maxWidth: 680, margin: '0 auto 28px' }}>
+            Klicke auf den Schalter, um direkt zu erleben, wie der Wechsel von der verstaubten statischen Plakat-Speisekarte zum dynamischen Video-Reel das Gäste-Erlebnis verändert.
+          </p>
+
+          {/* Toggle Switch */}
+          <div style={{ display: 'inline-flex', background: '#1B1C2E', padding: 6, borderRadius: 20, border: '1px solid rgba(255,255,255,0.15)', gap: 8 }}>
+            <button
+              onClick={() => setMode('static')}
+              style={{
+                padding: '10px 24px',
+                borderRadius: 14,
+                border: 'none',
+                background: mode === 'static' ? '#334155' : 'transparent',
+                color: mode === 'static' ? '#FFF' : '#94A3B8',
+                fontWeight: 800,
+                fontSize: 13,
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8
+              }}
+            >
+              <span>❌ Alt / Klassisch (DSMenu / Jodeck)</span>
+            </button>
+            <button
+              onClick={() => setMode('reel')}
+              style={{
+                padding: '10px 24px',
+                borderRadius: 14,
+                border: 'none',
+                background: mode === 'reel' ? 'linear-gradient(135deg, #8B5CF6, #EC4899)' : 'transparent',
+                color: '#FFF',
+                fontWeight: 800,
+                fontSize: 13,
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                boxShadow: mode === 'reel' ? '0 4px 20px rgba(139,92,246,0.5)' : 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8
+              }}
+            >
+              <span>✨ Neu / Sequential Reel (SCENVY)</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Display Stage */}
+        <div style={{
+          background: '#1B1C2E',
+          borderRadius: 32,
+          border: mode === 'reel' ? '2px solid rgba(139,92,246,0.5)' : '2px solid rgba(255,255,255,0.1)',
+          padding: 32,
+          boxShadow: mode === 'reel' ? '0 20px 60px rgba(139,92,246,0.25)' : '0 10px 30px rgba(0,0,0,0.5)',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: 32,
+          alignItems: 'center'
+        }}>
+          {/* Left / Mockup Showcase */}
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            {mode === 'static' ? (
+              /* Static PDF Mode */
+              <div style={{ width: 280, height: 480, borderRadius: 24, background: '#F8FAFC', border: '4px solid #CBD5E1', padding: 16, color: '#1E293B', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: '0 10px 25px rgba(0,0,0,0.3)', opacity: 0.85 }}>
+                <div>
+                  <div style={{ fontSize: 10, color: '#64748B', borderBottom: '1px solid #E2E8F0', paddingBottom: 4, marginBottom: 8, display: 'flex', justifyContent: 'space-between' }}>
+                    <span>SPEISEKARTE_FINAL_v2.pdf</span>
+                    <span>100% Zoom</span>
+                  </div>
+                  <div style={{ fontSize: 16, fontWeight: 900, textAlign: 'center', margin: '10px 0 6px', color: '#0F172A' }}>RESTAURANT MENU</div>
+                  <div style={{ fontSize: 9, color: '#64748B', textAlign: 'center', marginBottom: 12 }}>Stand: Januar 2024 · Preise inkl. MwSt.</div>
+                  
+                  <div style={{ background: '#E2E8F0', height: 110, borderRadius: 8, marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748B', fontSize: 11, textAlign: 'center', padding: 10 }}>
+                    [ Statisches Burger Foto ]<br/>Kein Dampf · Keine Bewegung
+                  </div>
+
+                  <div style={{ fontSize: 10, color: '#334155', lineHeight: 1.5 }}>
+                    <strong>101. Classic Cheeseburger</strong> ............ €14,50<br/>
+                    180g Rindfleisch, Cheddar, Tomaten, Zwiebeln<br/>
+                    <strong>102. Bacon Smokehouse</strong> ................ €16,90<br/>
+                    Smokey BBQ Sauce, Bacon, Gewürzgurken<br/>
+                    <strong>103. Truffle Fries</strong> ............................ €6,50
+                  </div>
+                </div>
+
+                <div style={{ background: '#F1F5F9', padding: 8, borderRadius: 8, fontSize: 9, color: '#64748B', textAlign: 'center', border: '1px dashed #CBD5E1' }}>
+                  ⚠️ Statisches Plakat: Wird als passive Werbung ignoriert. Keine Interaktion möglich.
+                </div>
+              </div>
+            ) : (
+              /* Reel Mode */
+              <div className="floating-mockup-anim" style={{ width: 280, height: 480, borderRadius: 32, background: '#090812', border: '4px solid #8B5CF6', padding: 14, position: 'relative', overflow: 'hidden', boxShadow: '0 0 50px rgba(139,92,246,0.5)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80" alt="Juicy Burger Reel" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.85) 100%)' }} />
+                
+                <div style={{ position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ background: '#F97316', color: '#FFF', fontSize: 10, fontWeight: 900, padding: '3px 10px', borderRadius: 10 }}>🔥 POPULÄR #1</span>
+                  <span style={{ background: 'rgba(0,0,0,0.6)', color: '#FFF', fontSize: 10, fontWeight: 800, padding: '3px 8px', borderRadius: 8 }}>REEL 1/3</span>
+                </div>
+
+                <div style={{ position: 'relative', zIndex: 10 }}>
+                  <div style={{ background: 'rgba(236,72,153,0.9)', color: '#FFF', fontSize: 11, fontWeight: 900, padding: '4px 10px', borderRadius: 8, display: 'inline-block', marginBottom: 8 }}>
+                    ⚡ CRAVING DEAL: -20% auf Truffle Fries
+                  </div>
+                  <div style={{ fontSize: 18, fontWeight: 900, color: '#FFF', lineHeight: 1.2, marginBottom: 4 }}>
+                    Dry-Aged Smokehouse Burger 🥩
+                  </div>
+                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.9)', marginBottom: 12 }}>
+                    Frisch gegrillt, zischender Bacon & fließender Cheddar in Slow-Motion.
+                  </div>
+                  <button style={{ width: '100%', padding: '12px 0', borderRadius: 12, border: 'none', background: 'linear-gradient(135deg, #8B5CF6, #EC4899)', color: '#FFF', fontWeight: 900, fontSize: 13, cursor: 'pointer', boxShadow: '0 4px 15px rgba(139,92,246,0.6)' }}>
+                    Jetzt bestellen (Tisch 12) →
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Right / Comparison Info */}
+          <div>
+            <div style={{ fontSize: 12, fontWeight: 800, color: mode === 'reel' ? '#A78BFA' : '#94A3B8', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>
+              {mode === 'reel' ? '✨ DAS NEXT-GEN ERLEBNIS' : '❌ DER VERSEHENTLICHE UMSATZKILLER'}
+            </div>
+            <h3 style={{ fontSize: 26, fontWeight: 900, color: '#FFF', marginBottom: 14 }}>
+              {mode === 'reel' ? 'Visueller Appetit-Trigger & Emotion' : 'Statische PDF & Textwüsten verpuffen'}
+            </h3>
+            <p style={{ fontSize: 15, color: '#E1E1E6', lineHeight: 1.6, marginBottom: 20 }}>
+              {mode === 'reel'
+                ? 'Durch hochauflösende, animierte Video-Reels reagiert das Gehirn der Gäste mit sofortigen Kaufimpulsen. Bewegung erzeugt Aufmerksamkeit – genau wie auf TikTok.'
+                : 'Statischer Text und flache Fotos lösen keine Emotionen aus. Gäste überfliegen die Karte in Sekunden und bestellen nur das Mindeste.'}
+            </p>
+
+            <div style={{ background: mode === 'reel' ? 'rgba(139,92,246,0.15)' : 'rgba(255,255,255,0.05)', border: mode === 'reel' ? '1px solid rgba(139,92,246,0.4)' : '1px solid rgba(255,255,255,0.1)', borderRadius: 18, padding: 20 }}>
+              <div style={{ fontSize: 18, fontWeight: 900, color: mode === 'reel' ? '#10B981' : '#EF4444', marginBottom: 4 }}>
+                Erhöhe deine Zusatzverkäufe um +24% – alleine durch den Wechsel von statischem Bild zu emotionaler Video-Story.
+              </div>
+              <div style={{ fontSize: 13, color: '#CBD5E1', lineHeight: 1.5, marginTop: 8 }}>
+                {mode === 'reel'
+                  ? 'Gäste sehen zischende Gerichte & sprudelnde Drinks in Bewegung – die Kaufentscheidung fällt augenblicklich.'
+                  : 'Ohne emotionale Reize bleiben Zusatzverkäufe für Drinks, Desserts & Specials aus.'}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function CompetitorComparisonSection({ lang = 'de' }) {
+  const comparisons = [
+    {
+      cat: 'Format & Visuals',
+      competitor: 'Statische PDFs, starre Layouts & unruhige Split-Screens',
+      scenvy: 'Dynamische Vertical Reels (9:16) & TikTok-Style Storyboarding'
+    },
+    {
+      cat: 'Engagement & Verweildauer',
+      competitor: 'Gering (wird als passive Plakatwerbung übersehen)',
+      scenvy: 'Bis zu 80% höhere Verweildauer durch Social-Media-Sehgewohnheiten'
+    },
+    {
+      cat: 'Mobil-Integration',
+      competitor: 'Schlechte Mobile-Ansichten & reine PDF-Links zum Download',
+      scenvy: 'Nahtlose Web-App & QR-Code Instant Reel-Playlists ohne App-Download'
+    },
+    {
+      cat: 'Content-Erstellung',
+      competitor: 'Komplexe, unübersichtliche Canvas-Editoren & starre Vorlagen',
+      scenvy: 'KI-gestützte Reel-Kaskaden in unter 5 Minuten einsatzbereit'
+    }
+  ]
+
+  return (
+    <section style={{ padding: '90px 5%', background: '#0D0E1A', position: 'relative', zIndex: 2, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+      <div style={{ maxWidth: 1150, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 48 }}>
+          <span style={{ background: 'rgba(139,92,246,0.18)', border: '1px solid rgba(139,92,246,0.3)', color: '#A78BFA', fontSize: 11, fontWeight: 900, padding: '4px 14px', borderRadius: 20, letterSpacing: 1, textTransform: 'uppercase', display: 'inline-block', marginBottom: 12 }}>
+            PARADIGMENWECHSEL AM POS
+          </span>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 900, color: '#FFF', marginBottom: 14 }}>
+            Warum klassische Digital Signage veraltet ist
+          </h2>
+          <p style={{ fontSize: 16, color: '#E1E1E6', maxWidth: 750, margin: '0 auto', lineHeight: 1.6 }}>
+            Klassische Software (DSMenu, Jodeck & Co.) vertreibt starre „digitale Plakatwände“. SCENVY liefert die vertikale, storygetriebene Reel-Revolution für maximale Conversion.
+          </p>
+        </div>
+
+        {/* Comparison Matrix */}
+        <div style={{ background: '#12131F', borderRadius: 28, border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}>
+          {/* Header Row */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 2fr 2fr', background: '#1B1C2E', padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.1)', alignItems: 'center' }}>
+            <div style={{ fontSize: 13, fontWeight: 900, color: '#94A3B8', textTransform: 'uppercase' }}>Kategorie</div>
+            <div style={{ fontSize: 14, fontWeight: 900, color: '#94A3B8', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span>❌ Klassische Software</span>
+              <span style={{ fontSize: 11, color: '#64748B', fontWeight: 600 }}>(DSMenu, Jodeck & Co.)</span>
+            </div>
+            <div style={{ fontSize: 15, fontWeight: 900, color: '#FFF', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #EC4899)', color: '#FFF', padding: '3px 10px', borderRadius: 8, fontSize: 11 }}>⭐ NEXT-GEN</span>
+              <span style={{ color: '#A78BFA' }}>Unser Sequential Reel System</span>
+            </div>
+          </div>
+
+          {/* Body Rows */}
+          {comparisons.map((c, i) => (
+            <div
+              key={i}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1.2fr 2fr 2fr',
+                padding: '22px 24px',
+                borderBottom: i < comparisons.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)',
+                alignItems: 'center',
+                gap: 16
+              }}
+            >
+              <div style={{ fontSize: 13, fontWeight: 800, color: '#A78BFA' }}>{c.cat}</div>
+              <div style={{ fontSize: 14, color: '#94A3B8', lineHeight: 1.5, display: 'flex', gap: 8 }}>
+                <span style={{ color: '#EF4444', fontWeight: 900 }}>✕</span>
+                <span>{c.competitor}</span>
+              </div>
+              <div style={{ fontSize: 14, color: '#FFF', fontWeight: 700, lineHeight: 1.5, display: 'flex', gap: 8, background: 'rgba(139,92,246,0.1)', padding: '10px 14px', borderRadius: 12, border: '1px solid rgba(139,92,246,0.2)' }}>
+                <span style={{ color: '#10B981', fontWeight: 900 }}>✓</span>
+                <span>{c.scenvy}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function PsychologySection({ lang = 'de' }) {
+  const cards = [
+    {
+      title: 'Der Dopamin-Effekt (Visual Appetite & Desire)',
+      text: 'Gehirne verarbeiten Bewegung 60.000-mal schneller als Text. Ein zischendes Steak oder die Bewegung eines Kleidungsstücks löst sofortige Kaufimpulse (Cravings) aus, die kein statisches Schild je erreichen kann.',
+      badge: '60.000x schneller',
+      icon: '🧠',
+      color: '#8B5CF6'
+    },
+    {
+      title: 'Smartphone-Sehgewohnheiten nutzen',
+      text: 'Deine Kunden sind an TikTok, Instagram und Shorts gewöhnt. Wir bringen dieses gewohnte, hoch-attraktive Fullscreen-Erlebnis direkt an deinen Point of Sale – ob auf große Screens oder das eigene Smartphone der Kunden.',
+      badge: 'TikTok & Shorts Format',
+      icon: '📱',
+      color: '#EC4899'
+    },
+    {
+      title: 'Sequential Storytelling (Kaskaden-Effekt)',
+      text: 'Zeige nicht alles auf einmal. Führe Kunden Schritt für Schritt: Vorspeise -> Hauptgang -> Dessert-Reel. Das erhöht die Upselling-Quote bei Menüs und Bundles signifikant.',
+      badge: '+24% Upsell-Quote',
+      icon: '⚡',
+      color: '#F97316'
+    }
+  ]
+
+  return (
+    <section style={{ padding: '90px 5%', background: '#12131F', position: 'relative', zIndex: 2 }}>
+      <div style={{ maxWidth: 1150, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 48 }}>
+          <span style={{ background: 'rgba(249,115,22,0.15)', border: '1px solid rgba(249,115,22,0.3)', color: '#F97316', fontSize: 11, fontWeight: 900, padding: '4px 14px', borderRadius: 20, letterSpacing: 1, textTransform: 'uppercase', display: 'inline-block', marginBottom: 12 }}>
+            KAUFIMPULS-PSYCHOLOGIE
+          </span>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 900, color: '#FFF', marginBottom: 14 }}>
+            Warum Video-Reels dein Umsatztreiber Nr. 1 sind
+          </h2>
+          <p style={{ fontSize: 16, color: '#E1E1E6', maxWidth: 700, margin: '0 auto', lineHeight: 1.6 }}>
+            Deine Mitbewerber verkaufen Software-Lizenzen. Wir verkaufen Verkaufspsychologie und messbare Umsatzsteigerung am Point of Sale.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24 }}>
+          {cards.map((c, i) => (
+            <div
+              key={i}
+              style={{
+                background: '#1B1C2E',
+                borderRadius: 24,
+                border: '1px solid rgba(255,255,255,0.1)',
+                padding: 32,
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'all 0.3s ease'
+              }}
+              className="hover-glow-card"
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = c.color
+                e.currentTarget.style.transform = 'translateY(-6px)'
+                e.currentTarget.style.boxShadow = `0 15px 40px ${c.color}33`
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = 'none'
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                <span style={{ fontSize: 32 }}>{c.icon}</span>
+                <span style={{ background: `${c.color}22`, color: c.color, border: `1px solid ${c.color}44`, fontSize: 11, fontWeight: 900, padding: '4px 12px', borderRadius: 12 }}>
+                  {c.badge}
+                </span>
+              </div>
+              <h3 style={{ fontSize: 20, fontWeight: 900, color: '#FFF', marginBottom: 12 }}>{c.title}</h3>
+              <p style={{ fontSize: 14, color: '#E1E1E6', lineHeight: 1.65 }}>{c.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function FaqAccordionSection({ lang = 'de' }) {
+  const [openIdx, setOpenIdx] = useState(0)
+
+  const faqs = [
+    {
+      q: 'Brauche ich teure neue Hardware oder Speziel-Hardware?',
+      a: 'Nein! Unser System läuft cloudbasiert auf nahezu jedem modernen Smart-TV, Fire TV Stick, Android/iOS-Tablet, Raspberry Pi oder Digital Signage Player.'
+    },
+    {
+      q: 'Wie erstelle ich die Video-Reels, wenn ich kein Videograf bin?',
+      a: 'Einfach & schnell: Nutze deine vorhandenen Smartphone-Videos, unsere integrierte KI-Reel-Engine oder lade fertige Social-Media-Inhalte hoch. In wenigen Minuten steht deine Playlist.'
+    },
+    {
+      q: 'Kann der Kunde das Reel auch auf seinem eigenen Smartphone ansehen?',
+      a: 'Ja! Über einen individuellen QR-Code am Tisch oder im Schaufenster startet die vertikale Reel-Show sofort im Webbrowser des Kunden – ganz ohne App-Installation.'
+    },
+    {
+      q: 'Kann ich die Inhalte zeitgesteuert anpassen?',
+      a: 'Absolut. Stelle automatisierte Regeln ein: Z.B. Frühstücks-Reels von 8-11 Uhr, Lunch-Angebote mittags und Happy-Hour-Cocktail-Reels ab 17 Uhr.'
+    }
+  ]
+
+  return (
+    <section style={{ padding: '90px 5%', background: '#0D0E1A', position: 'relative', zIndex: 2, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+      <div style={{ maxWidth: 850, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 44 }}>
+          <span style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', color: '#10B981', fontSize: 11, fontWeight: 900, padding: '4px 14px', borderRadius: 20, letterSpacing: 1, textTransform: 'uppercase', display: 'inline-block', marginBottom: 12 }}>
+            HÄUFIG GESTELLTE FRAGEN
+          </span>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 900, color: '#FFF', marginBottom: 12 }}>
+            Alles was du vor dem Start wissen musst
+          </h2>
+          <p style={{ fontSize: 15, color: '#E1E1E6' }}>
+            Keine versteckten Verträge, keine Spezialhardware – volle Flexibilität.
+          </p>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {faqs.map((faq, idx) => {
+            const isOpen = openIdx === idx
+            return (
+              <div
+                key={idx}
+                style={{
+                  background: '#12131F',
+                  border: isOpen ? '1px solid #8B5CF6' : '1px solid rgba(255,255,255,0.1)',
+                  borderRadius: 18,
+                  overflow: 'hidden',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <button
+                  onClick={() => setOpenIdx(isOpen ? -1 : idx)}
+                  style={{
+                    width: '100%',
+                    padding: '20px 24px',
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#FFF',
+                    fontWeight: 800,
+                    fontSize: 16,
+                    textAlign: 'left',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    gap: 16
+                  }}
+                >
+                  <span>{faq.q}</span>
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: isOpen ? '#8B5CF6' : 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.2s' }}>
+                    {isOpen ? <ChevronUp size={16} color="#FFF" /> : <ChevronDown size={16} color="#FFF" />}
+                  </div>
+                </button>
+
+                {isOpen && (
+                  <div style={{ padding: '0 24px 20px', color: '#CBD5E1', fontSize: 14, lineHeight: 1.6, borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16 }}>
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function BentoGridSection({ lang = 'de', onOpenAuth }) {
   return (
     <section id="features" style={{ padding: '90px 5%', background: '#12131F', position: 'relative', zIndex: 2 }}>
@@ -1216,6 +1682,18 @@ export default function Landing({ onOpenAuthModal }){
 
       {/* TRUST & PARTNER LOGOS */}
       <TrustPartnerSection lang={lang} />
+
+      {/* INFINITE MARQUEE BAND */}
+      <InfiniteMarqueeBanner />
+
+      {/* REEL VS STATIC TOGGLE SLIDER */}
+      <ReelVsStaticToggle lang={lang} />
+
+      {/* COMPETITOR COMPARISON MATRIX */}
+      <CompetitorComparisonSection lang={lang} />
+
+      {/* PSYCHOLOGY OF BUYING IMPULSES */}
+      <PsychologySection lang={lang} />
 
       {/* INTERACTIVE REEL PLAYER SHOWCASE */}
       <InteractiveReelPlayer lang={lang} />
@@ -1788,6 +2266,9 @@ export default function Landing({ onOpenAuthModal }){
           </div>
         </div>
       </section>
+
+      {/* FAQ ACCORDION SECTION */}
+      <FaqAccordionSection lang={lang} />
 
       {/* FINAL CTA */}
       <section style={{padding:'120px 5%',position:'relative',overflow:'hidden',zIndex:2}}>
