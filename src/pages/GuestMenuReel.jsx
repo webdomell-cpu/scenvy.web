@@ -356,15 +356,26 @@ Data is embedded as window.MENU_DATA at the top of index.html for quick edits.`)
                         </div>
                       )}
 
-                      {/* Cover Image */}
-                      {item.imageUrl && (
+                      {/* Cover Image / Video */}
+                      {(item.videoUrl || item.imageUrl) && (
                         <div style={{ width: 90, height: 90, borderRadius: 12, flexShrink: 0, overflow: 'hidden', position: 'relative' }}>
-                          <img 
-                            src={item.imageUrl} 
-                            alt={itemName} 
-                            onError={(e) => { e.target.onerror=null; e.target.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop' }} 
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                          />
+                          {(item.videoUrl || item.imageUrl?.includes('.mp4')) ? (
+                            <video
+                              src={item.videoUrl || item.imageUrl}
+                              autoPlay
+                              loop
+                              muted
+                              playsInline
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                          ) : (
+                            <img 
+                              src={item.imageUrl} 
+                              alt={itemName} 
+                              onError={(e) => { e.target.onerror=null; e.target.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop' }} 
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                            />
+                          )}
                         </div>
                       )}
 
@@ -612,13 +623,13 @@ function getSampleMenu() {
       },
       {
         id: 'cat_2',
-        name: { de: 'Pasta & Pizza', en: 'Pasta & Pizza' },
-        icon: '🍕',
+        name: { de: 'Pasta & Burger', en: 'Pasta & Burger' },
+        icon: '🍔',
         items: [
           {
             id: 'i3',
             name: { de: 'Tagliolini al Tartufo', en: 'Truffle Tagliolini' },
-            description: { de: 'Hausgemachte Pasta in Salbeibutter mit frisch geriebenem Trüffel', en: 'Handmade pasta in sage butter with freshly shaved truffle' },
+            description: { de: 'Hausgemachte Pasta in Salbeibutter mit frisch geriebenem schwarzem Trüffel', en: 'Handmade pasta in sage butter with freshly shaved black truffle' },
             price: '21.00 €',
             variants: [
               { name: { de: 'Normal', en: 'Standard' }, price: '21.00 €' },
@@ -627,7 +638,20 @@ function getSampleMenu() {
             allergens: ['A', 'C', 'G'],
             diet: ['vegetarian'],
             highlight: true,
-            imageUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600&auto=format&fit=crop'
+            imageUrl: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600&auto=format&fit=crop',
+            videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-cooking-pasta-in-a-pot-43093-large.mp4'
+          },
+          {
+            id: 'i4',
+            name: { de: 'Double Truffle Smash Burger & Fries', en: 'Double Truffle Smash Burger & Fries' },
+            description: { de: 'Saftiges Angus Rindfleisch, geschmolzener Cheddar, Trüffel-Mayo & knusprige Pommes', en: 'Juicy Angus beef, melted cheddar, truffle mayo & crispy fries' },
+            price: '16.50 €',
+            variants: [],
+            allergens: ['A', 'G'],
+            diet: [],
+            highlight: true,
+            imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop',
+            videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-serving-a-juicy-hamburger-with-french-fries-43180-large.mp4'
           }
         ]
       }

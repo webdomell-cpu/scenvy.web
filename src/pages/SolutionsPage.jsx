@@ -523,9 +523,12 @@ export default function SolutionsPage() {
                   3D SMARTPHONE
                 </div>
                 <div style={{ position: 'relative', borderRadius: 14, overflow: 'hidden', height: 210 }}>
-                  <img
-                    src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&q=80"
-                    alt="Cocktail Reel"
+                  <video
+                    src="https://assets.mixkit.co/videos/preview/mixkit-barman-preparing-a-cocktail-in-a-glass-42867-large.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.8) 100%)' }} />

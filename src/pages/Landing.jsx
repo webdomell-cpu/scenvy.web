@@ -823,7 +823,14 @@ function ReelVsStaticToggle({ lang = 'de' }) {
             ) : (
               /* Reel Mode */
               <div className="floating-mockup-anim" style={{ width: 280, height: 480, borderRadius: 32, background: '#090812', border: '4px solid #8B5CF6', padding: 14, position: 'relative', overflow: 'hidden', boxShadow: '0 0 50px rgba(139,92,246,0.5)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80" alt="Juicy Burger Reel" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                <video 
+                  src="https://assets.mixkit.co/videos/preview/mixkit-serving-a-juicy-hamburger-with-french-fries-43180-large.mp4" 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} 
+                />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.85) 100%)' }} />
                 
                 <div style={{ position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

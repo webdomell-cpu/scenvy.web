@@ -183,16 +183,31 @@ export function AiWorkflowSection({ lang = 'de' }) {
             border: `2px solid ${activeTab === 'after' ? C.pink : C.border}`,
             height: 320
           }}>
-            <img
-              src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1000&q=80"
-              alt="Juicy Gourmet Burger"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                filter: activeTab === 'before' ? 'grayscale(0.3) brightness(0.8)' : 'none'
-              }}
-            />
+            {activeTab === 'after' ? (
+              <video
+                src="https://assets.mixkit.co/videos/preview/mixkit-serving-a-juicy-hamburger-with-french-fries-43180-large.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            ) : (
+              <img
+                src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1000&q=80"
+                alt="Juicy Gourmet Burger"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: 'grayscale(0.3) brightness(0.8)'
+                }}
+              />
+            )}
 
             {/* Animated Overlay for AFTER */}
             {activeTab === 'after' && (

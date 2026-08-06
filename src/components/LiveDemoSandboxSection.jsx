@@ -14,6 +14,7 @@ export function LiveDemoSandboxSection({ lang = 'de' }) {
       title: 'Signatur Cocktails — 2 für 1',
       desc: 'Täglich ab 17:00 Uhr. Frisch gemixt mit Premium-Zutaten.',
       bgImg: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80',
+      videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-barman-preparing-a-cocktail-in-a-glass-42867-large.mp4',
       price: '9,50 €',
       likes: '1.4k',
       venue: 'Skyline Lounge & Bar'
@@ -23,17 +24,30 @@ export function LiveDemoSandboxSection({ lang = 'de' }) {
       tag: 'CHEF\'S SPECIAL',
       title: 'Truffle Tagliolini & Parmigiano',
       desc: 'Frische Pasta im Parmesanlaib geschwenkt mit frischem Sommertrüffel.',
-      bgImg: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281313?w=800&q=80',
+      bgImg: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=800&q=80',
+      videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-cooking-pasta-in-a-pot-43093-large.mp4',
       price: '18,90 €',
       likes: '2.8k',
       venue: 'Ristorante Bellavista'
     },
     {
       id: 3,
+      tag: 'GOURMET SPECIAL',
+      title: 'Double Truffle Smash Burger & Fries',
+      desc: 'Saftiges Angus Beef, Trüffel-Mayo, geschmolzener Cheddar & krosse Pommes.',
+      bgImg: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80',
+      videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-serving-a-juicy-hamburger-with-french-fries-43180-large.mp4',
+      price: '16,50 €',
+      likes: '3.9k',
+      venue: 'Smash & Craft Bar'
+    },
+    {
+      id: 4,
       tag: 'LIVE EVENT',
       title: 'Rooftop Sunset Beats & DJ Night',
       desc: 'Diesen Freitag ab 20:00 Uhr. Freier Eintritt für Hotelgäste.',
       bgImg: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80',
+      videoUrl: '',
       price: 'Free Entry',
       likes: '3.1k',
       venue: 'Grand Hotel Riverside'
@@ -232,12 +246,23 @@ export function LiveDemoSandboxSection({ lang = 'de' }) {
             display: 'flex',
             flexDirection: 'column'
           }}>
-            {/* Background Image Story Reel */}
-            <img 
-              src={currentReel.bgImg} 
-              alt={currentReel.title} 
-              style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} 
-            />
+            {/* Background Image / Video Story Reel */}
+            {currentReel.videoUrl ? (
+              <video 
+                src={currentReel.videoUrl} 
+                autoPlay 
+                loop 
+                muted={isMuted} 
+                playsInline 
+                style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} 
+              />
+            ) : (
+              <img 
+                src={currentReel.bgImg} 
+                alt={currentReel.title} 
+                style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} 
+              />
+            )}
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.6) 100%)' }} />
 
             {/* Top Bar inside Reel */}
