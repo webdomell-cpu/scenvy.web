@@ -96,16 +96,16 @@ const T = {
 
 const getImgs = (lang) => {
   const de = [
-    {url:'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80',accent:'#7C3AED',tag:'HAPPY HOUR',title:'50% auf Cocktails',cta:'Jetzt bestellen'},
-    {url:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80',accent:'#FF2D8D',tag:'NEUES MENÜ',title:"Chef's Special",cta:'Menü ansehen'},
-    {url:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=80',accent:'#00D4FF',tag:'DIESE WOCHE',title:'Ladies Night ✨',cta:'Kostenlos RSVP'},
-    {url:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80',accent:'#FF9500',tag:'HIGHLIGHT',title:'Sunset Terrace',cta:'Tisch reservieren'}
+    {url:'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&q=80',accent:'#7C3AED',tag:'HAPPY HOUR',title:'50% auf Cocktails',cta:'Jetzt bestellen'},
+    {url:'https://images.unsplash.com/photo-1558030006-450675393462?w=600&q=80',accent:'#FF2D8D',tag:'NEUES MENÜ',title:"Chef's Special",cta:'Menü ansehen'},
+    {url:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80',accent:'#00D4FF',tag:'DIESE WOCHE',title:'Ladies Night ✨',cta:'Kostenlos RSVP'},
+    {url:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',accent:'#FF9500',tag:'HIGHLIGHT',title:'Sunset Terrace',cta:'Tisch reservieren'}
   ];
   const en = [
-    {url:'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80',accent:'#7C3AED',tag:'HAPPY HOUR',title:'50% Off Cocktails',cta:'Order Now'},
-    {url:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80',accent:'#FF2D8D',tag:'NEW MENU',title:"Chef's Special",cta:'View Menu'},
-    {url:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=80',accent:'#00D4FF',tag:'THIS WEEK',title:'Ladies Night ✨',cta:'RSVP Free'},
-    {url:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80',accent:'#FF9500',tag:'FEATURED',title:'Sunset Terrace',cta:'Book Table'}
+    {url:'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&q=80',accent:'#7C3AED',tag:'HAPPY HOUR',title:'50% Off Cocktails',cta:'Order Now'},
+    {url:'https://images.unsplash.com/photo-1558030006-450675393462?w=600&q=80',accent:'#FF2D8D',tag:'NEW MENU',title:"Chef's Special",cta:'View Menu'},
+    {url:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80',accent:'#00D4FF',tag:'THIS WEEK',title:'Ladies Night ✨',cta:'RSVP Free'},
+    {url:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',accent:'#FF9500',tag:'FEATURED',title:'Sunset Terrace',cta:'Book Table'}
   ];
   return lang === 'de' ? de : en;
 }
@@ -151,7 +151,7 @@ function Hero3DSmartphone({ lang = 'de' }) {
       tag: lang === 'de' ? 'HAPPY HOUR 50% OFF' : 'HAPPY HOUR 50% OFF',
       sub: lang === 'de' ? 'Rooftop Bar 21 · Live bis 20:00 Uhr' : 'Rooftop Bar 21 · Live until 8:00 PM',
       cta: lang === 'de' ? 'Jetzt Cocktail bestellen' : 'Order Cocktail Now',
-      bg: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&q=80',
+      bg: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&q=80',
       accent: '#8B5CF6'
     },
     {
@@ -159,7 +159,7 @@ function Hero3DSmartphone({ lang = 'de' }) {
       tag: lang === 'de' ? 'CHEF\'S SPECIAL' : 'CHEF\'S SPECIAL',
       sub: lang === 'de' ? 'Serviert mit Trüffel-Pommes' : 'Served with Truffle Fries',
       cta: lang === 'de' ? 'Tisch reservieren' : 'Reserve Table',
-      bg: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80',
+      bg: 'https://images.unsplash.com/photo-1558030006-450675393462?w=600&q=80',
       accent: '#F97316'
     },
     {
@@ -422,7 +422,7 @@ function InteractiveReelPlayer({ lang = 'de' }) {
       desc: lang === 'de' ? 'Spontan aktiviert für die nächsten 60 Minuten. Zeige diesen Screen an der Bar.' : 'Activated instantly for the next 60 minutes. Show this screen at the bar.',
       time: '00:45:12 verbleibend',
       cta: lang === 'de' ? 'Gutschein an der Bar einlösen' : 'Redeem Coupon at Bar',
-      bg: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=800&q=80',
+      bg: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80',
       color: '#8B5CF6',
       badge: 'HAPPY HOUR'
     },
@@ -433,7 +433,7 @@ function InteractiveReelPlayer({ lang = 'de' }) {
       desc: lang === 'de' ? '45 Tage gereiftes Premium Beef mit hausgemachter Kräuterbutter & Süßkartoffel-Fries.' : '45-day aged premium beef served with house truffle butter & sweet potato fries.',
       time: 'Aus der Tageskarte',
       cta: lang === 'de' ? 'Tisch direkt am Platz bestellen' : 'Order Table-side',
-      bg: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80',
+      bg: 'https://images.unsplash.com/photo-1558030006-450675393462?w=800&q=80',
       color: '#F97316',
       badge: 'SPEISEKARTE'
     },
@@ -823,7 +823,7 @@ function ReelVsStaticToggle({ lang = 'de' }) {
             ) : (
               /* Reel Mode */
               <div className="floating-mockup-anim" style={{ width: 280, height: 480, borderRadius: 32, background: '#090812', border: '4px solid #8B5CF6', padding: 14, position: 'relative', overflow: 'hidden', boxShadow: '0 0 50px rgba(139,92,246,0.5)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80" alt="Juicy Burger Reel" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80" alt="Juicy Burger Reel" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.85) 100%)' }} />
                 
                 <div style={{ position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1541,14 +1541,6 @@ export default function Landing({ onOpenAuthModal }){
       <div style={{ position: 'sticky', top: 0, zIndex: 110 }}>
         <EcosystemHeaderBar />
       </div>
-
-      {/* TOP ANNOUNCEMENT BANNER */}
-      {landingConfig.show_top_banner && (
-        <div style={{background:'linear-gradient(90deg, #7C3AED, #DB2777)',color:C.white,padding:'8px 16px',textAlign:'center',fontSize:12,fontWeight:700,letterSpacing:0.5,display:'flex',alignItems:'center',justifyContent:'center',gap:8,cursor:'pointer'}} onClick={() => nav(landingConfig.top_banner_link || '/menu-addon')}>
-          <span>{getLangText('top_banner_text', '🔥 Neu: AI Speisekarten-Reel Generator v2 ist live!', '🔥 New: AI Menu Reel Generator v2 is live!')}</span>
-          <span style={{background:'rgba(255,255,255,0.2)',padding:'2px 8px',borderRadius:10,fontSize:10}}>{lang==='en'?'View →':'Ansehen →'}</span>
-        </div>
-      )}
 
       {/* NAV */}
       <nav style={{position:'sticky',top:42,left:0,right:0,zIndex:100,height:80,background:'rgba(13,13,20,.95)',backdropFilter:'blur(20px)',borderBottom:`1px solid ${C.border}`,padding:'0 5%',display:'flex',alignItems:'center',justifyContent:'space-between'}}>

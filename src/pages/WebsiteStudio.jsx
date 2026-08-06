@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import { C, grad } from '@/tokens'
 import { useAuth } from '@/lib/AuthContext'
 import { 
-  Globe, Layout, Code, Sparkles, Plus, Save, Trash2, Eye, ExternalLink, 
+  Globe, Layout, Code, Sparkles, Plus, Save, Trash2, Eye, EyeOff, ExternalLink, 
   Settings, Type, Palette, MoveUp, MoveDown, Check, ArrowLeft, RefreshCw, 
   Sliders, Copy, Monitor, Smartphone, Layers, Play, Zap, FileText, CheckCircle, LogOut, User,
-  Image as ImageIcon, Upload, List, AlignLeft, HelpCircle, Star, MessageSquare
+  Image as ImageIcon, Upload, List, AlignLeft, HelpCircle, Star, MessageSquare, Flame, Tv
 } from 'lucide-react'
 import { db } from '@/lib/firebase'
-import { collection, doc, setDoc, getDocs, deleteDoc } from 'firebase/firestore'
+import { collection, doc, setDoc, getDoc, getDocs, deleteDoc } from 'firebase/firestore'
 
 // Default template pages with Company & Legal pages pre-populated
 const INITIAL_TEMPLATES = [
@@ -52,30 +52,75 @@ const INITIAL_TEMPLATES = [
         secondaryCtaText: 'Live Demo Ansehen',
         secondaryCtaLink: '#demo',
         fontSize: 34,
-        paddingY: 48
+        paddingY: 48,
+        isHidden: false
       },
       {
-        id: 'b2',
-        type: 'features',
-        title: 'Was SCENVY einzigartig macht',
-        subtitle: 'Ein System. Alle Werkzeuge für maximale Gäste-Interaktion.',
-        fontSize: 24,
+        id: 'b_roi',
+        type: 'roi_calculator',
+        title: 'Interaktiver ROI & Umsatz-Rechner',
+        subtitle: 'Berechne deinen monatlichen Zusatzumsatz durch dynamisches Cross-Selling mit SCENVY.',
+        paddingY: 40,
+        isHidden: false
+      },
+      {
+        id: 'b_sandbox',
+        type: 'live_demo_sandbox',
+        title: 'Interaktive Live-Demo & Smartphone QR Scanner',
+        subtitle: 'Testen Sie das SCENVY Gästeerlebnis direkt im Browser oder scannen Sie den QR-Code mit Ihrem Smartphone.',
+        paddingY: 40,
+        isHidden: false
+      },
+      {
+        id: 'b_ai_wf',
+        type: 'ai_workflow',
+        title: 'KI-Workflow in 60 Sekunden',
+        subtitle: 'Erstellen Sie automatisch fesselnde Marketing-Reels aus Text oder Fotos.',
+        paddingY: 40,
+        isHidden: false
+      },
+      {
+        id: 'b_personas',
+        type: 'buyer_personas',
+        title: 'Maßgeschneiderte Lösungen für Ihr Team',
+        subtitle: 'Egal ob Betreiber, Marketing oder IT — SCENVY bietet den passenden Mehrwert.',
+        paddingY: 40,
+        isHidden: false
+      },
+      {
+        id: 'b_hardware',
+        type: 'social_proof_hardware',
+        title: '100% Hardware-Unabhängigkeit & Vergleichstabelle',
+        subtitle: 'Erfahren Sie, warum SCENVY herkömmlichen Digital Signage Anbietern meilenweit voraus ist.',
+        paddingY: 40,
+        isHidden: false
+      },
+      {
+        id: 'b_faq',
+        type: 'faq_accordion',
+        title: 'Häufig gestellte Fragen (FAQ)',
+        subtitle: 'Alles was Sie über SCENVY, Setup, Hardware und Verträge wissen müssen.',
         paddingY: 36,
-        items: [
-          { title: 'Interactive Reels', desc: 'TikTok-artige Vollbild-Videos direkt im mobilen Web-Browser.' },
-          { title: 'Live Happy Hour Push', desc: 'Spontane Deals in unter 60 Sekunden auf alle Gästebildschirme streamen.' },
-          { title: 'KI Content Creator', desc: 'Generiere fesselnde Marketing-Reels per Knopfdruck mit KI.' }
-        ]
+        isHidden: false
       },
       {
-        id: 'b3',
+        id: 'b_pricing',
+        type: 'pricing',
+        title: 'Einfache, transparente Preise',
+        subtitle: 'Keine Setup-Gebühren. Keine versteckten Kosten. Jederzeit kündbar.',
+        paddingY: 40,
+        isHidden: false
+      },
+      {
+        id: 'b_cta',
         type: 'cta',
         title: 'Bereit deinen Umsatz zu steigern?',
         subtitle: 'Über 2.000 Venues vertrauen bereits auf das SCENVY Ecosystem.',
         ctaText: 'Jetzt Standort Registrieren →',
         ctaLink: 'https://app.scenvy.de',
         fontSize: 28,
-        paddingY: 40
+        paddingY: 40,
+        isHidden: false
       }
     ]
   },
@@ -375,7 +420,7 @@ export default function WebsiteStudio() {
   
   const [pages, setPages] = useState([])
   const [selectedPageId, setSelectedPageId] = useState(null)
-  const [activeTab, setActiveTab] = useState('editor') // 'editor' | 'nav' | 'code' | 'settings' | 'preview'
+  const [activeTab, setActiveTab] = useState('editor') // 'editor' | 'nav' | 'code' | 'global' | 'settings' | 'preview'
   const [previewDevice, setPreviewDevice] = useState('desktop') // 'desktop' | 'mobile'
   const [isSaving, setIsSaving] = useState(false)
   const [notifyMsg, setNotifyMsg] = useState('')
@@ -384,6 +429,21 @@ export default function WebsiteStudio() {
   // Form for new page
   const [newPageTitle, setNewPageTitle] = useState('')
   const [newPageSlug, setNewPageSlug] = useState('')
+
+  // Global Ecosystem Header Bar & Live Ticker Settings State
+  const [globalSettings, setGlobalSettings] = useState({
+    isAnnouncementEnabled: true,
+    announcementText: '✨ NEU: KI Reel-Generator 2.0 ist live',
+    announcementLink: 'https://app.scenvy.de',
+    isLiveTickerEnabled: true,
+    liveTickerSpeedSec: 6,
+    liveTickerMessages: [
+      { text: 'Ein Restaurant aus München hat gerade die Gastronomie-Reel-Engine gestartet', icon: 'Flame', color: '#EC4899' },
+      { text: 'Boutique-Hotel in Wien hat 4 SCENVY Digital Boards verbunden', icon: 'Tv', color: '#3B82F6' },
+      { text: 'Rooftop Bar in Hamburg schaltete den 2-for-1 Happy Hour Reel frei', icon: 'Sparkles', color: '#7C3AED' },
+      { text: 'Pizzeria in Berlin hat 18 neue Scan-to-Order QR Aufsteller gedruckt', icon: 'CheckCircle', color: '#10B981' }
+    ]
+  })
 
   // Selected Page State
   const currentPage = pages.find(p => p.id === selectedPageId) || pages[0]
@@ -410,6 +470,12 @@ export default function WebsiteStudio() {
         setPages(INITIAL_TEMPLATES)
         setSelectedPageId(INITIAL_TEMPLATES[0].id)
       }
+
+      // Load Global Ecosystem Settings from Firestore
+      const globSnap = await getDoc(doc(db, 'scenvy_global_settings', 'main'))
+      if (globSnap.exists()) {
+        setGlobalSettings(prev => ({ ...prev, ...globSnap.data() }))
+      }
     } catch (e) {
       console.warn('Firestore fallback to local initial templates:', e)
       setPages(INITIAL_TEMPLATES)
@@ -420,13 +486,20 @@ export default function WebsiteStudio() {
   const savePagesToBackend = async (updatedPagesList) => {
     setIsSaving(true)
     try {
-      for (const p of updatedPagesList) {
+      for (const p of updatedPagesList || pages) {
         await setDoc(doc(db, 'custom_pages', p.id), {
           ...p,
           updatedAt: new Date().toISOString()
         })
       }
-      triggerNotify('✅ Alle Webseiten & Landing-Pages erfolgreich im Backend gespeichert!')
+      
+      // Save Global Ecosystem & Header Settings
+      await setDoc(doc(db, 'scenvy_global_settings', 'main'), {
+        ...globalSettings,
+        updatedAt: new Date().toISOString()
+      })
+
+      triggerNotify('✅ Alle Webseiten & globale Header-Einstellungen gespeichert!')
     } catch (e) {
       console.error('Save error:', e)
       triggerNotify('💾 Lokal aktualisiert (Backend-Hinweis: ' + e.message + ')')
@@ -588,7 +661,7 @@ export default function WebsiteStudio() {
 
   const addBlockToPage = (type) => {
     if (!currentPage) return
-    let newB = { id: 'b_' + Date.now(), type, fontSize: 24, paddingY: 32 }
+    let newB = { id: 'b_' + Date.now(), type, fontSize: 24, paddingY: 32, isHidden: false }
     if (type === 'hero') {
       newB = { ...newB, kicker: 'NEUE SEKTION', title: 'Beeindruckender Titel', subtitle: 'Beschreibung der Aktion hier eingeben.', ctaText: 'Mehr Erfahren', ctaLink: '#' }
     } else if (type === 'text_block') {
@@ -597,6 +670,20 @@ export default function WebsiteStudio() {
       newB = { ...newB, imageUrl: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=1000&q=80', caption: 'Atmosphärisches Bild', altText: 'Banner Bild' }
     } else if (type === 'features') {
       newB = { ...newB, title: 'Unsere Highlights', subtitle: 'Drei starke Argumente', items: [{ title: 'Punkt 1', desc: 'Vorteil A' }, { title: 'Punkt 2', desc: 'Vorteil B' }] }
+    } else if (type === 'roi_calculator') {
+      newB = { ...newB, title: 'Interaktiver ROI & Umsatz-Rechner', subtitle: 'Berechne deinen monatlichen Zusatzumsatz durch dynamisches Cross-Selling.' }
+    } else if (type === 'live_demo_sandbox') {
+      newB = { ...newB, title: 'Interaktive Live-Demo & Smartphone Scanner', subtitle: 'Gästeerlebnis direkt im Browser oder per QR-Code testen.' }
+    } else if (type === 'ai_workflow') {
+      newB = { ...newB, title: 'KI-Workflow in 60 Sekunden', subtitle: 'Automatisch fesselnde Marketing-Reels aus Text oder Fotos generieren.' }
+    } else if (type === 'buyer_personas') {
+      newB = { ...newB, title: 'Maßgeschneiderte Lösungen für Ihr Team', subtitle: 'Für Gastronomen, Marketing und IT-Verantwortliche.' }
+    } else if (type === 'social_proof_hardware') {
+      newB = { ...newB, title: 'Hardware-Unabhängigkeit & Vergleichstabelle', subtitle: 'Vergleich mit herkömmlichen Systemen.' }
+    } else if (type === 'faq_accordion') {
+      newB = { ...newB, title: 'Häufig gestellte Fragen (FAQ)', subtitle: 'Alle wichtigen Antworten auf einen Blick.' }
+    } else if (type === 'pricing') {
+      newB = { ...newB, title: 'Einfache, transparente Preise', subtitle: 'Keine versteckten Kosten.' }
     } else if (type === 'cta') {
       newB = { ...newB, title: 'Jetzt Starten', subtitle: 'Verpasse keine Angebote mehr.', ctaText: 'Hier Klicken', ctaLink: '#' }
     } else if (type === 'code_embed') {
@@ -793,9 +880,10 @@ export default function WebsiteStudio() {
                 </div>
 
                 {/* Editor Mode Tabs */}
-                <div style={{ display: 'flex', background: C.bg, padding: 4, borderRadius: 10, border: `1px solid ${C.border}` }}>
+                <div style={{ display: 'flex', background: C.bg, padding: 4, borderRadius: 10, border: `1px solid ${C.border}`, flexWrap: 'wrap', gap: 4 }}>
                   {[
                     ['editor', '✏️ Visual Editor', Layout],
+                    ['global', '🌐 Header & Live Ticker', Sliders],
                     ['nav', '📌 Menü & Reihenfolge', List],
                     ['code', '💻 Custom CSS', Code],
                     ['settings', '⚙️ SEO & Settings', Settings],
@@ -805,7 +893,7 @@ export default function WebsiteStudio() {
                       key={tabKey}
                       onClick={() => setActiveTab(tabKey)}
                       style={{
-                        padding: '8px 16px',
+                        padding: '8px 14px',
                         borderRadius: 8,
                         border: 'none',
                         background: activeTab === tabKey ? C.purple : 'transparent',
@@ -846,25 +934,41 @@ export default function WebsiteStudio() {
                             <Copy size={12} /> Block Einfügen
                           </button>
                         )}
-                        <button onClick={() => addBlockToPage('hero')} style={{ padding: '6px 10px', borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Hero</button>
-                        <button onClick={() => addBlockToPage('text_block')} style={{ padding: '6px 10px', borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Text / Artikel</button>
-                        <button onClick={() => addBlockToPage('image_banner')} style={{ padding: '6px 10px', borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Bild Banner</button>
-                        <button onClick={() => addBlockToPage('features')} style={{ padding: '6px 10px', borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Features Grid</button>
-                        <button onClick={() => addBlockToPage('cta')} style={{ padding: '6px 10px', borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ CTA</button>
-                        <button onClick={() => addBlockToPage('code_embed')} style={{ padding: '6px 10px', borderRadius: 8, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Custom HTML</button>
+                        <button onClick={() => addBlockToPage('hero')} style={{ padding: '5px 9px', borderRadius: 6, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Hero</button>
+                        <button onClick={() => addBlockToPage('roi_calculator')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ ROI Rechner</button>
+                        <button onClick={() => addBlockToPage('live_demo_sandbox')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Live Demo</button>
+                        <button onClick={() => addBlockToPage('ai_workflow')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ KI Workflow</button>
+                        <button onClick={() => addBlockToPage('buyer_personas')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Personas</button>
+                        <button onClick={() => addBlockToPage('social_proof_hardware')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Hardware</button>
+                        <button onClick={() => addBlockToPage('faq_accordion')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ FAQ</button>
+                        <button onClick={() => addBlockToPage('pricing')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Pricing</button>
+                        <button onClick={() => addBlockToPage('cta')} style={{ padding: '5px 9px', borderRadius: 6, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ CTA</button>
+                        <button onClick={() => addBlockToPage('text_block')} style={{ padding: '5px 9px', borderRadius: 6, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Text</button>
+                        <button onClick={() => addBlockToPage('image_banner')} style={{ padding: '5px 9px', borderRadius: 6, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Bild</button>
+                        <button onClick={() => addBlockToPage('code_embed')} style={{ padding: '5px 9px', borderRadius: 6, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ HTML</button>
                       </div>
                     </div>
 
                     {/* Render Block List */}
                     {currentPage.blocks.map((block, idx) => (
-                      <div key={block.id} style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, padding: 18, display: 'grid', gap: 14 }}>
+                      <div key={block.id} style={{ background: C.card, borderRadius: 14, border: `1px solid ${block.isHidden ? 'rgba(239,68,68,0.3)' : C.border}`, padding: 18, display: 'grid', gap: 14, opacity: block.isHidden ? 0.6 : 1 }}>
                         {/* Block Header Toolbar */}
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${C.border}`, paddingBottom: 10, flexWrap: 'wrap', gap: 8 }}>
-                          <span style={{ fontSize: 12, fontWeight: 900, color: C.purple, textTransform: 'uppercase', letterSpacing: 1 }}>
-                            #{idx + 1} {block.type} BLOCK
+                          <span style={{ fontSize: 12, fontWeight: 900, color: block.isHidden ? C.muted : C.purple, textTransform: 'uppercase', letterSpacing: 1, display: 'flex', alignItems: 'center', gap: 6 }}>
+                            #{idx + 1} {block.type} BLOCK {block.isHidden && <span style={{ color: '#EF4444', fontSize: 10, fontWeight: 800, background: 'rgba(239,68,68,0.15)', padding: '2px 6px', borderRadius: 4 }}>(AUSGEBLENDET)</span>}
                           </span>
 
                           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                            {/* Toggle Block Visibility */}
+                            <button
+                              onClick={() => updateBlock(block.id, 'isHidden', !block.isHidden)}
+                              title={block.isHidden ? "Block einblenden" : "Block ausblenden"}
+                              style={{ padding: '4px 8px', borderRadius: 6, background: block.isHidden ? 'rgba(239,68,68,0.2)' : 'rgba(16,185,129,0.15)', border: `1px solid ${block.isHidden ? '#EF4444' : '#10B981'}`, color: block.isHidden ? '#EF4444' : '#10B981', fontSize: 11, fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
+                            >
+                              {block.isHidden ? <EyeOff size={11} /> : <Eye size={11} />}
+                              {block.isHidden ? 'Versteckt' : 'Sichtbar'}
+                            </button>
+
                             {/* Copy to Clipboard */}
                             <button
                               onClick={() => handleCopyBlockToClipboard(block)}
@@ -899,23 +1003,24 @@ export default function WebsiteStudio() {
                           </div>
                         </div>
 
-                        {/* Block Form Inputs */}
+                        {/* Generic Title & Subtitle for all block types */}
+                        <div>
+                          <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>TITEL DER SEKTION</label>
+                          <input type="text" value={block.title || ''} onChange={e => updateBlock(block.id, 'title', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 14, fontWeight: 800 }} />
+                        </div>
+
+                        <div>
+                          <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>UNTERTITEL / BESCHREIBUNG</label>
+                          <input type="text" value={block.subtitle || ''} onChange={e => updateBlock(block.id, 'subtitle', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 13 }} />
+                        </div>
+
+                        {/* Block Form Specific Inputs */}
                         {block.type === 'hero' && (
                           <div style={{ display: 'grid', gap: 12 }}>
                             <div>
                               <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>KICKER / OBERTITEL</label>
                               <input type="text" value={block.kicker || ''} onChange={e => updateBlock(block.id, 'kicker', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 13 }} />
                             </div>
-                            <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>HAUPTTITEL (ÜBERSCHRIFT)</label>
-                              <input type="text" value={block.title || ''} onChange={e => updateBlock(block.id, 'title', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 15, fontWeight: 800 }} />
-                            </div>
-                            <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>UNTERTITEL / BESCHREIBUNG</label>
-                              <textarea rows={2} value={block.subtitle || ''} onChange={e => updateBlock(block.id, 'subtitle', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 13, resize: 'vertical' }} />
-                            </div>
-                            
-                            {/* Image Field & Local File Upload */}
                             <div>
                               <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BILD URL ODER FILE UPLOAD</label>
                               <div style={{ display: 'flex', gap: 8 }}>
@@ -926,7 +1031,6 @@ export default function WebsiteStudio() {
                                 </label>
                               </div>
                             </div>
-
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                               <div>
                                 <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>CTA BUTTON TEXT</label>
@@ -941,18 +1045,21 @@ export default function WebsiteStudio() {
                         )}
 
                         {block.type === 'text_block' && (
-                          <div style={{ display: 'grid', gap: 12 }}>
+                          <div>
+                            <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>FLIESSTEXT / ARTIKEL INHALT</label>
+                            <textarea rows={5} value={block.content || ''} onChange={e => updateBlock(block.id, 'content', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 12px', color: C.white, fontSize: 13, resize: 'vertical', lineHeight: 1.6 }} />
+                          </div>
+                        )}
+
+                        {block.type === 'cta' && (
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                             <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>TITEL</label>
-                              <input type="text" value={block.title || ''} onChange={e => updateBlock(block.id, 'title', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 14, fontWeight: 800 }} />
+                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BUTTON TEXT</label>
+                              <input type="text" value={block.ctaText || ''} onChange={e => updateBlock(block.id, 'ctaText', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
                             </div>
                             <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>UNTERTITEL</label>
-                              <input type="text" value={block.subtitle || ''} onChange={e => updateBlock(block.id, 'subtitle', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 13 }} />
-                            </div>
-                            <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>FLIESSTEXT / ARTIKEL INHALT</label>
-                              <textarea rows={5} value={block.content || ''} onChange={e => updateBlock(block.id, 'content', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 12px', color: C.white, fontSize: 13, resize: 'vertical', lineHeight: 1.6 }} />
+                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BUTTON LINK</label>
+                              <input type="text" value={block.ctaLink || ''} onChange={e => updateBlock(block.id, 'ctaLink', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
                             </div>
                           </div>
                         )}
@@ -1051,6 +1158,143 @@ export default function WebsiteStudio() {
                     </div>
                   </div>
 
+                </div>
+              )}
+
+              {/* TAB GLOBAL SETTINGS: HEADER BARS & LIVE TICKER */}
+              {activeTab === 'global' && (
+                <div style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, padding: 24, display: 'grid', gap: 24, maxWidth: 800 }}>
+                  <div>
+                    <div style={{ fontSize: 18, fontWeight: 900, color: C.white, display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <Sliders size={20} color={C.purple} /> Globale Header-Leisten & Live Ticker Einstellungen
+                    </div>
+                    <div style={{ fontSize: 12, color: C.muted, marginTop: 4 }}>
+                      Verwalte die oberste Icon-Leiste (Ecosystem Header Bar), den Ankündigungs-Banner sowie die untere Live-Aktivitäts-Ticker-Leiste plattformweit.
+                    </div>
+                  </div>
+
+                  {/* Section 1: Top Ecosystem Announcement Banner */}
+                  <div style={{ background: C.bg, padding: 18, borderRadius: 12, border: `1px solid ${C.border}`, display: 'grid', gap: 14 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ fontSize: 14, fontWeight: 800, color: C.white }}>Oberer Ankündigungs-Banner (Header-Rechts)</div>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 12, fontWeight: 700, color: globalSettings.isAnnouncementEnabled ? C.green : C.muted }}>
+                        <input
+                          type="checkbox"
+                          checked={globalSettings.isAnnouncementEnabled !== false}
+                          onChange={e => setGlobalSettings(prev => ({ ...prev, isAnnouncementEnabled: e.target.checked }))}
+                        />
+                        {globalSettings.isAnnouncementEnabled !== false ? 'Aktiv' : 'Deaktiviert'}
+                      </label>
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BANNER TEXT</label>
+                      <input
+                        type="text"
+                        value={globalSettings.announcementText || ''}
+                        onChange={e => setGlobalSettings(prev => ({ ...prev, announcementText: e.target.value }))}
+                        style={{ width: '100%', background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 14px', color: C.white, fontSize: 13 }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BANNER ZIEL-URL / LINK</label>
+                      <input
+                        type="text"
+                        value={globalSettings.announcementLink || ''}
+                        onChange={e => setGlobalSettings(prev => ({ ...prev, announcementLink: e.target.value }))}
+                        style={{ width: '100%', background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 14px', color: C.white, fontSize: 13 }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Section 2: Bottom Live Activity Ticker */}
+                  <div style={{ background: C.bg, padding: 18, borderRadius: 12, border: `1px solid ${C.border}`, display: 'grid', gap: 14 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ fontSize: 14, fontWeight: 800, color: C.white }}>Unterer Live-Aktivitäts Ticker</div>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 12, fontWeight: 700, color: globalSettings.isLiveTickerEnabled ? C.green : C.muted }}>
+                        <input
+                          type="checkbox"
+                          checked={globalSettings.isLiveTickerEnabled !== false}
+                          onChange={e => setGlobalSettings(prev => ({ ...prev, isLiveTickerEnabled: e.target.checked }))}
+                        />
+                        {globalSettings.isLiveTickerEnabled !== false ? 'Aktiv' : 'Deaktiviert'}
+                      </label>
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>WECHSEL-GESCHWINDIGKEIT (SEKUNDEN PRO MESSAGE)</label>
+                      <input
+                        type="number"
+                        min="2"
+                        max="30"
+                        value={globalSettings.liveTickerSpeedSec || 6}
+                        onChange={e => setGlobalSettings(prev => ({ ...prev, liveTickerSpeedSec: Number(e.target.value) }))}
+                        style={{ width: 120, background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 13 }}
+                      />
+                    </div>
+
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                        <label style={{ fontSize: 11, fontWeight: 700, color: C.muted }}>TICKER NACHRICHTEN ({globalSettings.liveTickerMessages?.length || 0})</label>
+                        <button
+                          onClick={() => {
+                            const newMsgList = [...(globalSettings.liveTickerMessages || []), { text: 'Neue Venue Aktivität', icon: 'Sparkles', color: '#7C3AED' }]
+                            setGlobalSettings(prev => ({ ...prev, liveTickerMessages: newMsgList }))
+                          }}
+                          style={{ padding: '4px 10px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}
+                        >
+                          + Nachricht hinzufügen
+                        </button>
+                      </div>
+
+                      <div style={{ display: 'grid', gap: 8 }}>
+                        {(globalSettings.liveTickerMessages || []).map((msg, mIdx) => (
+                          <div key={mIdx} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                            <input
+                              type="text"
+                              value={msg.text}
+                              onChange={e => {
+                                const updatedMsgs = [...globalSettings.liveTickerMessages]
+                                updatedMsgs[mIdx].text = e.target.value
+                                setGlobalSettings(prev => ({ ...prev, liveTickerMessages: updatedMsgs }))
+                              }}
+                              style={{ flex: 1, background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }}
+                            />
+                            <button
+                              onClick={() => {
+                                const updatedMsgs = globalSettings.liveTickerMessages.filter((_, i) => i !== mIdx)
+                                setGlobalSettings(prev => ({ ...prev, liveTickerMessages: updatedMsgs }))
+                              }}
+                              style={{ padding: '8px 10px', borderRadius: 8, background: `${C.pink}22`, border: `1px solid ${C.pink}`, color: C.pink, cursor: 'pointer' }}
+                            >
+                              <Trash2 size={12} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => savePagesToBackend(pages)}
+                    style={{
+                      padding: '12px 24px',
+                      borderRadius: 10,
+                      background: grad.purple,
+                      color: C.white,
+                      fontSize: 14,
+                      fontWeight: 800,
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 8
+                    }}
+                  >
+                    <Save size={16} /> Globale Einstellungen Speichern
+                  </button>
                 </div>
               )}
 

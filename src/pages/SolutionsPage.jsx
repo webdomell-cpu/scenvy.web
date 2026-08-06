@@ -273,7 +273,7 @@ export default function SolutionsPage() {
       subtitle: 'Floating Dark Purple Studio Environment',
       badge: 'LIVE 3D REEL',
       badgeBg: '#8B5CF6',
-      image: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=1000&q=80',
+      image: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1000&q=80',
       description: 'Gourmet-Cocktail Zubereitung mit Rauch- & Eis-Effekten. Präsentiert in schlankem Smartphone-Frame mit violettem Ambient Glow.',
       metrics: ['+80% Impulskauf', 'Sequential Story 1/3', '1.4k Likes']
     },
@@ -285,7 +285,7 @@ export default function SolutionsPage() {
       subtitle: 'Dark Wood Atmosphere Display',
       badge: 'TISCH POS DISPLAY',
       badgeBg: '#F97316',
-      image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=1000&q=80',
+      image: 'https://images.unsplash.com/photo-1558030006-450675393462?w=1000&q=80',
       description: 'Elegantes Tisch-Tablet auf Echtholzständer. Gäste sehen saftiges Tomahawk-Steak zischen und bestellen per Tischnummer.',
       metrics: ['NFC & QR Tisch 12', '+24% Bon-Wert', 'Appetit-Trigger']
     },

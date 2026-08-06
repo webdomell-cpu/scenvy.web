@@ -184,8 +184,8 @@ export function AiWorkflowSection({ lang = 'de' }) {
             height: 320
           }}>
             <img
-              src="https://images.unsplash.com/photo-1544025162-d76694265947?w=1000&q=80"
-              alt="Food Dish"
+              src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1000&q=80"
+              alt="Juicy Gourmet Burger"
               style={{
                 width: '100%',
                 height: '100%',

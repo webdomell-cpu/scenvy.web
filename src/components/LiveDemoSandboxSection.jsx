@@ -13,7 +13,7 @@ export function LiveDemoSandboxSection({ lang = 'de' }) {
       tag: 'HAPPY HOUR',
       title: 'Signatur Cocktails — 2 für 1',
       desc: 'Täglich ab 17:00 Uhr. Frisch gemixt mit Premium-Zutaten.',
-      bgImg: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=800&q=80',
+      bgImg: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80',
       price: '9,50 €',
       likes: '1.4k',
       venue: 'Skyline Lounge & Bar'
@@ -23,7 +23,7 @@ export function LiveDemoSandboxSection({ lang = 'de' }) {
       tag: 'CHEF\'S SPECIAL',
       title: 'Truffle Tagliolini & Parmigiano',
       desc: 'Frische Pasta im Parmesanlaib geschwenkt mit frischem Sommertrüffel.',
-      bgImg: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80',
+      bgImg: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281313?w=800&q=80',
       price: '18,90 €',
       likes: '2.8k',
       venue: 'Ristorante Bellavista'
