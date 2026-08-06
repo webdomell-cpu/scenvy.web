@@ -250,6 +250,8 @@ export default function SolutionsPage() {
   const [consultationOpen, setConsultationOpen] = useState(false)
   const [selectedIndustry, setSelectedIndustry] = useState('Gastronomie & Bars')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [selectedGalleryTab, setSelectedGalleryTab] = useState('all')
+  const [activeModalItem, setActiveModalItem] = useState(null)
 
   useEffect(() => {
     document.title = lang === 'de' 
@@ -261,6 +263,73 @@ export default function SolutionsPage() {
     setSelectedIndustry(ind)
     setConsultationOpen(true)
   }
+
+  const GALLERY_ITEMS = [
+    {
+      id: 'smartphone-3d',
+      cat: 'gastronomie',
+      industry: 'Gastronomie & Lounge',
+      title: '3D Smartphone Vertical Reel',
+      subtitle: 'Floating Dark Purple Studio Environment',
+      badge: 'LIVE 3D REEL',
+      badgeBg: '#8B5CF6',
+      image: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=1000&q=80',
+      description: 'Gourmet-Cocktail Zubereitung mit Rauch- & Eis-Effekten. Präsentiert in schlankem Smartphone-Frame mit violettem Ambient Glow.',
+      metrics: ['+80% Impulskauf', 'Sequential Story 1/3', '1.4k Likes']
+    },
+    {
+      id: 'table-stand',
+      cat: 'gastronomie',
+      industry: 'Gastronomie & Bars',
+      title: 'Tischaufsteller & Lounge Stand',
+      subtitle: 'Dark Wood Atmosphere Display',
+      badge: 'TISCH POS DISPLAY',
+      badgeBg: '#F97316',
+      image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=1000&q=80',
+      description: 'Elegantes Tisch-Tablet auf Echtholzständer. Gäste sehen saftiges Tomahawk-Steak zischen und bestellen per Tischnummer.',
+      metrics: ['NFC & QR Tisch 12', '+24% Bon-Wert', 'Appetit-Trigger']
+    },
+    {
+      id: 'retail-window',
+      cat: 'retail',
+      industry: 'Einzelhandel (Retail)',
+      title: 'Retail Schaufenster Display',
+      subtitle: 'High-Brightness Boutique Facade',
+      badge: 'SCHAUFENSTER LED',
+      badgeBg: '#EC4899',
+      image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1000&q=80',
+      description: 'Großflächiger vertikaler High-Brightness LED-Screen an der Boutique-Fassade. Zeigt Fashion-Catwalk im bewegten Reel.',
+      metrics: ['Passanten-Scan +65%', 'Visual Merchandising 2.0', '2500 Nits']
+    },
+    {
+      id: 'hotel-concierge',
+      cat: 'hotel',
+      industry: 'Hotellerie & Resorts',
+      title: 'Hotellerie Digital Concierge',
+      subtitle: 'Grand Marble Lobby Reception',
+      badge: 'HOTEL LOBBY CONCIERGE',
+      badgeBg: '#10B981',
+      image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1000&q=80',
+      description: 'Messing-gefasster vertikaler Screen im Marmor-Empfangsbereich. Zeigt Spa-Angebote, Frühstückszeiten & Sightseeing Reels.',
+      metrics: ['Rezeption Entlastung', '+35% Spa-Buchung', '24/7 Service']
+    },
+    {
+      id: 'event-stage',
+      cat: 'events',
+      industry: 'Events & Festivals',
+      title: 'Festival & Mainstage Live Screen',
+      subtitle: 'Realtime Cloud Stage Sync',
+      badge: 'LIVE STAGE REEL',
+      badgeBg: '#3B82F6',
+      image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1000&q=80',
+      description: 'Verwandelt Festival-Screens in interaktive Experience-Wände mit Live-Lineup, Sponsoren-Clips und Crowd QR-Voting.',
+      metrics: ['Cloud Realtime Sync', 'Sponsoren-Impact +300%', 'Live Voting']
+    }
+  ]
+
+  const filteredGallery = selectedGalleryTab === 'all'
+    ? GALLERY_ITEMS
+    : GALLERY_ITEMS.filter(item => item.cat === selectedGalleryTab)
 
   return (
     <div style={{ background: '#12131F', color: '#FFFFFF', minHeight: '100vh', fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
@@ -430,59 +499,237 @@ export default function SolutionsPage() {
           {/* 3D Smartphone Hero Visual Mockup */}
           <div style={{
             position: 'relative',
-            maxWidth: 780,
+            maxWidth: 820,
             margin: '0 auto',
-            background: '#1B1C2E',
+            background: 'linear-gradient(145deg, #1B1C2E 0%, #12131F 100%)',
             borderRadius: 32,
-            border: '2px solid rgba(139,92,246,0.35)',
-            padding: '30px 20px',
-            boxShadow: '0 30px 90px rgba(139,92,246,0.25)'
+            border: '2px solid rgba(139,92,246,0.4)',
+            padding: '24px 20px',
+            boxShadow: '0 30px 90px rgba(139,92,246,0.3)'
           }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20, alignItems: 'center' }}>
+            <div style={{ fontSize: 12, fontWeight: 800, color: '#A78BFA', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12 }}>
+              ✨ Klicke auf ein Bild für die interaktive Vollbild-Vorschau
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, alignItems: 'center' }}>
               
               {/* Phone Mockup Card */}
-              <div style={{ background: '#12131F', borderRadius: 24, padding: 16, border: '1px solid rgba(255,255,255,0.1)', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', top: 12, right: 12, background: '#8B5CF6', color: '#FFF', fontSize: 9, fontWeight: 900, padding: '2px 8px', borderRadius: 10 }}>
-                  LIVE REEL
+              <div
+                onClick={() => setActiveModalItem(GALLERY_ITEMS[0])}
+                style={{ background: '#0D0E1A', borderRadius: 20, padding: 12, border: '1px solid rgba(139,92,246,0.3)', position: 'relative', overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s, boxShadow 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(139,92,246,0.4)'; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+              >
+                <div style={{ position: 'absolute', top: 12, right: 12, background: '#8B5CF6', color: '#FFF', fontSize: 9, fontWeight: 900, padding: '3px 8px', borderRadius: 10, zIndex: 2 }}>
+                  3D SMARTPHONE
                 </div>
-                <img
-                  src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&q=80"
-                  alt="Cocktail Reel"
-                  style={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 16, marginBottom: 10 }}
-                />
-                <div style={{ fontSize: 13, fontWeight: 800, color: '#FFF' }}>Sequential Reel Story 1/3</div>
-                <div style={{ fontSize: 11, color: '#94A3B8' }}>Visual Appetite Trigger · Bar & Lounge</div>
+                <div style={{ position: 'relative', borderRadius: 14, overflow: 'hidden', height: 210 }}>
+                  <img
+                    src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&q=80"
+                    alt="Cocktail Reel"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.8) 100%)' }} />
+                  <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: 11, fontWeight: 800, color: '#FFF' }}>Sequential Reel 1/3</span>
+                    <span style={{ background: 'rgba(255,255,255,0.2)', padding: '2px 6px', borderRadius: 6, fontSize: 10, color: '#FFF' }}>▶ Vorschau</span>
+                  </div>
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 800, color: '#FFF', marginTop: 10 }}>Bar & Lounge Reel</div>
+                <div style={{ fontSize: 11, color: '#94A3B8' }}>Visual Appetite Trigger</div>
               </div>
 
               {/* Retail Mockup Card */}
-              <div style={{ background: '#12131F', borderRadius: 24, padding: 16, border: '1px solid rgba(255,255,255,0.1)', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', top: 12, right: 12, background: '#EC4899', color: '#FFF', fontSize: 9, fontWeight: 900, padding: '2px 8px', borderRadius: 10 }}>
-                  HIGH-BRIGHTNESS
+              <div
+                onClick={() => setActiveModalItem(GALLERY_ITEMS[2])}
+                style={{ background: '#0D0E1A', borderRadius: 20, padding: 12, border: '1px solid rgba(236,72,153,0.3)', position: 'relative', overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s, boxShadow 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(236,72,153,0.4)'; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+              >
+                <div style={{ position: 'absolute', top: 12, right: 12, background: '#EC4899', color: '#FFF', fontSize: 9, fontWeight: 900, padding: '3px 8px', borderRadius: 10, zIndex: 2 }}>
+                  SCHAUFENSTER
                 </div>
-                <img
-                  src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&q=80"
-                  alt="Retail Display"
-                  style={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 16, marginBottom: 10 }}
-                />
-                <div style={{ fontSize: 13, fontWeight: 800, color: '#FFF' }}>Schaufenster Display Sync</div>
-                <div style={{ fontSize: 11, color: '#94A3B8' }}>Visual Merchandising 2.0 · Retail</div>
+                <div style={{ position: 'relative', borderRadius: 14, overflow: 'hidden', height: 210 }}>
+                  <img
+                    src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&q=80"
+                    alt="Retail Display"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.8) 100%)' }} />
+                  <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: 11, fontWeight: 800, color: '#FFF' }}>Boutique Front LED</span>
+                    <span style={{ background: 'rgba(255,255,255,0.2)', padding: '2px 6px', borderRadius: 6, fontSize: 10, color: '#FFF' }}>▶ Vorschau</span>
+                  </div>
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 800, color: '#FFF', marginTop: 10 }}>Retail Fashion Display</div>
+                <div style={{ fontSize: 11, color: '#94A3B8' }}>Visual Merchandising 2.0</div>
               </div>
 
               {/* Hotel Mockup Card */}
-              <div style={{ background: '#12131F', borderRadius: 24, padding: 16, border: '1px solid rgba(255,255,255,0.1)', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', top: 12, right: 12, background: '#10B981', color: '#FFF', fontSize: 9, fontWeight: 900, padding: '2px 8px', borderRadius: 10 }}>
-                  HOTEL CONCIERGE
+              <div
+                onClick={() => setActiveModalItem(GALLERY_ITEMS[3])}
+                style={{ background: '#0D0E1A', borderRadius: 20, padding: 12, border: '1px solid rgba(16,185,129,0.3)', position: 'relative', overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s, boxShadow 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(16,185,129,0.4)'; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+              >
+                <div style={{ position: 'absolute', top: 12, right: 12, background: '#10B981', color: '#FFF', fontSize: 9, fontWeight: 900, padding: '3px 8px', borderRadius: 10, zIndex: 2 }}>
+                  HOTEL LOBBY
                 </div>
-                <img
-                  src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80"
-                  alt="Hotel Screen"
-                  style={{ width: '100%', height: 220, objectFit: 'cover', borderRadius: 16, marginBottom: 10 }}
-                />
-                <div style={{ fontSize: 13, fontWeight: 800, color: '#FFF' }}>Lobby Welcome Reel</div>
-                <div style={{ fontSize: 11, color: '#94A3B8' }}>Digital Concierge · Hospitality</div>
+                <div style={{ position: 'relative', borderRadius: 14, overflow: 'hidden', height: 210 }}>
+                  <img
+                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80"
+                    alt="Hotel Screen"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.8) 100%)' }} />
+                  <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: 11, fontWeight: 800, color: '#FFF' }}>Marmor Empfang Display</span>
+                    <span style={{ background: 'rgba(255,255,255,0.2)', padding: '2px 6px', borderRadius: 6, fontSize: 10, color: '#FFF' }}>▶ Vorschau</span>
+                  </div>
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 800, color: '#FFF', marginTop: 10 }}>Digital Concierge Screen</div>
+                <div style={{ fontSize: 11, color: '#94A3B8' }}>Hospitality Welcome Reel</div>
               </div>
 
             </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* BRANCHEN VISUAL GALERIE & MOCKUP SHOWCASE */}
+      <section style={{ padding: '70px 5%', background: '#12131F', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+        <div style={{ maxWidth: 1150, margin: '0 auto' }}>
+          
+          <div style={{ textAlign: 'center', marginBottom: 40 }}>
+            <span style={{
+              background: 'rgba(139,92,246,0.18)',
+              border: '1px solid rgba(139,92,246,0.3)',
+              color: '#A78BFA',
+              fontSize: 11,
+              fontWeight: 800,
+              padding: '4px 14px',
+              borderRadius: 20,
+              letterSpacing: 1,
+              textTransform: 'uppercase',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              marginBottom: 12
+            }}>
+              <Film size={14} color="#A78BFA" /> VISUELLE SHOWCASE-GALERIE
+            </span>
+            <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 40px)', fontWeight: 900, color: '#FFFFFF', marginBottom: 12 }}>
+              Alle Branchen-Setups auf einen Blick
+            </h2>
+            <p style={{ fontSize: 16, color: '#E1E1E6', maxWidth: 700, margin: '0 auto 28px' }}>
+              Entdecke, wie SCENVY Sequential Reels in unterschiedlichen Architektur- & POS-Umgebungen wirken – vom Tischaufsteller bis zur Festival-Bühne.
+            </p>
+
+            {/* Filter Tabs */}
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+              {[
+                { id: 'all', label: 'Alle Setups (5)' },
+                { id: 'gastronomie', label: 'Gastronomie & Lounge' },
+                { id: 'retail', label: 'Einzelhandel (Retail)' },
+                { id: 'hotel', label: 'Hotellerie & Resorts' },
+                { id: 'events', label: 'Events & Festivals' }
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setSelectedGalleryTab(tab.id)}
+                  style={{
+                    padding: '8px 18px',
+                    borderRadius: 20,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    border: selectedGalleryTab === tab.id ? '1px solid #8B5CF6' : '1px solid rgba(255,255,255,0.15)',
+                    background: selectedGalleryTab === tab.id ? 'rgba(139,92,246,0.25)' : '#1B1C2E',
+                    color: selectedGalleryTab === tab.id ? '#FFFFFF' : '#94A3B8',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Grid of Visual Mockups */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 24 }}>
+            {filteredGallery.map(item => (
+              <div
+                key={item.id}
+                onClick={() => setActiveModalItem(item)}
+                style={{
+                  background: '#1B1C2E',
+                  borderRadius: 24,
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  position: 'relative'
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = 'translateY(-6px)'
+                  e.currentTarget.style.borderColor = item.badgeBg
+                  e.currentTarget.style.boxShadow = `0 15px 40px ${item.badgeBg}33`
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'
+                  e.currentTarget.style.boxShadow = 'none'
+                }}
+              >
+                {/* Image Container */}
+                <div style={{ position: 'relative', height: 240, overflow: 'hidden' }}>
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(18,19,31,0.9) 100%)' }} />
+                  
+                  {/* Badge */}
+                  <span style={{
+                    position: 'absolute',
+                    top: 14,
+                    left: 14,
+                    background: item.badgeBg,
+                    color: '#FFF',
+                    fontSize: 10,
+                    fontWeight: 900,
+                    padding: '4px 10px',
+                    borderRadius: 12,
+                    letterSpacing: 0.5
+                  }}>
+                    {item.badge}
+                  </span>
+
+                  <div style={{ position: 'absolute', bottom: 12, left: 14, right: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: 12, color: '#A78BFA', fontWeight: 800 }}>{item.industry}</span>
+                    <span style={{ background: 'rgba(255,255,255,0.2)', color: '#FFF', padding: '4px 10px', borderRadius: 10, fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <Play size={12} fill="#FFF" /> Vorschau
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div style={{ padding: 20 }}>
+                  <h3 style={{ fontSize: 18, fontWeight: 900, color: '#FFF', marginBottom: 4 }}>{item.title}</h3>
+                  <div style={{ fontSize: 12, color: item.badgeBg, fontWeight: 700, marginBottom: 12 }}>{item.subtitle}</div>
+                  <p style={{ fontSize: 13, color: '#E1E1E6', lineHeight: 1.5, marginBottom: 16 }}>{item.description}</p>
+
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    {item.metrics.map((m, idx) => (
+                      <span key={idx} style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#CBD5E1', fontSize: 11, fontWeight: 700, padding: '3px 8px', borderRadius: 8 }}>
+                        ✓ {m}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
         </div>
@@ -1026,6 +1273,160 @@ export default function SolutionsPage() {
           </div>
         </div>
       </footer>
+
+      {/* MODALS */}
+      {/* Lightbox / Fullscreen Reel Preview Modal */}
+      {activeModalItem && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(9, 10, 16, 0.92)',
+          backdropFilter: 'blur(16px)',
+          zIndex: 200,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 20
+        }}>
+          <div style={{
+            background: '#12131F',
+            border: `2px solid ${activeModalItem.badgeBg}`,
+            borderRadius: 28,
+            maxWidth: 850,
+            width: '100%',
+            overflow: 'hidden',
+            boxShadow: `0 25px 80px ${activeModalItem.badgeBg}44`,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            position: 'relative'
+          }}>
+            {/* Close Button */}
+            <button
+              onClick={() => setActiveModalItem(null)}
+              style={{
+                position: 'absolute',
+                top: 16,
+                right: 16,
+                background: 'rgba(0,0,0,0.6)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                color: '#FFF',
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                zIndex: 10
+              }}
+            >
+              <X size={18} />
+            </button>
+
+            {/* Left: Image Preview in Phone/Screen Container */}
+            <div style={{ background: '#090A10', padding: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+              <div style={{
+                width: 260,
+                height: 480,
+                borderRadius: 36,
+                overflow: 'hidden',
+                border: `4px solid ${activeModalItem.badgeBg}`,
+                boxShadow: `0 0 40px ${activeModalItem.badgeBg}66`,
+                position: 'relative'
+              }}>
+                <img
+                  src={activeModalItem.image}
+                  alt={activeModalItem.title}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.85) 100%)' }} />
+                
+                {/* Simulated Screen Badge */}
+                <div style={{ position: 'absolute', top: 16, left: 14, background: activeModalItem.badgeBg, color: '#FFF', fontSize: 9, fontWeight: 900, padding: '3px 8px', borderRadius: 8 }}>
+                  {activeModalItem.badge}
+                </div>
+
+                {/* Simulated Reel CTA */}
+                <div style={{ position: 'absolute', bottom: 16, left: 14, right: 14 }}>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: '#FFF', marginBottom: 4 }}>{activeModalItem.title}</div>
+                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.8)', marginBottom: 10 }}>{activeModalItem.subtitle}</div>
+                  <button style={{ width: '100%', padding: '10px 0', borderRadius: 10, border: 'none', background: activeModalItem.badgeBg, color: '#FFF', fontWeight: 800, fontSize: 12 }}>
+                    Live-Demo testen →
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Details & Action */}
+            <div style={{ padding: 32, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <span style={{ color: activeModalItem.badgeBg, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>
+                {activeModalItem.industry}
+              </span>
+              <h2 style={{ fontSize: 24, fontWeight: 900, color: '#FFF', marginBottom: 12 }}>
+                {activeModalItem.title}
+              </h2>
+              <p style={{ fontSize: 14, color: '#E1E1E6', lineHeight: 1.6, marginBottom: 20 }}>
+                {activeModalItem.description}
+              </p>
+
+              <div style={{ background: '#1B1C2E', borderRadius: 16, padding: 16, border: '1px solid rgba(255,255,255,0.1)', marginBottom: 24 }}>
+                <div style={{ fontSize: 12, fontWeight: 800, color: '#A78BFA', marginBottom: 8 }}>HIGHLIGHT FEATURES:</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  {activeModalItem.metrics.map((m, idx) => (
+                    <div key={idx} style={{ fontSize: 13, color: '#FFF', display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <Check size={14} color={activeModalItem.badgeBg} /> {m}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: 12 }}>
+                <button
+                  onClick={() => {
+                    const ind = activeModalItem.industry
+                    setActiveModalItem(null)
+                    openConsultationFor(ind)
+                  }}
+                  style={{
+                    flex: 1,
+                    padding: '14px 0',
+                    borderRadius: 12,
+                    border: 'none',
+                    background: `linear-gradient(135deg, ${activeModalItem.badgeBg} 0%, #EC4899 100%)`,
+                    color: '#FFF',
+                    fontWeight: 800,
+                    fontSize: 14,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8
+                  }}
+                >
+                  <span>Anfragen</span>
+                  <ArrowRight size={16} />
+                </button>
+
+                <button
+                  onClick={() => setActiveModalItem(null)}
+                  style={{
+                    padding: '14px 20px',
+                    borderRadius: 12,
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    background: 'transparent',
+                    color: '#FFF',
+                    fontWeight: 700,
+                    fontSize: 14,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Schließen
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* MODALS */}
       <AppAuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
