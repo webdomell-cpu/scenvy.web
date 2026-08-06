@@ -14,6 +14,7 @@ import {
   useDisplays, useSaveDisplay, usePlaylists, useSavePlaylist, useLayouts
 } from '@/lib/db'
 import { AppLauncherBar } from '@/components/AppLauncherBar'
+import { FlagDE, FlagGB } from '@/components/FlagIcons'
 import { launchSubdomainModule } from '@/lib/sso'
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import { Home, Film, MapPin, BarChart2, Sparkles, Settings, Menu, QrCode, Eye, MousePointer, Video, Plus, Trash2, RefreshCw, Copy, LogOut, Upload, Link, X, Image, ExternalLink, CreditCard as Edit2, Download, Globe, Save, Mail, Shield, Library, Building2, Phone, Utensils, Tv, ConciergeBell, Layers } from 'lucide-react'
@@ -2526,10 +2527,13 @@ export default function Dashboard() {
 
           {/* Right: Language, domain, user avatar & Logout Button */}
           <div style={{display:'flex',alignItems:'center',gap:12}}>
-            <div style={{display:'flex',background:C.card2,border:`1px solid ${C.border}`,borderRadius:8,padding:2}}>
-              {[['de','🇩🇪'],['en','🇬🇧']].map(([l,f])=>(
-                <button key={l} onClick={()=>{setLang(l);localStorage.setItem('scenvy_lang',l)}} style={{padding:'2px 8px',borderRadius:5,border:'none',cursor:'pointer',background:lang===l?C.purple:'transparent',fontSize:14,fontFamily:'inherit'}}>{f}</button>
-              ))}
+            <div style={{display:'flex',background:C.card2,border:`1px solid ${C.border}`,borderRadius:8,padding:2,gap:2}}>
+              <button onClick={()=>{setLang('de');localStorage.setItem('scenvy_lang','de')}} style={{padding:'4px 9px',borderRadius:6,border:'none',cursor:'pointer',background:lang==='de'?C.purple:'transparent',color:'#FFF',fontSize:11,fontWeight:800,display:'flex',alignItems:'center',gap:5,fontFamily:'inherit'}}>
+                <FlagDE size={16} /> <span>DE</span>
+              </button>
+              <button onClick={()=>{setLang('en');localStorage.setItem('scenvy_lang','en')}} style={{padding:'4px 9px',borderRadius:6,border:'none',cursor:'pointer',background:lang==='en'?C.purple:'transparent',color:'#FFF',fontSize:11,fontWeight:800,display:'flex',alignItems:'center',gap:5,fontFamily:'inherit'}}>
+                <FlagGB size={16} /> <span>EN</span>
+              </button>
             </div>
             <div style={{fontSize:12,color:C.muted,display:'none',alignItems:'center',gap:4}} className="md:flex">
               app.scenvy.de

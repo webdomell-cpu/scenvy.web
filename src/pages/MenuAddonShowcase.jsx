@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { C, grad } from '@/tokens'
 import { ScenvyLogoFull, ScenvyLogoIcon } from '@/components/ScenvyLogo'
 import { ScenvyAppIcon } from '@/components/ScenvyBrandShowcase'
+import { FlagDE, FlagGB } from '@/components/FlagIcons'
 import { 
   Utensils, Sparkles, QrCode, FileText, Check, ArrowRight, Video, 
   Smartphone, Upload, Globe, Zap, BarChart2, ShieldCheck, Play, 
@@ -216,12 +217,13 @@ export default function MenuAddonShowcase() {
             <ArrowLeft size={16} /> {t.back}
           </button>
           
-          <div style={{ display: 'flex', background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: 3 }}>
-            {[['de','🇩🇪'],['en','🇬🇧']].map(([l,f]) => (
-              <button key={l} onClick={() => setLang(l)} style={{ padding: '4px 8px', borderRadius: 6, border: 'none', cursor: 'pointer', background: lang===l?C.purple:'transparent', fontSize: 15, fontFamily: 'inherit' }}>
-                {f}
-              </button>
-            ))}
+          <div style={{ display: 'flex', background: 'rgba(255,255,255,0.06)', border: `1px solid ${C.border}`, borderRadius: 10, padding: 3, gap: 2 }}>
+            <button onClick={() => setLang('de')} style={{ padding: '6px 12px', borderRadius: 7, border: 'none', cursor: 'pointer', background: lang==='de'?C.purple:'transparent', color: '#FFF', fontSize: 12, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 7, fontFamily: 'inherit' }}>
+              <FlagDE size={18} /> <span>DE</span>
+            </button>
+            <button onClick={() => setLang('en')} style={{ padding: '6px 12px', borderRadius: 7, border: 'none', cursor: 'pointer', background: lang==='en'?C.purple:'transparent', color: '#FFF', fontSize: 12, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 7, fontFamily: 'inherit' }}>
+              <FlagGB size={18} /> <span>EN</span>
+            </button>
           </div>
 
           <button onClick={() => nav('/auth?mode=register')} style={{ background: grad(C.purple, C.pink), color: C.white, border: 'none', borderRadius: 10, padding: '10px 20px', fontWeight: 700, fontSize: 13, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -231,12 +233,13 @@ export default function MenuAddonShowcase() {
 
         {/* Mobile Hamburger Toggle */}
         <div className="mobile-nav-toggle" style={{ display: 'none', alignItems: 'center', gap: 10 }}>
-          <div style={{ display: 'flex', background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: 2 }}>
-            {[['de','🇩🇪'],['en','🇬🇧']].map(([l,f]) => (
-              <button key={l} onClick={() => setLang(l)} style={{ padding: '3px 6px', borderRadius: 5, border: 'none', cursor: 'pointer', background: lang===l?C.purple:'transparent', fontSize: 13, fontFamily: 'inherit' }}>
-                {f}
-              </button>
-            ))}
+          <div style={{ display: 'flex', background: 'rgba(255,255,255,0.06)', border: `1px solid ${C.border}`, borderRadius: 8, padding: 2, gap: 2 }}>
+            <button onClick={() => setLang('de')} style={{ padding: '5px 9px', borderRadius: 6, border: 'none', cursor: 'pointer', background: lang==='de'?C.purple:'transparent', color: '#FFF', fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 5, fontFamily: 'inherit' }}>
+              <FlagDE size={16} /> <span>DE</span>
+            </button>
+            <button onClick={() => setLang('en')} style={{ padding: '5px 9px', borderRadius: 6, border: 'none', cursor: 'pointer', background: lang==='en'?C.purple:'transparent', color: '#FFF', fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 5, fontFamily: 'inherit' }}>
+              <FlagGB size={16} /> <span>EN</span>
+            </button>
           </div>
           <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ background: 'none', border: 'none', color: C.white, cursor: 'pointer', padding: 6 }}>
             {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}

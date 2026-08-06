@@ -4,6 +4,7 @@ import { db } from '@/lib/firebase'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { C } from '@/tokens'
 import { ScenvyLogoFull } from '@/components/ScenvyLogo'
+import { FlagDE, FlagGB } from '@/components/FlagIcons'
 import { ArrowRight, CheckCircle, Sparkles } from 'lucide-react'
 
 export default function PublicCustomPage() {
@@ -109,15 +110,15 @@ export default function PublicCustomPage() {
           <div style={{ display: 'flex', background: 'rgba(255,255,255,0.06)', padding: 3, borderRadius: 8, border: '1px solid rgba(255,255,255,0.12)' }}>
             <button
               onClick={() => setLang('de')}
-              style={{ padding: '4px 10px', borderRadius: 6, border: 'none', background: lang === 'de' ? C.purple : 'transparent', color: '#FFF', fontSize: 11, fontWeight: 800, cursor: 'pointer' }}
+              style={{ padding: '4px 10px', borderRadius: 6, border: 'none', background: lang === 'de' ? C.purple : 'transparent', color: '#FFF', fontSize: 11, fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5 }}
             >
-              🇩🇪 DE
+              <FlagDE size={15} /> <span>DE</span>
             </button>
             <button
               onClick={() => setLang('en')}
-              style={{ padding: '4px 10px', borderRadius: 6, border: 'none', background: lang === 'en' ? C.purple : 'transparent', color: '#FFF', fontSize: 11, fontWeight: 800, cursor: 'pointer' }}
+              style={{ padding: '4px 10px', borderRadius: 6, border: 'none', background: lang === 'en' ? C.purple : 'transparent', color: '#FFF', fontSize: 11, fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5 }}
             >
-              🇬🇧 EN
+              <FlagGB size={15} /> <span>EN</span>
             </button>
           </div>
 

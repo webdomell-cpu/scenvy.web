@@ -5,6 +5,7 @@ import { ScenvyLogoFull, ScenvyLogoIcon, ScenvyLogoBadge } from '@/components/Sc
 import { ScenvyAppIcon, ScenvyPhoneMockup, ScenvyHeroShowcase, MODULE_COLORS } from '@/components/ScenvyBrandShowcase'
 import { Check, Clock, Star, Play, Video, Zap, Sparkles, MapPin, BarChart2, QrCode, X, Send, Menu, Film, Utensils, Tv, Building, ShoppingBag, Tag, Heart, MessageCircle, Share2, Volume2, VolumeX, ChevronDown, ChevronUp, ArrowRight, ShieldCheck, Award, TrendingUp, Smartphone, Layers, Eye, Pause, Repeat, Flame } from 'lucide-react'
 import CmsPasscodeModal from '@/components/CmsPasscodeModal'
+import { FlagDE, FlagGB } from '@/components/FlagIcons'
 import { EcosystemHeaderBar } from '@/components/EcosystemHeaderBar'
 import { RoiCalculatorSection } from '@/components/RoiCalculatorSection'
 import { LiveDemoSandboxSection } from '@/components/LiveDemoSandboxSection'
@@ -335,23 +336,6 @@ function Hero3DSmartphone({ lang = 'de' }) {
 
           {/* Home Bar */}
           <div style={{ position: 'relative', zIndex: 10, width: 120, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.5)', alignSelf: 'center', marginTop: 10 }} />
-        </div>
-
-        {/* Live Badge Float Overlay */}
-        <div style={{ position: 'absolute', top: 30, left: -20, zIndex: 20, background: '#1B1C2E', border: '1px solid rgba(139,92,246,0.4)', borderRadius: 16, padding: '10px 16px', boxShadow: '0 10px 30px rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 10px #10B981' }} />
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 900, color: '#FFF' }}>Sequential Reel Stream</div>
-            <div style={{ fontSize: 9, color: '#10B981', fontWeight: 700 }}>● 100% Web-URL · Kein App-Download</div>
-          </div>
-        </div>
-
-        <div style={{ position: 'absolute', bottom: 50, right: -20, zIndex: 20, background: '#1B1C2E', border: '1px solid rgba(249,115,22,0.4)', borderRadius: 16, padding: '10px 16px', boxShadow: '0 10px 30px rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Flame size={18} color="#F97316" />
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 900, color: '#FFF' }}>3.4x Scan-to-Order CTR</div>
-            <div style={{ fontSize: 9, color: '#94A3B8' }}>Inkl. Countdown & Live Deals</div>
-          </div>
         </div>
       </div>
     </div>
@@ -1572,9 +1556,20 @@ export default function Landing({ onOpenAuthModal }){
         </div>
 
         {/* Desktop Navigation Right Actions */}
-        <div className="desktop-nav-right" style={{display:'flex',gap:8,alignItems:'center'}}>
-          <div style={{display:'flex',background:C.card,border:`1px solid ${C.border}`,borderRadius:8,padding:3}}>
-            {[['de','🇩🇪'],['en','🇬🇧']].map(([l,f])=><button key={l} onClick={()=>setLang(l)} style={{padding:'4px 8px',borderRadius:6,border:'none',cursor:'pointer',background:lang===l?C.purple:'transparent',fontSize:16,fontFamily:'inherit'}}>{f}</button>)}
+        <div className="desktop-nav-right" style={{display:'flex',gap:12,alignItems:'center'}}>
+          <div style={{display:'flex',background:'rgba(255,255,255,0.06)',border:`1px solid ${C.border}`,borderRadius:10,padding:3,gap:2}}>
+            <button 
+              onClick={()=>setLang('de')} 
+              style={{padding:'6px 12px',borderRadius:7,border:'none',cursor:'pointer',background:lang==='de'?C.purple:'transparent',color:'#FFF',fontSize:12,fontWeight:800,display:'flex',alignItems:'center',gap:7,fontFamily:'inherit',transition:'all 0.15s ease'}}
+            >
+              <FlagDE size={18} /> <span>DE</span>
+            </button>
+            <button 
+              onClick={()=>setLang('en')} 
+              style={{padding:'6px 12px',borderRadius:7,border:'none',cursor:'pointer',background:lang==='en'?C.purple:'transparent',color:'#FFF',fontSize:12,fontWeight:800,display:'flex',alignItems:'center',gap:7,fontFamily:'inherit',transition:'all 0.15s ease'}}
+            >
+              <FlagGB size={18} /> <span>EN</span>
+            </button>
           </div>
           {landingConfig.show_login_btn && (
             <Btn variant="ghost" onClick={handleOpenAuth} style={{fontSize:14,padding:'9px 16px'}}>{t.nav.login}</Btn>
@@ -1586,8 +1581,19 @@ export default function Landing({ onOpenAuthModal }){
 
         {/* Mobile Hamburger Button */}
         <div className="mobile-hamburger-btn" style={{display:'none',alignItems:'center',gap:10}}>
-          <div style={{display:'flex',background:C.card,border:`1px solid ${C.border}`,borderRadius:8,padding:2}}>
-            {[['de','🇩🇪'],['en','🇬🇧']].map(([l,f])=><button key={l} onClick={()=>setLang(l)} style={{padding:'3px 6px',borderRadius:5,border:'none',cursor:'pointer',background:lang===l?C.purple:'transparent',fontSize:14,fontFamily:'inherit'}}>{f}</button>)}
+          <div style={{display:'flex',background:'rgba(255,255,255,0.06)',border:`1px solid ${C.border}`,borderRadius:8,padding:2,gap:2}}>
+            <button 
+              onClick={()=>setLang('de')} 
+              style={{padding:'5px 9px',borderRadius:6,border:'none',cursor:'pointer',background:lang==='de'?C.purple:'transparent',color:'#FFF',fontSize:11,fontWeight:800,display:'flex',alignItems:'center',gap:5,fontFamily:'inherit'}}
+            >
+              <FlagDE size={16} /> <span>DE</span>
+            </button>
+            <button 
+              onClick={()=>setLang('en')} 
+              style={{padding:'5px 9px',borderRadius:6,border:'none',cursor:'pointer',background:lang==='en'?C.purple:'transparent',color:'#FFF',fontSize:11,fontWeight:800,display:'flex',alignItems:'center',gap:5,fontFamily:'inherit'}}
+            >
+              <FlagGB size={16} /> <span>EN</span>
+            </button>
           </div>
           <button onClick={()=>setMobileMenuOpen(!mobileMenuOpen)} style={{background:'none',border:'none',color:C.white,cursor:'pointer',padding:6,display:'flex',alignItems:'center',justifyContent:'center'}}>
             {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}

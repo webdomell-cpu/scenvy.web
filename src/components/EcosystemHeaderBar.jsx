@@ -6,13 +6,25 @@ import { Sparkles, ArrowRight } from 'lucide-react'
 import { db } from '@/lib/firebase'
 import { doc, getDoc, onSnapshot } from 'firebase/firestore'
 
-export function EcosystemHeaderBar({ announcementText, announcementLink, isAnnouncementEnabled }) {
+export function EcosystemHeaderBar({ announcementText, announcementLink, isAnnouncementEnabled, lang: propLang, setLang: propSetLang }) {
   const nav = useNavigate()
   const [globalConfig, setGlobalConfig] = useState({
     announcementText: announcementText || '✨ NEU: KI Reel-Generator 2.0 ist live',
     announcementLink: announcementLink || 'https://app.scenvy.de',
     isAnnouncementEnabled: isAnnouncementEnabled ?? true
   })
+  const [currentLang, setCurrentLang] = useState(() => propLang || localStorage.getItem('scenvy_lang') || 'de')
+
+  useEffect(() => {
+    if (propLang) setCurrentLang(propLang)
+  }, [propLang])
+
+  const handleToggleLang = (l) => {
+    setCurrentLang(l)
+    localStorage.setItem('scenvy_lang', l)
+    if (propSetLang) propSetLang(l)
+    window.dispatchEvent(new Event('storage'))
+  }
 
   useEffect(() => {
     // Realtime sync from Firestore global settings if available

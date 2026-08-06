@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { fetchMenuReel } from '@/lib/db'
 import { Phone, MessageCircle, MapPin, Instagram, Globe, Sparkles, ChevronUp, ArrowLeft, Edit3, Check, Plus, Trash2, Image, ShieldAlert, Download, QrCode, Share2, Copy } from 'lucide-react'
 import { copyToClipboard } from '@/storage'
+import { FlagDE, FlagGB } from '@/components/FlagIcons'
 import JSZip from 'jszip'
 
 export default function GuestMenuReel({ initialMenu, isPreview = false, onSaveMenu }) {
@@ -254,11 +255,11 @@ Data is embedded as window.MENU_DATA at the top of index.html for quick edits.`)
 
             {/* Language Switcher */}
             <div style={{ display: 'flex', background: 'rgba(255,255,255,0.08)', borderRadius: 20, padding: 3, border: '1px solid rgba(255,255,255,0.1)' }}>
-              <button onClick={() => setLang('de')} style={{ padding: '4px 10px', borderRadius: 16, border: 'none', background: lang === 'de' ? primaryColor : 'transparent', color: '#fff', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>
-                🇩🇪 DE
+              <button onClick={() => setLang('de')} style={{ padding: '4px 10px', borderRadius: 16, border: 'none', background: lang === 'de' ? primaryColor : 'transparent', color: '#fff', fontSize: 11, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5 }}>
+                <FlagDE size={15} /> <span>DE</span>
               </button>
-              <button onClick={() => setLang('en')} style={{ padding: '4px 10px', borderRadius: 16, border: 'none', background: lang === 'en' ? primaryColor : 'transparent', color: '#fff', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>
-                🇬🇧 EN
+              <button onClick={() => setLang('en')} style={{ padding: '4px 10px', borderRadius: 16, border: 'none', background: lang === 'en' ? primaryColor : 'transparent', color: '#fff', fontSize: 11, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 5 }}>
+                <FlagGB size={15} /> <span>EN</span>
               </button>
             </div>
           </div>

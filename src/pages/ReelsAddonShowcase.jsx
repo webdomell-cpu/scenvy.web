@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { C, grad } from '@/tokens'
 import { ScenvyLogoFull, ScenvyLogoIcon } from '@/components/ScenvyLogo'
 import { ScenvyAppIcon } from '@/components/ScenvyBrandShowcase'
+import { FlagDE, FlagGB } from '@/components/FlagIcons'
 import { 
   Video, Zap, Sparkles, QrCode, Check, ArrowRight, Play, 
   Smartphone, Globe, BarChart2, ShieldCheck, ChevronRight, 
@@ -101,12 +102,13 @@ export default function ReelsAddonShowcase() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ display: 'flex', background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: 3 }}>
-            {[['de', '🇩🇪'], ['en', '🇬🇧']].map(([l, f]) => (
-              <button key={l} onClick={() => setLang(l)} style={{ padding: '4px 8px', borderRadius: 6, border: 'none', cursor: 'pointer', background: lang === l ? C.purple : 'transparent', fontSize: 14 }}>
-                {f}
-              </button>
-            ))}
+          <div style={{ display: 'flex', background: 'rgba(255,255,255,0.06)', border: `1px solid ${C.border}`, borderRadius: 10, padding: 3, gap: 2 }}>
+            <button onClick={() => setLang('de')} style={{ padding: '6px 12px', borderRadius: 7, border: 'none', cursor: 'pointer', background: lang === 'de' ? C.purple : 'transparent', color: '#FFF', fontSize: 12, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 7 }}>
+              <FlagDE size={18} /> <span>DE</span>
+            </button>
+            <button onClick={() => setLang('en')} style={{ padding: '6px 12px', borderRadius: 7, border: 'none', cursor: 'pointer', background: lang === 'en' ? C.purple : 'transparent', color: '#FFF', fontSize: 12, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 7 }}>
+              <FlagGB size={18} /> <span>EN</span>
+            </button>
           </div>
 
           <button onClick={() => nav('/auth')} style={{ padding: '9px 18px', borderRadius: 10, border: 'none', background: grad(C.purple, C.pink), color: C.white, fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
