@@ -56,6 +56,22 @@ const INITIAL_TEMPLATES = [
         isHidden: false
       },
       {
+        id: 'b_reel_toggle',
+        type: 'pos_reel_toggle',
+        title: 'Der „Reel vs. Static“ Unterschied am POS',
+        subtitle: 'Interaktiver Schalter: Wechsle zwischen klassischem Plakat und dynamischem Video Reel.',
+        paddingY: 40,
+        isHidden: false
+      },
+      {
+        id: 'b_psychology',
+        type: 'pos_psychology',
+        title: 'Verkaufs-Psychologie & Impulse Engine am POS',
+        subtitle: 'Wie Bewegung, Farbkontraste und Timing die Kaufentscheidung am POS lenken.',
+        paddingY: 40,
+        isHidden: false
+      },
+      {
         id: 'b_roi',
         type: 'roi_calculator',
         title: 'Interaktiver ROI & Umsatz-Rechner',
@@ -421,10 +437,92 @@ export default function WebsiteStudio() {
   const [pages, setPages] = useState([])
   const [selectedPageId, setSelectedPageId] = useState(null)
   const [activeTab, setActiveTab] = useState('editor') // 'editor' | 'nav' | 'code' | 'global' | 'settings' | 'preview'
+  const [editorMode, setEditorMode] = useState('visual') // 'visual' (WYSIWYG) | 'form'
+  const [wysiwygLang, setWysiwygLang] = useState('de') // 'de' | 'en'
+  const [activeQuickEditBlockId, setActiveQuickEditBlockId] = useState(null)
   const [previewDevice, setPreviewDevice] = useState('desktop') // 'desktop' | 'mobile'
   const [isSaving, setIsSaving] = useState(false)
   const [notifyMsg, setNotifyMsg] = useState('')
   const [showNewPageModal, setShowNewPageModal] = useState(false)
+  const [showPreview, setShowPreview] = useState(false)
+  const [jumpToBlockId, setJumpToBlockId] = useState('')
+
+  // Comprehensive Auto-Translator from German to English
+  const translateTextDEtoEN = (txt) => {
+    if (!txt) return ''
+    const map = {
+      'Verwandle jeden Ort in ein scrollbares Erlebnis.': 'Transform every venue into a scrollable experience.',
+      'SCENVY verwandelt QR-Codes in TikTok-artige vertikale Reels. Echtzeit-Angebote & KI-Inhalte ohne App-Download.': 'SCENVY turns QR codes into TikTok-style vertical reels. Real-time deals & AI content without app downloads.',
+      'Jetzt Kostenlos Ausprobieren →': 'Try For Free Now →',
+      'Live Demo Ansehen': 'Watch Live Demo',
+      'Der „Reel vs. Static“ Unterschied am POS': 'The "Reel vs. Static" Difference at POS',
+      'Interaktiver Schalter: Wechsle zwischen klassischem Plakat und dynamischem Video Reel.': 'Interactive Switch: Toggle between classic posters and dynamic video reels.',
+      'Verkaufs-Psychologie & Impulse Engine am POS': 'Sales Psychology & Impulse Engine at POS',
+      'Wie Bewegung, Farbkontraste und Timing die Kaufentscheidung am POS lenken.': 'How motion, color contrast, and timing drive purchase decisions at POS.',
+      'Interaktiver ROI & Umsatz-Rechner': 'Interactive ROI & Revenue Calculator',
+      'Berechne deinen monatlichen Zusatzumsatz durch dynamisches Cross-Selling mit SCENVY.': 'Calculate your monthly extra revenue from dynamic cross-selling with SCENVY.',
+      'Interaktive Live-Demo & Smartphone QR Scanner': 'Interactive Live Demo & Smartphone QR Scanner',
+      'Testen Sie das SCENVY Gästeerlebnis direkt im Browser oder scannen Sie den QR-Code mit Ihrem Smartphone.': 'Test the SCENVY guest experience in your browser or scan the QR code with your smartphone.',
+      'KI-Workflow in 60 Sekunden': 'AI Workflow in 60 Seconds',
+      'Erstellen Sie automatisch fesselnde Marketing-Reels aus Text oder Fotos.': 'Automatically create captivating marketing reels from text or photos.',
+      'Maßgeschneiderte Lösungen für Ihr Team': 'Tailored Solutions for Your Team',
+      'Egal ob Betreiber, Marketing oder IT — SCENVY bietet den passenden Mehrwert.': 'Whether operator, marketing or IT — SCENVY provides tailored value.',
+      '100% Hardware-Unabhängigkeit & Vergleichstabelle': '100% Hardware Independence & Comparison Table',
+      'Erfahren Sie, warum SCENVY herkömmlichen Digital Signage Anbietern meilenweit voraus ist.': 'Learn why SCENVY is miles ahead of legacy digital signage providers.',
+      'Häufig gestellte Fragen (FAQ)': 'Frequently Asked Questions (FAQ)',
+      'Alles was Sie über SCENVY, Setup, Hardware und Verträge wissen müssen.': 'Everything you need to know about SCENVY, setup, hardware, and contracts.',
+      'Einfache, transparente Preise': 'Simple, Transparent Pricing',
+      'Keine Setup-Gebühren. Keine versteckten Kosten. Jederzeit kündbar.': 'No setup fees. No hidden costs. Cancel anytime.',
+      'Bereit deinen Umsatz zu steigern?': 'Ready to grow your revenue?',
+      'Über 2.000 Venues vertrauen bereits auf das SCENVY Ecosystem.': 'Over 2,000 venues already trust the SCENVY Ecosystem.',
+      'Jetzt Standort Registrieren →': 'Register Your Venue Now →',
+      'DIE ZUKUNFT DES VENUE-MARKETINGS': 'THE FUTURE OF VENUE MARKETING',
+      'WILLKOMMEN': 'WELCOME',
+      'NEUE SEKTION': 'NEW SECTION'
+    }
+    if (map[txt]) return map[txt]
+    return txt
+      .replace(/JETZT KOSTENLOS/gi, 'TRY FREE NOW')
+      .replace(/Jetzt Starten/gi, 'Get Started Now')
+      .replace(/Aktion Starten/gi, 'Start Action')
+      .replace(/Mehr Erfahren/gi, 'Learn More')
+      .replace(/Verwandle/g, 'Transform')
+      .replace(/Kostenlos/gi, 'Free')
+  }
+
+  const handleAutoTranslateBlock = (blockId) => {
+    updateCurrentPage(prev => ({
+      ...prev,
+      blocks: prev.blocks.map(b => {
+        if (b.id !== blockId) return b
+        return {
+          ...b,
+          title_en: b.title_en || translateTextDEtoEN(b.title),
+          subtitle_en: b.subtitle_en || translateTextDEtoEN(b.subtitle),
+          kicker_en: b.kicker_en || translateTextDEtoEN(b.kicker),
+          ctaText_en: b.ctaText_en || translateTextDEtoEN(b.ctaText),
+          content_en: b.content_en || translateTextDEtoEN(b.content)
+        }
+      })
+    }))
+    triggerNotify('✨ DE ➔ EN KI-Übersetzung erfolgreich angewendet!')
+  }
+
+  const handleAutoTranslateAll = () => {
+    if (!currentPage) return
+    updateCurrentPage(prev => ({
+      ...prev,
+      blocks: prev.blocks.map(b => ({
+        ...b,
+        title_en: b.title_en || translateTextDEtoEN(b.title),
+        subtitle_en: b.subtitle_en || translateTextDEtoEN(b.subtitle),
+        kicker_en: b.kicker_en || translateTextDEtoEN(b.kicker),
+        ctaText_en: b.ctaText_en || translateTextDEtoEN(b.ctaText),
+        content_en: b.content_en || translateTextDEtoEN(b.content)
+      }))
+    }))
+    triggerNotify('✨ Alle Sektionen & Texte wurden automatisch ins Englische übersetzt!')
+  }
   
   // Form for new page
   const [newPageTitle, setNewPageTitle] = useState('')
@@ -644,7 +742,19 @@ export default function WebsiteStudio() {
   const updateBlock = (blockId, field, value) => {
     updateCurrentPage(prev => ({
       ...prev,
-      blocks: prev.blocks.map(b => b.id === blockId ? { ...b, [field]: value } : b)
+      blocks: prev.blocks.map(b => {
+        if (b.id !== blockId) return b
+        const updated = { ...b, [field]: value }
+
+        // Live automatic translation if user is editing a German field and English field is empty/unset
+        if (['title', 'subtitle', 'kicker', 'ctaText', 'content'].includes(field)) {
+          const enField = `${field}_en`
+          if (!updated[enField] || updated[enField] === translateTextDEtoEN(b[field])) {
+            updated[enField] = translateTextDEtoEN(value)
+          }
+        }
+        return updated
+      })
     }))
   }
 
@@ -796,69 +906,153 @@ export default function WebsiteStudio() {
         </div>
       </header>
 
-      {/* Main Studio Workspace Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', minHeight: 'calc(100vh - 80px)' }}>
+      {/* Studio Compact Navigation & Control Toolbar */}
+      <div style={{ background: C.card, borderBottom: `1px solid ${C.border}`, padding: '12px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
         
-        {/* Left Sidebar: Page List & Selector */}
-        <aside style={{ background: C.card, borderRight: `1px solid ${C.border}`, padding: 20, display: 'flex', flexDirection: 'column', gap: 20, maxHeight: 'calc(100vh - 80px)', overflowY: 'auto' }}>
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 800, color: C.muted, letterSpacing: 1, marginBottom: 12 }}>
-              VERFÜGBARE LANDING-PAGES ({pages.length})
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {pages.map(p => {
-                const isSel = p.id === currentPage?.id
-                return (
-                  <div
-                    key={p.id}
-                    onClick={() => setSelectedPageId(p.id)}
-                    style={{
-                      padding: 12,
-                      borderRadius: 10,
-                      background: isSel ? `${C.purple}22` : C.bg,
-                      border: `1px solid ${isSel ? C.purple : C.border}`,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 4,
-                      position: 'relative'
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: 13, fontWeight: 800, color: isSel ? C.white : C.muted }}>
-                        {p.title}
-                      </span>
-                      <span style={{ fontSize: 10, fontWeight: 800, padding: '2px 6px', borderRadius: 6, background: p.isPublished ? `${C.green}22` : `${C.orange}22`, color: p.isPublished ? C.green : C.orange }}>
-                        {p.isPublished ? 'LIVE' : 'ENTWURF'}
-                      </span>
-                    </div>
-                    
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2 }}>
-                      <div style={{ fontSize: 11, color: C.dim, fontFamily: 'monospace' }}>
-                        /{p.slug === 'hauptseite' ? '' : p.slug}
-                      </div>
-
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleDuplicatePage(p.id)
-                        }}
-                        title="Seite kopieren / duplizieren"
-                        style={{ background: 'transparent', border: 'none', color: C.purple, cursor: 'pointer', padding: 2, display: 'flex', alignItems: 'center' }}
-                      >
-                        <Copy size={13} />
-                      </button>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
+        {/* Left Side: Dropdown Selectors */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          
+          {/* Page Dropdown Selector */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ fontSize: 11, fontWeight: 800, color: C.purple, letterSpacing: 1 }}>SEITE:</span>
+            <select
+              value={selectedPageId || ''}
+              onChange={(e) => setSelectedPageId(e.target.value)}
+              style={{
+                background: C.bg,
+                border: `1px solid ${C.purple}`,
+                color: C.white,
+                fontSize: 13,
+                fontWeight: 800,
+                padding: '8px 14px',
+                borderRadius: 10,
+                cursor: 'pointer',
+                outline: 'none',
+                boxShadow: '0 2px 10px rgba(124,58,237,0.2)'
+              }}
+            >
+              {pages.map(p => (
+                <option key={p.id} value={p.id}>
+                  📄 {p.title} ({p.isPublished ? 'LIVE' : 'ENTWURF'})
+                </option>
+              ))}
+            </select>
           </div>
-        </aside>
 
-        {/* Right Main Content Area */}
-        <main style={{ padding: 28, overflowY: 'auto' }}>
+          {/* Editor Area Dropdown Selector */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ fontSize: 11, fontWeight: 800, color: C.muted, letterSpacing: 1 }}>BEREICH:</span>
+            <select
+              value={activeTab}
+              onChange={(e) => setActiveTab(e.target.value)}
+              style={{
+                background: C.bg,
+                border: `1px solid ${C.border}`,
+                color: C.white,
+                fontSize: 13,
+                fontWeight: 700,
+                padding: '8px 14px',
+                borderRadius: 10,
+                cursor: 'pointer',
+                outline: 'none'
+              }}
+            >
+              <option value="editor">✏️ Inhalts-Blöcke & Sektionen</option>
+              <option value="global">🌐 Header & Live-Ticker Einstellungen</option>
+              <option value="nav">📌 Menü-Reihenfolge & Navigation</option>
+              <option value="code">💻 Custom CSS & Keyframes</option>
+              <option value="settings">⚙️ SEO & Seiteneinstellungen</option>
+              <option value="preview">👁️ Vollbild Live-Vorschau</option>
+            </select>
+          </div>
+
+          {/* Jump to Block Dropdown (When in Editor Tab) */}
+          {activeTab === 'editor' && currentPage?.blocks?.length > 0 && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: 11, fontWeight: 800, color: C.muted, letterSpacing: 1 }}>SPRINGEN:</span>
+              <select
+                value={jumpToBlockId}
+                onChange={(e) => {
+                  const val = e.target.value
+                  setJumpToBlockId(val)
+                  if (val) {
+                    const el = document.getElementById('block_card_' + val)
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                  }
+                }}
+                style={{
+                  background: C.bg,
+                  border: `1px solid ${C.border}`,
+                  color: C.purple,
+                  fontSize: 12,
+                  fontWeight: 800,
+                  padding: '8px 12px',
+                  borderRadius: 10,
+                  cursor: 'pointer',
+                  outline: 'none'
+                }}
+              >
+                <option value="">📍 Zu Sektion springen...</option>
+                {currentPage.blocks.map((b, i) => (
+                  <option key={b.id} value={b.id}>
+                    #{i + 1} {b.type.toUpperCase()} ({b.title || 'Kein Titel'})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+
+        {/* Right Side: Toggle Preview & Action Controls */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          {activeTab === 'editor' && (
+            <button
+              onClick={() => setShowPreview(!showPreview)}
+              style={{
+                padding: '8px 16px',
+                borderRadius: 10,
+                background: showPreview ? C.purple : C.bg,
+                border: `1px solid ${showPreview ? C.purple : C.border}`,
+                color: C.white,
+                fontSize: 12,
+                fontWeight: 800,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                boxShadow: showPreview ? '0 4px 14px rgba(124,58,237,0.3)' : 'none',
+                transition: 'all 0.2s'
+              }}
+            >
+              <Eye size={15} />
+              <span>{showPreview ? 'Vorschau Ausblenden' : 'Vorschau Einblenden'}</span>
+            </button>
+          )}
+
+          <button
+            onClick={() => handleDuplicatePage(currentPage.id)}
+            style={{
+              padding: '8px 14px',
+              borderRadius: 10,
+              background: `${C.purple}22`,
+              border: `1px solid ${C.purple}66`,
+              color: C.purple,
+              fontSize: 12,
+              fontWeight: 800,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6
+            }}
+          >
+            <Copy size={13} /> Seite Duplizieren
+          </button>
+        </div>
+
+      </div>
+
+      {/* Main Studio Content Area */}
+      <main style={{ padding: 28, overflowY: 'auto', minHeight: 'calc(100vh - 140px)' }}>
           
           {currentPage && (
             <>
@@ -913,250 +1107,435 @@ export default function WebsiteStudio() {
                 </div>
               </div>
 
-              {/* TAB 1: VISUAL BLOCK EDITOR */}
+              {/* TAB 1: VISUAL BLOCK EDITOR (WYSIWYG OR FORM) */}
               {activeTab === 'editor' && (
-                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 24 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                   
-                  {/* Left Column: Form Controls for Blocks */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <div style={{ fontSize: 14, fontWeight: 800, color: C.white, display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <Layers size={16} color={C.purple} /> Sektionen & Inhalt Blöcke ({currentPage.blocks.length})
-                      </div>
+                  {/* Sub-Header: Mode Switch & Translation Tools */}
+                  <div style={{ background: C.card, padding: 14, borderRadius: 14, border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+                    
+                    {/* Visual vs Form Mode Switch */}
+                    <div style={{ display: 'flex', background: C.bg, padding: 3, borderRadius: 10, border: `1px solid ${C.border}` }}>
+                      <button
+                        onClick={() => setEditorMode('visual')}
+                        style={{
+                          padding: '8px 16px',
+                          borderRadius: 8,
+                          border: 'none',
+                          background: editorMode === 'visual' ? C.purple : 'transparent',
+                          color: C.white,
+                          fontSize: 12,
+                          fontWeight: 800,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 6
+                        }}
+                      >
+                        <Layout size={14} /> 🎨 Visueller Live-Editor (WYSIWYG)
+                      </button>
 
-                      {/* Add Block Selector */}
-                      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
-                        {copiedBlock && (
-                          <button
-                            onClick={handlePasteBlockFromClipboard}
-                            style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(16,185,129,0.2)', border: '1px solid #10B981', color: '#10B981', fontSize: 11, fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
-                          >
-                            <Copy size={12} /> Block Einfügen
-                          </button>
-                        )}
-                        <button onClick={() => addBlockToPage('hero')} style={{ padding: '5px 9px', borderRadius: 6, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Hero</button>
-                        <button onClick={() => addBlockToPage('roi_calculator')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ ROI Rechner</button>
-                        <button onClick={() => addBlockToPage('live_demo_sandbox')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Live Demo</button>
-                        <button onClick={() => addBlockToPage('ai_workflow')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ KI Workflow</button>
-                        <button onClick={() => addBlockToPage('buyer_personas')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Personas</button>
-                        <button onClick={() => addBlockToPage('social_proof_hardware')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Hardware</button>
-                        <button onClick={() => addBlockToPage('faq_accordion')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ FAQ</button>
-                        <button onClick={() => addBlockToPage('pricing')} style={{ padding: '5px 9px', borderRadius: 6, background: `${C.purple}22`, border: `1px solid ${C.purple}66`, color: C.purple, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Pricing</button>
-                        <button onClick={() => addBlockToPage('cta')} style={{ padding: '5px 9px', borderRadius: 6, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ CTA</button>
-                        <button onClick={() => addBlockToPage('text_block')} style={{ padding: '5px 9px', borderRadius: 6, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Text</button>
-                        <button onClick={() => addBlockToPage('image_banner')} style={{ padding: '5px 9px', borderRadius: 6, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ Bild</button>
-                        <button onClick={() => addBlockToPage('code_embed')} style={{ padding: '5px 9px', borderRadius: 6, background: C.card, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>+ HTML</button>
-                      </div>
+                      <button
+                        onClick={() => setEditorMode('form')}
+                        style={{
+                          padding: '8px 16px',
+                          borderRadius: 8,
+                          border: 'none',
+                          background: editorMode === 'form' ? C.purple : 'transparent',
+                          color: editorMode === 'form' ? C.white : C.muted,
+                          fontSize: 12,
+                          fontWeight: 800,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 6
+                        }}
+                      >
+                        <List size={14} /> 📋 Formular-Inspektor
+                      </button>
                     </div>
 
-                    {/* Render Block List */}
-                    {currentPage.blocks.map((block, idx) => (
-                      <div key={block.id} style={{ background: C.card, borderRadius: 14, border: `1px solid ${block.isHidden ? 'rgba(239,68,68,0.3)' : C.border}`, padding: 18, display: 'grid', gap: 14, opacity: block.isHidden ? 0.6 : 1 }}>
-                        {/* Block Header Toolbar */}
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${C.border}`, paddingBottom: 10, flexWrap: 'wrap', gap: 8 }}>
-                          <span style={{ fontSize: 12, fontWeight: 900, color: block.isHidden ? C.muted : C.purple, textTransform: 'uppercase', letterSpacing: 1, display: 'flex', alignItems: 'center', gap: 6 }}>
-                            #{idx + 1} {block.type} BLOCK {block.isHidden && <span style={{ color: '#EF4444', fontSize: 10, fontWeight: 800, background: 'rgba(239,68,68,0.15)', padding: '2px 6px', borderRadius: 4 }}>(AUSGEBLENDET)</span>}
-                          </span>
-
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-                            {/* Toggle Block Visibility */}
-                            <button
-                              onClick={() => updateBlock(block.id, 'isHidden', !block.isHidden)}
-                              title={block.isHidden ? "Block einblenden" : "Block ausblenden"}
-                              style={{ padding: '4px 8px', borderRadius: 6, background: block.isHidden ? 'rgba(239,68,68,0.2)' : 'rgba(16,185,129,0.15)', border: `1px solid ${block.isHidden ? '#EF4444' : '#10B981'}`, color: block.isHidden ? '#EF4444' : '#10B981', fontSize: 11, fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
-                            >
-                              {block.isHidden ? <EyeOff size={11} /> : <Eye size={11} />}
-                              {block.isHidden ? 'Versteckt' : 'Sichtbar'}
-                            </button>
-
-                            {/* Copy to Clipboard */}
-                            <button
-                              onClick={() => handleCopyBlockToClipboard(block)}
-                              title="Block kopieren (Zwischenablage)"
-                              style={{ padding: '4px 8px', borderRadius: 6, background: C.bg, border: `1px solid ${C.border}`, color: C.white, fontSize: 11, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}
-                            >
-                              <Copy size={11} /> Kopieren
-                            </button>
-
-                            {/* Copy to specific target page selector */}
-                            <select
-                              defaultValue=""
-                              onChange={(e) => {
-                                if (e.target.value) {
-                                  handleCopyBlockToPage(block, e.target.value)
-                                  e.target.value = ""
-                                }
-                              }}
-                              style={{ background: C.bg, border: `1px solid ${C.purple}88`, color: C.purple, fontSize: 11, fontWeight: 700, padding: '4px 6px', borderRadius: 6, cursor: 'pointer' }}
-                            >
-                              <option value="" disabled>📋 Kopieren in Seite...</option>
-                              {pages.map(p => (
-                                <option key={p.id} value={p.id} disabled={p.id === currentPage.id}>
-                                  {p.title} {p.id === currentPage.id ? '(Aktuell)' : ''}
-                                </option>
-                              ))}
-                            </select>
-
-                            <button onClick={() => moveBlock(idx, -1)} disabled={idx === 0} style={{ padding: '4px 8px', borderRadius: 6, background: C.bg, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer', opacity: idx === 0 ? 0.3 : 1 }}><MoveUp size={12} /></button>
-                            <button onClick={() => moveBlock(idx, 1)} disabled={idx === currentPage.blocks.length - 1} style={{ padding: '4px 8px', borderRadius: 6, background: C.bg, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer', opacity: idx === currentPage.blocks.length - 1 ? 0.3 : 1 }}><MoveDown size={12} /></button>
-                            <button onClick={() => removeBlock(block.id)} style={{ padding: '4px 8px', borderRadius: 6, background: `${C.pink}22`, border: `1px solid ${C.pink}`, color: C.pink, cursor: 'pointer' }}><Trash2 size={12} /></button>
-                          </div>
-                        </div>
-
-                        {/* Generic Title & Subtitle for all block types */}
-                        <div>
-                          <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>TITEL DER SEKTION</label>
-                          <input type="text" value={block.title || ''} onChange={e => updateBlock(block.id, 'title', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 14, fontWeight: 800 }} />
-                        </div>
-
-                        <div>
-                          <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>UNTERTITEL / BESCHREIBUNG</label>
-                          <input type="text" value={block.subtitle || ''} onChange={e => updateBlock(block.id, 'subtitle', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 13 }} />
-                        </div>
-
-                        {/* Block Form Specific Inputs */}
-                        {block.type === 'hero' && (
-                          <div style={{ display: 'grid', gap: 12 }}>
-                            <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>KICKER / OBERTITEL</label>
-                              <input type="text" value={block.kicker || ''} onChange={e => updateBlock(block.id, 'kicker', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 13 }} />
-                            </div>
-                            <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BILD URL ODER FILE UPLOAD</label>
-                              <div style={{ display: 'flex', gap: 8 }}>
-                                <input type="text" placeholder="https://..." value={block.imageUrl || ''} onChange={e => updateBlock(block.id, 'imageUrl', e.target.value)} style={{ flex: 1, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
-                                <label style={{ padding: '8px 12px', background: `${C.purple}22`, border: `1px solid ${C.purple}`, borderRadius: 8, color: C.purple, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
-                                  <Upload size={13} /> Upload
-                                  <input type="file" accept="image/*" onChange={e => handleFileUploadForBlock(block.id, 'imageUrl', e)} style={{ display: 'none' }} />
-                                </label>
-                              </div>
-                            </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                              <div>
-                                <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>CTA BUTTON TEXT</label>
-                                <input type="text" value={block.ctaText || ''} onChange={e => updateBlock(block.id, 'ctaText', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
-                              </div>
-                              <div>
-                                <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>CTA LINK (URL)</label>
-                                <input type="text" value={block.ctaLink || ''} onChange={e => updateBlock(block.id, 'ctaLink', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-                        {block.type === 'text_block' && (
-                          <div>
-                            <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>FLIESSTEXT / ARTIKEL INHALT</label>
-                            <textarea rows={5} value={block.content || ''} onChange={e => updateBlock(block.id, 'content', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 12px', color: C.white, fontSize: 13, resize: 'vertical', lineHeight: 1.6 }} />
-                          </div>
-                        )}
-
-                        {block.type === 'cta' && (
-                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                            <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BUTTON TEXT</label>
-                              <input type="text" value={block.ctaText || ''} onChange={e => updateBlock(block.id, 'ctaText', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
-                            </div>
-                            <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BUTTON LINK</label>
-                              <input type="text" value={block.ctaLink || ''} onChange={e => updateBlock(block.id, 'ctaLink', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
-                            </div>
-                          </div>
-                        )}
-
-                        {block.type === 'image_banner' && (
-                          <div style={{ display: 'grid', gap: 12 }}>
-                            <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BILD URL ODER FILE UPLOAD</label>
-                              <div style={{ display: 'flex', gap: 8 }}>
-                                <input type="text" placeholder="https://..." value={block.imageUrl || ''} onChange={e => updateBlock(block.id, 'imageUrl', e.target.value)} style={{ flex: 1, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
-                                <label style={{ padding: '8px 12px', background: `${C.purple}22`, border: `1px solid ${C.purple}`, borderRadius: 8, color: C.purple, fontSize: 12, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
-                                  <Upload size={13} /> Upload
-                                  <input type="file" accept="image/*" onChange={e => handleFileUploadForBlock(block.id, 'imageUrl', e)} style={{ display: 'none' }} />
-                                </label>
-                              </div>
-                            </div>
-                            <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BILD-UNTERSCHRIFT (CAPTION)</label>
-                              <input type="text" value={block.caption || ''} onChange={e => updateBlock(block.id, 'caption', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 13 }} />
-                            </div>
-                          </div>
-                        )}
-
-                        {block.type === 'features' && (
-                          <div style={{ display: 'grid', gap: 12 }}>
-                            <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>SEKTIONS-TITEL</label>
-                              <input type="text" value={block.title || ''} onChange={e => updateBlock(block.id, 'title', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 14, fontWeight: 800 }} />
-                            </div>
-                          </div>
-                        )}
-
-                        {block.type === 'cta' && (
-                          <div style={{ display: 'grid', gap: 12 }}>
-                            <div>
-                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>TITEL</label>
-                              <input type="text" value={block.title || ''} onChange={e => updateBlock(block.id, 'title', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 14, fontWeight: 800 }} />
-                            </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                              <div>
-                                <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BUTTON TEXT</label>
-                                <input type="text" value={block.ctaText || ''} onChange={e => updateBlock(block.id, 'ctaText', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
-                              </div>
-                              <div>
-                                <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>BUTTON LINK</label>
-                                <input type="text" value={block.ctaLink || ''} onChange={e => updateBlock(block.id, 'ctaLink', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-                        {block.type === 'code_embed' && (
-                          <div style={{ display: 'grid', gap: 12 }}>
-                            <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block' }}>CUSTOM HTML / CODE CONTENT</label>
-                            <textarea rows={4} value={block.htmlContent || ''} onChange={e => updateBlock(block.id, 'htmlContent', e.target.value)} style={{ width: '100%', background: '#05070B', border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px', color: C.green, fontSize: 12, fontFamily: 'monospace' }} />
-                          </div>
-                        )}
+                    {/* Language Preview Switch & Auto Translate All */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', background: C.bg, padding: 3, borderRadius: 8, border: `1px solid ${C.border}` }}>
+                        <button
+                          onClick={() => setWysiwygLang('de')}
+                          style={{
+                            padding: '4px 10px',
+                            borderRadius: 6,
+                            border: 'none',
+                            background: wysiwygLang === 'de' ? C.purple : 'transparent',
+                            color: C.white,
+                            fontSize: 11,
+                            fontWeight: 800,
+                            cursor: 'pointer'
+                          }}
+                        >
+                          🇩🇪 Deutsch
+                        </button>
+                        <button
+                          onClick={() => setWysiwygLang('en')}
+                          style={{
+                            padding: '4px 10px',
+                            borderRadius: 6,
+                            border: 'none',
+                            background: wysiwygLang === 'en' ? C.purple : 'transparent',
+                            color: C.white,
+                            fontSize: 11,
+                            fontWeight: 800,
+                            cursor: 'pointer'
+                          }}
+                        >
+                          🇬🇧 English
+                        </button>
                       </div>
-                    ))}
+
+                      <button
+                        onClick={handleAutoTranslateAll}
+                        style={{
+                          padding: '7px 14px',
+                          borderRadius: 8,
+                          background: 'linear-gradient(135deg, rgba(124,58,237,0.3) 0%, rgba(236,72,153,0.3) 100%)',
+                          border: '1px solid rgba(168,85,247,0.7)',
+                          color: '#E9D5FF',
+                          fontSize: 12,
+                          fontWeight: 800,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 6
+                        }}
+                      >
+                        <Sparkles size={14} color="#A855F7" /> ✨ Alle DE ➔ EN KI-Übersetzen
+                      </button>
+
+                      {/* Add Block Dropdown */}
+                      <select
+                        onChange={(e) => {
+                          if (e.target.value) {
+                            addBlockToPage(e.target.value)
+                            e.target.value = ""
+                          }
+                        }}
+                        style={{
+                          background: C.purple,
+                          border: 'none',
+                          color: C.white,
+                          fontSize: 12,
+                          fontWeight: 800,
+                          padding: '8px 12px',
+                          borderRadius: 8,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <option value="">+ Neue Sektion Hinzufügen...</option>
+                        <option value="hero">Hero Block</option>
+                        <option value="pos_reel_toggle">POS Reel vs Static Switch</option>
+                        <option value="pos_psychology">Verkaufs-Psychologie Cards</option>
+                        <option value="roi_calculator">ROI & Umsatz-Rechner</option>
+                        <option value="live_demo_sandbox">Interactive Sandbox</option>
+                        <option value="ai_workflow">KI Workflow (60 Sek)</option>
+                        <option value="buyer_personas">Buyer Personas</option>
+                        <option value="social_proof_hardware">Hardware Vergleich</option>
+                        <option value="faq_accordion">FAQ Accordion</option>
+                        <option value="pricing">Pricing Plans</option>
+                        <option value="cta">Call to Action (CTA)</option>
+                        <option value="text_block">Fließtext Artikel</option>
+                        <option value="image_banner">Bild Banner</option>
+                        <option value="code_embed">HTML / Embed Code</option>
+                      </select>
+                    </div>
+
                   </div>
 
-                  {/* Right Column: Live Side Preview */}
-                  <div style={{ background: C.card, borderRadius: 16, border: `1px solid ${C.border}`, padding: 20, position: 'sticky', top: 20, alignSelf: 'start' }}>
-                    <div style={{ fontSize: 13, fontWeight: 800, color: C.white, marginBottom: 14, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}><Eye size={15} color={C.purple} /> Echtzeit-Vorschau</span>
-                      <span style={{ fontSize: 10, color: C.green, background: `${C.green}22`, padding: '2px 8px', borderRadius: 10, fontWeight: 800 }}>LIVE SYNC</span>
-                    </div>
-
+                  {/* VISUAL WYSIWYG CANVAS */}
+                  {editorMode === 'visual' ? (
                     <div style={{
-                      background: currentPage.theme?.bg || '#0A0A10',
-                      color: currentPage.theme?.text || '#F3F4F6',
-                      borderRadius: 12,
-                      border: `1px solid ${C.border}`,
-                      padding: 20,
-                      maxHeight: '70vh',
-                      overflowY: 'auto'
+                      background: currentPage.theme?.bg || '#070B14',
+                      color: currentPage.theme?.text || '#F8FAFC',
+                      borderRadius: 18,
+                      border: `2px dashed ${C.purple}66`,
+                      padding: '32px 24px',
+                      boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 40,
+                      position: 'relative'
                     }}>
-                      <style>{currentPage.theme?.customCss || ''}</style>
-                      {currentPage.blocks.map(b => (
-                        <div key={b.id} style={{ padding: `${b.paddingY || 24}px 0`, borderBottom: `1px solid rgba(255,255,255,0.05)` }}>
-                          {b.kicker && <div style={{ fontSize: 11, color: currentPage.theme?.accent || C.purple, fontWeight: 800, letterSpacing: 1.5, marginBottom: 6 }}>{b.kicker}</div>}
-                          {b.title && <div style={{ fontSize: b.fontSize || 24, fontWeight: 900, marginBottom: 8 }}>{b.title}</div>}
-                          {b.subtitle && <div style={{ fontSize: 13, opacity: 0.8, marginBottom: 14, lineHeight: 1.5 }}>{b.subtitle}</div>}
-                          {b.content && <div style={{ fontSize: 13, opacity: 0.9, lineHeight: 1.6, marginBottom: 14, whitespace: 'pre-line' }}>{b.content}</div>}
-                          {b.imageUrl && (
-                            <img src={b.imageUrl} alt="Uploaded preview" style={{ width: '100%', maxHeight: 220, objectFit: 'cover', borderRadius: 10, marginBottom: 14 }} />
-                          )}
-                          {b.ctaText && (
-                            <a href={b.ctaLink || '#'} style={{ display: 'inline-block', padding: '8px 20px', borderRadius: 8, background: currentPage.theme?.accent || C.purple, color: '#FFF', fontWeight: 800, fontSize: 12, textDecoration: 'none' }}>
-                              {b.ctaText}
-                            </a>
-                          )}
-                          {b.htmlContent && <div dangerouslySetInnerHTML={{ __html: b.htmlContent }} />}
+                      <div style={{ position: 'absolute', top: 12, right: 16, fontSize: 11, fontWeight: 800, color: C.purple, background: `${C.purple}22`, padding: '4px 10px', borderRadius: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <Edit3 size={12} /> WYSIWYG LIVE CANVAS — Klicke auf ein beliebiges Element zum Bearbeiten
+                      </div>
+
+                      {currentPage.blocks.map((b, idx) => {
+                        const title = wysiwygLang === 'en' && b.title_en ? b.title_en : b.title
+                        const subtitle = wysiwygLang === 'en' && b.subtitle_en ? b.subtitle_en : b.subtitle
+                        const kicker = wysiwygLang === 'en' && b.kicker_en ? b.kicker_en : b.kicker
+                        const ctaText = wysiwygLang === 'en' && b.ctaText_en ? b.ctaText_en : b.ctaText
+                        const content = wysiwygLang === 'en' && b.content_en ? b.content_en : b.content
+
+                        return (
+                          <div
+                            key={b.id}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setActiveQuickEditBlockId(b.id)
+                            }}
+                            className="group"
+                            style={{
+                              position: 'relative',
+                              padding: '24px 20px',
+                              borderRadius: 14,
+                              border: `2px dashed transparent`,
+                              transition: 'all 0.2s ease',
+                              cursor: 'pointer',
+                              opacity: b.isHidden ? 0.4 : 1
+                            }}
+                            onMouseEnter={e => {
+                              e.currentTarget.style.border = `2px dashed ${C.purple}`
+                              e.currentTarget.style.background = 'rgba(168,85,247,0.04)'
+                            }}
+                            onMouseLeave={e => {
+                              e.currentTarget.style.border = '2px dashed transparent'
+                              e.currentTarget.style.background = 'transparent'
+                            }}
+                          >
+                            {/* Floating Hover Badge Toolbar */}
+                            <div
+                              style={{
+                                position: 'absolute',
+                                top: -14,
+                                left: 20,
+                                background: C.purple,
+                                color: C.white,
+                                fontSize: 11,
+                                fontWeight: 800,
+                                padding: '3px 10px',
+                                borderRadius: 6,
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 8,
+                                zIndex: 10,
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.4)'
+                              }}
+                            >
+                              <span>#{idx + 1} {b.type.toUpperCase()}</span>
+                              <span style={{ opacity: 0.8 }}>| ✏️ Klick zum Bearbeiten</span>
+                              {b.imageUrl && <span>| 📷 Bild ändern</span>}
+                            </div>
+
+                            {/* Section Content Visual Rendering */}
+                            <div style={{ paddingTop: 10 }}>
+                              {kicker && (
+                                <div style={{ fontSize: 12, fontWeight: 900, color: C.purple, letterSpacing: 2, marginBottom: 8, textTransform: 'uppercase' }}>
+                                  {kicker}
+                                </div>
+                              )}
+
+                              {title && (
+                                <h2 style={{ fontSize: b.fontSize || 32, fontWeight: 900, marginBottom: 12, color: C.white }}>
+                                  {title}
+                                </h2>
+                              )}
+
+                              {subtitle && (
+                                <p style={{ fontSize: 16, color: '#94A3B8', maxWidth: 720, lineHeight: 1.6, marginBottom: 20 }}>
+                                  {subtitle}
+                                </p>
+                              )}
+
+                              {b.imageUrl && (
+                                <div style={{ position: 'relative', borderRadius: 12, overflow: 'hidden', marginBottom: 20, maxWidth: 800 }}>
+                                  <img src={b.imageUrl} alt="Banner" style={{ width: '100%', maxHeight: 400, objectFit: 'cover', borderRadius: 12 }} />
+                                  <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0, transition: 'opacity 0.2s' }} onMouseEnter={e => e.currentTarget.style.opacity = 1} onMouseLeave={e => e.currentTarget.style.opacity = 0}>
+                                    <span style={{ background: '#000', color: '#FFF', padding: '8px 16px', borderRadius: 8, fontWeight: 800, fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
+                                      <Upload size={14} /> Bild ersetzen / hochladen
+                                    </span>
+                                  </div>
+                                </div>
+                              )}
+
+                              {content && (
+                                <div style={{ fontSize: 15, color: '#CBD5E1', lineHeight: 1.7, marginBottom: 20 }}>
+                                  {content}
+                                </div>
+                              )}
+
+                              {ctaText && (
+                                <button style={{ padding: '12px 28px', borderRadius: 12, background: C.purple, color: C.white, border: 'none', fontWeight: 800, fontSize: 14, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                                  {ctaText}
+                                </button>
+                              )}
+
+                              {/* Specialized Section Placeholders */}
+                              {b.type === 'pos_reel_toggle' && (
+                                <div style={{ padding: 20, background: 'rgba(255,255,255,0.03)', borderRadius: 12, border: `1px solid ${C.border}`, fontSize: 13, color: C.muted, display: 'flex', alignItems: 'center', gap: 10 }}>
+                                  <Tv size={18} color={C.purple} /> Interactive POS Reel vs Static Interactive Switch Module
+                                </div>
+                              )}
+
+                              {b.type === 'pos_psychology' && (
+                                <div style={{ padding: 20, background: 'rgba(255,255,255,0.03)', borderRadius: 12, border: `1px solid ${C.border}`, fontSize: 13, color: C.muted, display: 'flex', alignItems: 'center', gap: 10 }}>
+                                  <Sparkles size={18} color={C.pink} /> Kaufimpuls Psychologie 4-Card Module
+                                </div>
+                              )}
+
+                              {b.type === 'roi_calculator' && (
+                                <div style={{ padding: 20, background: 'rgba(255,255,255,0.03)', borderRadius: 12, border: `1px solid ${C.border}`, fontSize: 13, color: C.muted, display: 'flex', alignItems: 'center', gap: 10 }}>
+                                  <Sliders size={18} color={C.green} /> Interactive ROI Revenue Calculator Module
+                                </div>
+                              )}
+
+                              {b.type === 'faq_accordion' && (
+                                <div style={{ padding: 20, background: 'rgba(255,255,255,0.03)', borderRadius: 12, border: `1px solid ${C.border}`, fontSize: 13, color: C.muted, display: 'flex', alignItems: 'center', gap: 10 }}>
+                                  <MessageSquare size={18} color={C.purple} /> FAQ Accordion Interactive Module
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  ) : (
+                    /* FORM INSPECTOR MODE */
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                      {currentPage.blocks.map((block, idx) => (
+                        <div key={block.id} style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, padding: 20, display: 'grid', gap: 14 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${C.border}`, paddingBottom: 10 }}>
+                            <span style={{ fontSize: 12, fontWeight: 900, color: C.purple, textTransform: 'uppercase' }}>#{idx + 1} {block.type} BLOCK</span>
+                            <div style={{ display: 'flex', gap: 6 }}>
+                              <button onClick={() => moveBlock(idx, -1)} disabled={idx === 0} style={{ padding: '4px 8px', borderRadius: 6, background: C.bg, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer', opacity: idx === 0 ? 0.3 : 1 }}><MoveUp size={12} /></button>
+                              <button onClick={() => moveBlock(idx, 1)} disabled={idx === currentPage.blocks.length - 1} style={{ padding: '4px 8px', borderRadius: 6, background: C.bg, border: `1px solid ${C.border}`, color: C.white, cursor: 'pointer', opacity: idx === currentPage.blocks.length - 1 ? 0.3 : 1 }}><MoveDown size={12} /></button>
+                              <button onClick={() => removeBlock(block.id)} style={{ padding: '4px 8px', borderRadius: 6, background: `${C.pink}22`, border: `1px solid ${C.pink}`, color: C.pink, cursor: 'pointer' }}><Trash2 size={12} /></button>
+                            </div>
+                          </div>
+
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                            <div>
+                              <label style={{ fontSize: 11, fontWeight: 700, color: C.muted, display: 'block', marginBottom: 4 }}>TITEL (DE)</label>
+                              <input type="text" value={block.title || ''} onChange={e => updateBlock(block.id, 'title', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 13 }} />
+                            </div>
+                            <div>
+                              <label style={{ fontSize: 11, fontWeight: 700, color: '#A855F7', display: 'block', marginBottom: 4 }}>TITLE (EN)</label>
+                              <input type="text" value={block.title_en || ''} onChange={e => updateBlock(block.id, 'title_en', e.target.value)} placeholder="English title..." style={{ width: '100%', background: C.bg, border: '1px solid rgba(168,85,247,0.4)', borderRadius: 8, padding: '8px 12px', color: '#E9D5FF', fontSize: 13 }} />
+                            </div>
+                          </div>
                         </div>
                       ))}
                     </div>
-                  </div>
+                  )}
+
+                  {/* VISUAL QUICK-EDIT POPOVER MODAL */}
+                  {activeQuickEditBlockId && (() => {
+                    const block = currentPage?.blocks.find(b => b.id === activeQuickEditBlockId)
+                    if (!block) return null
+
+                    return (
+                      <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+                        <div style={{ background: C.card, border: `2px solid ${C.purple}`, borderRadius: 20, padding: 28, width: '100%', maxWidth: 640, boxShadow: '0 25px 60px rgba(0,0,0,0.8)', display: 'flex', flexDirection: 'column', gap: 18 }}>
+                          
+                          {/* Modal Header */}
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${C.border}`, paddingBottom: 14 }}>
+                            <div>
+                              <div style={{ fontSize: 18, fontWeight: 900, color: C.white, display: 'flex', alignItems: 'center', gap: 8 }}>
+                                <Edit3 size={18} color={C.purple} /> Sektion Visuell Bearbeiten
+                              </div>
+                              <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>
+                                Änderungen werden sofort in Echtzeit auf der Seite sichtbar.
+                              </div>
+                            </div>
+                            <button onClick={() => setActiveQuickEditBlockId(null)} style={{ background: C.bg, border: `1px solid ${C.border}`, color: C.muted, borderRadius: 8, padding: '6px 10px', cursor: 'pointer', fontSize: 12, fontWeight: 700 }}>✕ Schließen</button>
+                          </div>
+
+                          {/* Dual Language Inputs */}
+                          <div style={{ display: 'grid', gap: 14 }}>
+                            
+                            {/* Kicker */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                              <div>
+                                <label style={{ fontSize: 11, fontWeight: 800, color: C.muted, display: 'block', marginBottom: 4 }}>KICKER / BADGE (DEUTSCH)</label>
+                                <input type="text" value={block.kicker || ''} onChange={e => updateBlock(block.id, 'kicker', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 12px', color: C.white, fontSize: 13 }} />
+                              </div>
+                              <div>
+                                <label style={{ fontSize: 11, fontWeight: 800, color: C.purple, display: 'block', marginBottom: 4 }}>KICKER / BADGE (ENGLISH)</label>
+                                <input type="text" value={block.kicker_en || ''} onChange={e => updateBlock(block.id, 'kicker_en', e.target.value)} placeholder="Auto-translated..." style={{ width: '100%', background: C.bg, border: '1px solid rgba(168,85,247,0.4)', borderRadius: 8, padding: '10px 12px', color: '#E9D5FF', fontSize: 13 }} />
+                              </div>
+                            </div>
+
+                            {/* Title */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                              <div>
+                                <label style={{ fontSize: 11, fontWeight: 800, color: C.muted, display: 'block', marginBottom: 4 }}>HAUPTÜBERSCHRIFT (DEUTSCH)</label>
+                                <input type="text" value={block.title || ''} onChange={e => updateBlock(block.id, 'title', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 12px', color: C.white, fontSize: 14, fontWeight: 800 }} />
+                              </div>
+                              <div>
+                                <label style={{ fontSize: 11, fontWeight: 800, color: C.purple, display: 'block', marginBottom: 4 }}>MAIN HEADING (ENGLISH)</label>
+                                <input type="text" value={block.title_en || ''} onChange={e => updateBlock(block.id, 'title_en', e.target.value)} placeholder="Auto-translated..." style={{ width: '100%', background: C.bg, border: '1px solid rgba(168,85,247,0.4)', borderRadius: 8, padding: '10px 12px', color: '#E9D5FF', fontSize: 14, fontWeight: 800 }} />
+                              </div>
+                            </div>
+
+                            {/* Subtitle */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                              <div>
+                                <label style={{ fontSize: 11, fontWeight: 800, color: C.muted, display: 'block', marginBottom: 4 }}>UNTERTITEL (DEUTSCH)</label>
+                                <textarea rows={3} value={block.subtitle || ''} onChange={e => updateBlock(block.id, 'subtitle', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 12px', color: C.white, fontSize: 13, resize: 'vertical' }} />
+                              </div>
+                              <div>
+                                <label style={{ fontSize: 11, fontWeight: 800, color: C.purple, display: 'block', marginBottom: 4 }}>SUBTITLE (ENGLISH)</label>
+                                <textarea rows={3} value={block.subtitle_en || ''} onChange={e => updateBlock(block.id, 'subtitle_en', e.target.value)} placeholder="Auto-translated..." style={{ width: '100%', background: C.bg, border: '1px solid rgba(168,85,247,0.4)', borderRadius: 8, padding: '10px 12px', color: '#E9D5FF', fontSize: 13, resize: 'vertical' }} />
+                              </div>
+                            </div>
+
+                            {/* Image Upload / URL */}
+                            <div>
+                              <label style={{ fontSize: 11, fontWeight: 800, color: C.muted, display: 'block', marginBottom: 4 }}>BILD URL ODER DIREKT-UPLOAD</label>
+                              <div style={{ display: 'flex', gap: 8 }}>
+                                <input type="text" placeholder="https://..." value={block.imageUrl || ''} onChange={e => updateBlock(block.id, 'imageUrl', e.target.value)} style={{ flex: 1, background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 12px', color: C.white, fontSize: 13 }} />
+                                <label style={{ padding: '10px 16px', background: C.purple, border: 'none', borderRadius: 8, color: C.white, fontSize: 12, fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
+                                  <Upload size={14} /> Datei Hochladen
+                                  <input type="file" accept="image/*" onChange={e => handleFileUploadForBlock(block.id, 'imageUrl', e)} style={{ display: 'none' }} />
+                                </label>
+                              </div>
+                            </div>
+
+                            {/* CTA Button Label & Link */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+                              <div>
+                                <label style={{ fontSize: 11, fontWeight: 800, color: C.muted, display: 'block', marginBottom: 4 }}>BUTTON TEXT (DE)</label>
+                                <input type="text" value={block.ctaText || ''} onChange={e => updateBlock(block.id, 'ctaText', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
+                              </div>
+                              <div>
+                                <label style={{ fontSize: 11, fontWeight: 800, color: C.purple, display: 'block', marginBottom: 4 }}>BUTTON TEXT (EN)</label>
+                                <input type="text" value={block.ctaText_en || ''} onChange={e => updateBlock(block.id, 'ctaText_en', e.target.value)} style={{ width: '100%', background: C.bg, border: '1px solid rgba(168,85,247,0.4)', borderRadius: 8, padding: '8px 12px', color: '#E9D5FF', fontSize: 12 }} />
+                              </div>
+                              <div>
+                                <label style={{ fontSize: 11, fontWeight: 800, color: C.muted, display: 'block', marginBottom: 4 }}>BUTTON LINK</label>
+                                <input type="text" value={block.ctaLink || ''} onChange={e => updateBlock(block.id, 'ctaLink', e.target.value)} style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '8px 12px', color: C.white, fontSize: 12 }} />
+                              </div>
+                            </div>
+
+                          </div>
+
+                          {/* Modal Footer */}
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: `1px solid ${C.border}`, paddingTop: 14, marginTop: 6 }}>
+                            <button
+                              onClick={() => handleAutoTranslateBlock(block.id)}
+                              style={{ background: 'rgba(168,85,247,0.2)', border: '1px solid rgba(168,85,247,0.5)', color: '#E9D5FF', borderRadius: 8, padding: '8px 14px', fontSize: 12, fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                            >
+                              <Sparkles size={13} color="#A855F7" /> Dieser Sektion DE ➔ EN Übersetzen
+                            </button>
+
+                            <button
+                              onClick={() => setActiveQuickEditBlockId(null)}
+                              style={{ background: C.purple, border: 'none', color: C.white, borderRadius: 8, padding: '10px 24px', fontSize: 13, fontWeight: 900, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                            >
+                              <Check size={16} /> ✓ Übernehmen & Live-Vorschau
+                            </button>
+                          </div>
+
+                        </div>
+                      </div>
+                    )
+                  })()}
 
                 </div>
               )}
@@ -1465,8 +1844,6 @@ export default function WebsiteStudio() {
           )}
 
         </main>
-
-      </div>
 
       {/* New Page Modal */}
       {showNewPageModal && (

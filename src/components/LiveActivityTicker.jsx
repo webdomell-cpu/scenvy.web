@@ -4,18 +4,31 @@ import { Flame, Sparkles, Tv, CheckCircle, X } from 'lucide-react'
 import { db } from '@/lib/firebase'
 import { doc, onSnapshot } from 'firebase/firestore'
 
-export function LiveActivityTicker() {
+export function LiveActivityTicker({ lang = 'de' }) {
   const [isVisible, setIsVisible] = useState(true)
   const [isEnabled, setIsEnabled] = useState(true)
   const [intervalSec, setIntervalSec] = useState(6)
   const [currentIdx, setCurrentIdx] = useState(0)
 
-  const [activities, setActivities] = useState([
+  const defaultDe = [
     { text: 'Ein Restaurant aus München hat gerade die Gastronomie-Reel-Engine gestartet', icon: 'Flame', color: '#EC4899' },
     { text: 'Boutique-Hotel in Wien hat 4 SCENVY Digital Boards verbunden', icon: 'Tv', color: '#3B82F6' },
     { text: 'Rooftop Bar in Hamburg schaltete den 2-for-1 Happy Hour Reel frei', icon: 'Sparkles', color: '#7C3AED' },
     { text: 'Pizzeria in Berlin hat 18 neue Scan-to-Order QR Aufsteller gedruckt', icon: 'CheckCircle', color: '#10B981' }
-  ])
+  ]
+
+  const defaultEn = [
+    { text: 'A restaurant in Munich just launched the SCENVY Reel Engine', icon: 'Flame', color: '#EC4899' },
+    { text: 'Boutique Hotel in Vienna connected 4 SCENVY Digital Boards', icon: 'Tv', color: '#3B82F6' },
+    { text: 'Rooftop Bar in Hamburg activated a 2-for-1 Happy Hour Reel', icon: 'Sparkles', color: '#7C3AED' },
+    { text: 'Pizzeria in Berlin printed 18 new Scan-to-Order QR displays', icon: 'CheckCircle', color: '#10B981' }
+  ]
+
+  const [activities, setActivities] = useState(lang === 'en' ? defaultEn : defaultDe)
+
+  useEffect(() => {
+    setActivities(lang === 'en' ? defaultEn : defaultDe)
+  }, [lang])
 
   useEffect(() => {
     // Sync settings from Firestore global config

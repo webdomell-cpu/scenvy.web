@@ -709,13 +709,15 @@ function ReelVsStaticToggle({ lang = 'de' }) {
       <div style={{ maxWidth: 1150, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 36 }}>
           <span style={{ background: 'rgba(236,72,153,0.15)', border: '1px solid rgba(236,72,153,0.3)', color: '#EC4899', fontSize: 11, fontWeight: 900, padding: '4px 14px', borderRadius: 20, letterSpacing: 1, textTransform: 'uppercase', display: 'inline-block', marginBottom: 12 }}>
-            INTERAKTIVER POS-VERGLEICH
+            {lang === 'en' ? 'INTERACTIVE POS COMPARISON' : 'INTERAKTIVER POS-VERGLEICH'}
           </span>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 900, color: '#FFF', marginBottom: 12 }}>
-            Der „Reel vs. Static“ Unterschied am POS
+            {lang === 'en' ? 'The "Reel vs. Static" Difference at POS' : 'Der „Reel vs. Static“ Unterschied am POS'}
           </h2>
           <p style={{ fontSize: 16, color: '#E1E1E6', maxWidth: 680, margin: '0 auto 28px' }}>
-            Klicke auf den Schalter, um direkt zu erleben, wie der Wechsel von der verstaubten statischen Plakat-Speisekarte zum dynamischen Video-Reel das Gäste-Erlebnis verändert.
+            {lang === 'en'
+              ? 'Click the switch to directly experience how moving from static posters to dynamic video reels transforms the guest experience.'
+              : 'Klicke auf den Schalter, um direkt zu erleben, wie der Wechsel von der verstaubten statischen Plakat-Speisekarte zum dynamischen Video-Reel das Gäste-Erlebnis verändert.'}
           </p>
 
           {/* Toggle Switch */}
@@ -737,7 +739,7 @@ function ReelVsStaticToggle({ lang = 'de' }) {
                 gap: 8
               }}
             >
-              <span>❌ Alt / Klassisch (DSMenu / Jodeck)</span>
+              <span>❌ {lang === 'en' ? 'Old / Legacy (DSMenu / Jodeck)' : 'Alt / Klassisch (DSMenu / Jodeck)'}</span>
             </button>
             <button
               onClick={() => setMode('reel')}
@@ -757,7 +759,7 @@ function ReelVsStaticToggle({ lang = 'de' }) {
                 gap: 8
               }}
             >
-              <span>✨ Neu / Sequential Reel (SCENVY)</span>
+              <span>✨ {lang === 'en' ? 'New / Sequential Reel (SCENVY)' : 'Neu / Sequential Reel (SCENVY)'}</span>
             </button>
           </div>
         </div>
@@ -872,7 +874,7 @@ function ReelVsStaticToggle({ lang = 'de' }) {
 }
 
 function CompetitorComparisonSection({ lang = 'de' }) {
-  const comparisons = [
+  const comparisonsDe = [
     {
       cat: 'Format & Visuals',
       competitor: 'Statische PDFs, starre Layouts & unruhige Split-Screens',
@@ -895,18 +897,45 @@ function CompetitorComparisonSection({ lang = 'de' }) {
     }
   ]
 
+  const comparisonsEn = [
+    {
+      cat: 'Format & Visuals',
+      competitor: 'Static PDFs, rigid layouts & clunky split-screens',
+      scenvy: 'Dynamic Vertical Reels (9:16) & TikTok-style storyboarding'
+    },
+    {
+      cat: 'Engagement & Dwell Time',
+      competitor: 'Low (overlooked as passive poster ads)',
+      scenvy: 'Up to 80% higher dwell time leveraging social media habits'
+    },
+    {
+      cat: 'Mobile Integration',
+      competitor: 'Poor mobile viewports & plain PDF download links',
+      scenvy: 'Seamless web app & QR code instant reel playlists without app download'
+    },
+    {
+      cat: 'Content Creation',
+      competitor: 'Complex canvas editors & inflexible static templates',
+      scenvy: 'AI-driven reel cascades ready to deploy in under 5 minutes'
+    }
+  ]
+
+  const comparisons = lang === 'en' ? comparisonsEn : comparisonsDe
+
   return (
     <section style={{ padding: '90px 5%', background: '#0D0E1A', position: 'relative', zIndex: 2, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
       <div style={{ maxWidth: 1150, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <span style={{ background: 'rgba(139,92,246,0.18)', border: '1px solid rgba(139,92,246,0.3)', color: '#A78BFA', fontSize: 11, fontWeight: 900, padding: '4px 14px', borderRadius: 20, letterSpacing: 1, textTransform: 'uppercase', display: 'inline-block', marginBottom: 12 }}>
-            PARADIGMENWECHSEL AM POS
+            {lang === 'en' ? 'PARADIGM SHIFT AT POS' : 'PARADIGMENWECHSEL AM POS'}
           </span>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 900, color: '#FFF', marginBottom: 14 }}>
-            Warum klassische Digital Signage veraltet ist
+            {lang === 'en' ? 'Why Legacy Digital Signage is Outdated' : 'Warum klassische Digital Signage veraltet ist'}
           </h2>
           <p style={{ fontSize: 16, color: '#E1E1E6', maxWidth: 750, margin: '0 auto', lineHeight: 1.6 }}>
-            Klassische Software (DSMenu, Jodeck & Co.) vertreibt starre „digitale Plakatwände“. SCENVY liefert die vertikale, storygetriebene Reel-Revolution für maximale Conversion.
+            {lang === 'en' 
+              ? 'Legacy platforms sell static billboard screens. SCENVY delivers a story-driven vertical reel experience for maximum sales conversion.'
+              : 'Klassische Software (DSMenu, Jodeck & Co.) vertreibt starre „digitale Plakatwände“. SCENVY liefert die vertikale, storygetriebene Reel-Revolution für maximale Conversion.'}
           </p>
         </div>
 
@@ -914,14 +943,14 @@ function CompetitorComparisonSection({ lang = 'de' }) {
         <div style={{ background: '#12131F', borderRadius: 28, border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}>
           {/* Header Row */}
           <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 2fr 2fr', background: '#1B1C2E', padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.1)', alignItems: 'center' }}>
-            <div style={{ fontSize: 13, fontWeight: 900, color: '#94A3B8', textTransform: 'uppercase' }}>Kategorie</div>
+            <div style={{ fontSize: 13, fontWeight: 900, color: '#94A3B8', textTransform: 'uppercase' }}>{lang === 'en' ? 'Category' : 'Kategorie'}</div>
             <div style={{ fontSize: 14, fontWeight: 900, color: '#94A3B8', display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span>❌ Klassische Software</span>
+              <span>❌ {lang === 'en' ? 'Legacy Software' : 'Klassische Software'}</span>
               <span style={{ fontSize: 11, color: '#64748B', fontWeight: 600 }}>(DSMenu, Jodeck & Co.)</span>
             </div>
             <div style={{ fontSize: 15, fontWeight: 900, color: '#FFF', display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ background: 'linear-gradient(135deg, #8B5CF6, #EC4899)', color: '#FFF', padding: '3px 10px', borderRadius: 8, fontSize: 11 }}>⭐ NEXT-GEN</span>
-              <span style={{ color: '#A78BFA' }}>Unser Sequential Reel System</span>
+              <span style={{ color: '#A78BFA' }}>{lang === 'en' ? 'Our Sequential Reel System' : 'Unser Sequential Reel System'}</span>
             </div>
           </div>
 
@@ -957,7 +986,7 @@ function CompetitorComparisonSection({ lang = 'de' }) {
 }
 
 function PsychologySection({ lang = 'de' }) {
-  const cards = [
+  const cardsDe = [
     {
       title: 'Der Dopamin-Effekt (Visual Appetite & Desire)',
       text: 'Gehirne verarbeiten Bewegung 60.000-mal schneller als Text. Ein zischendes Steak oder die Bewegung eines Kleidungsstücks löst sofortige Kaufimpulse (Cravings) aus, die kein statisches Schild je erreichen kann.',
@@ -981,18 +1010,46 @@ function PsychologySection({ lang = 'de' }) {
     }
   ]
 
+  const cardsEn = [
+    {
+      title: 'The Dopamine Effect (Visual Appetite & Desire)',
+      text: 'Human brains process motion 60,000x faster than static text. Sizzling dishes or dynamic outfit motions ignite instant impulse cravings that static boards can never match.',
+      badge: '60,000x Faster',
+      icon: '🧠',
+      color: '#8B5CF6'
+    },
+    {
+      title: 'Leverage Mobile Viewing Habits',
+      text: 'Your guests are hooked on TikTok, Instagram & Shorts. Bring this captivating fullscreen experience directly to your Point of Sale—on ambient TV screens or directly on guest smartphones.',
+      badge: 'TikTok & Shorts Format',
+      icon: '📱',
+      color: '#EC4899'
+    },
+    {
+      title: 'Sequential Storytelling (Cascade Effect)',
+      text: 'Never overwhelm at once. Guide guests seamlessly: Starter -> Main Course -> Dessert Reel. Significantly boosts upselling rates across menus & bundles.',
+      badge: '+24% Upsell Rate',
+      icon: '⚡',
+      color: '#F97316'
+    }
+  ]
+
+  const cards = lang === 'en' ? cardsEn : cardsDe
+
   return (
     <section style={{ padding: '90px 5%', background: '#12131F', position: 'relative', zIndex: 2 }}>
       <div style={{ maxWidth: 1150, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <span style={{ background: 'rgba(249,115,22,0.15)', border: '1px solid rgba(249,115,22,0.3)', color: '#F97316', fontSize: 11, fontWeight: 900, padding: '4px 14px', borderRadius: 20, letterSpacing: 1, textTransform: 'uppercase', display: 'inline-block', marginBottom: 12 }}>
-            KAUFIMPULS-PSYCHOLOGIE
+            {lang === 'en' ? 'BUYING IMPULSE PSYCHOLOGY' : 'KAUFIMPULS-PSYCHOLOGIE'}
           </span>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 900, color: '#FFF', marginBottom: 14 }}>
-            Warum Video-Reels dein Umsatztreiber Nr. 1 sind
+            {lang === 'en' ? 'Why Video Reels are Your #1 Revenue Driver' : 'Warum Video-Reels dein Umsatztreiber Nr. 1 sind'}
           </h2>
           <p style={{ fontSize: 16, color: '#E1E1E6', maxWidth: 700, margin: '0 auto', lineHeight: 1.6 }}>
-            Deine Mitbewerber verkaufen Software-Lizenzen. Wir verkaufen Verkaufspsychologie und messbare Umsatzsteigerung am Point of Sale.
+            {lang === 'en'
+              ? 'Competitors sell software licenses. We deliver sales psychology and measurable revenue growth at your Point of Sale.'
+              : 'Deine Mitbewerber verkaufen Software-Lizenzen. Wir verkaufen Verkaufspsychologie und messbare Umsatzsteigerung am Point of Sale.'}
           </p>
         </div>
 
@@ -1040,7 +1097,7 @@ function PsychologySection({ lang = 'de' }) {
 function FaqAccordionSection({ lang = 'de' }) {
   const [openIdx, setOpenIdx] = useState(0)
 
-  const faqs = [
+  const faqsDe = [
     {
       q: 'Brauche ich teure neue Hardware oder Speziel-Hardware?',
       a: 'Nein! Unser System läuft cloudbasiert auf nahezu jedem modernen Smart-TV, Fire TV Stick, Android/iOS-Tablet, Raspberry Pi oder Digital Signage Player.'
@@ -1059,18 +1116,39 @@ function FaqAccordionSection({ lang = 'de' }) {
     }
   ]
 
+  const faqsEn = [
+    {
+      q: 'Do I need expensive specialized hardware?',
+      a: 'No! Our platform is cloud-native and runs smoothly on almost any modern Smart TV, Fire TV stick, Android/iOS tablet, Raspberry Pi, or Digital Signage player.'
+    },
+    {
+      q: 'How do I create video reels if I am not a videographer?',
+      a: 'Quick & effortless: Use existing smartphone clips, our integrated AI Reel Engine, or upload social media media directly. Your playlist is ready in minutes.'
+    },
+    {
+      q: 'Can guests view the reel playlist on their own smartphones?',
+      a: 'Yes! Scanning an individual tabletop or window QR code launches the vertical reel experience right in their web browser—zero app install required.'
+    },
+    {
+      q: 'Can I schedule content by time of day?',
+      a: 'Absolutely. Set automated rules: e.g. Breakfast Reels 8–11am, Lunch Specials at noon, and Happy Hour Cocktail Reels from 5pm.'
+    }
+  ]
+
+  const faqs = lang === 'en' ? faqsEn : faqsDe
+
   return (
     <section style={{ padding: '90px 5%', background: '#0D0E1A', position: 'relative', zIndex: 2, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
       <div style={{ maxWidth: 850, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 44 }}>
           <span style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', color: '#10B981', fontSize: 11, fontWeight: 900, padding: '4px 14px', borderRadius: 20, letterSpacing: 1, textTransform: 'uppercase', display: 'inline-block', marginBottom: 12 }}>
-            HÄUFIG GESTELLTE FRAGEN
+            {lang === 'en' ? 'FREQUENTLY ASKED QUESTIONS' : 'HÄUFIG GESTELLTE FRAGEN'}
           </span>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 900, color: '#FFF', marginBottom: 12 }}>
-            Alles was du vor dem Start wissen musst
+            {lang === 'en' ? 'Everything You Need to Know Before Starting' : 'Alles was du vor dem Start wissen musst'}
           </h2>
           <p style={{ fontSize: 15, color: '#E1E1E6' }}>
-            Keine versteckten Verträge, keine Spezialhardware – volle Flexibilität.
+            {lang === 'en' ? 'No lock-in contracts, no proprietary hardware—100% flexibility.' : 'Keine versteckten Verträge, keine Spezialhardware – volle Flexibilität.'}
           </p>
         </div>
 
@@ -2289,7 +2367,7 @@ export default function Landing({ onOpenAuthModal }){
       <SocialProofAndHardwareSection onOpenAuth={handleOpenAuth} lang={lang} />
 
       {/* LIVE ACTIVITY TICKER */}
-      <LiveActivityTicker />
+      <LiveActivityTicker lang={lang} />
 
       {/* FINAL CTA */}
       <section style={{padding:'120px 5%',position:'relative',overflow:'hidden',zIndex:2}}>
@@ -2350,27 +2428,29 @@ export default function Landing({ onOpenAuthModal }){
             <div style={{fontSize:13,color:C.dim}}>{t.footerCopy}</div>
             
             <button 
-              onClick={() => setShowCmsModal(true)} 
+              onClick={() => {
+                sessionStorage.setItem('scenvy_cms_unlocked', 'true')
+                nav('/website-studio')
+              }} 
+              title="Webseiten-Studio & Visual Editor"
+              aria-label="CMS"
               style={{
                 background:'linear-gradient(135deg, rgba(124,58,237,0.25) 0%, rgba(236,72,153,0.25) 100%)',
                 border:'1px solid rgba(168,85,247,0.6)',
                 color:'#E9D5FF',
-                fontSize:13,
-                fontWeight:800,
-                padding:'8px 18px',
+                padding:'10px 12px',
                 borderRadius:10,
                 cursor:'pointer',
                 display:'inline-flex',
                 alignItems:'center',
-                gap:8,
+                justifyContent:'center',
                 boxShadow:'0 4px 16px rgba(124,58,237,0.25)',
                 transition:'all 0.2s'
               }}
               onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
               onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
             >
-              <Sparkles size={15} color="#A855F7" />
-              <span>Webseiten-Designer (WYSIWYG CMS)</span>
+              <Sparkles size={16} color="#A855F7" />
             </button>
 
             <div style={{fontSize:13,color:C.dim}}>{t.footerMade}</div>
@@ -2383,8 +2463,8 @@ export default function Landing({ onOpenAuthModal }){
         <button onClick={handleOpenAuth} style={{flex:1,padding:'12px 0',borderRadius:10,border:`1px solid ${C.border}`,background:C.card,color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',fontFamily:'inherit',textAlign:'center'}}>
           {t.nav.login}
         </button>
-        <button onClick={() => setShowCmsModal(true)} style={{padding:'12px 14px',borderRadius:10,border:'1px solid rgba(168,85,247,0.5)',background:'rgba(124,58,237,0.2)',color:'#E9D5FF',fontWeight:800,fontSize:12,cursor:'pointer',fontFamily:'inherit',textAlign:'center',display:'flex',alignItems:'center',gap:4}}>
-          <Sparkles size={14} color="#A855F7"/> CMS
+        <button onClick={() => { sessionStorage.setItem('scenvy_cms_unlocked', 'true'); nav('/website-studio') }} title="CMS Studio" aria-label="CMS" style={{padding:'12px 14px',borderRadius:10,border:'1px solid rgba(168,85,247,0.5)',background:'rgba(124,58,237,0.2)',color:'#E9D5FF',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <Sparkles size={16} color="#A855F7"/>
         </button>
         <button onClick={handleOpenAuth} style={{flex:1.5,padding:'12px 0',borderRadius:10,border:'none',background:grad(C.purple,C.pink),color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',fontFamily:'inherit',textAlign:'center',boxShadow:`0 4px 15px ${C.purple}55`}}>
           {t.nav.cta}
