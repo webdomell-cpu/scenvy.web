@@ -348,10 +348,55 @@ const INITIAL_TEMPLATES = [
       {
         id: 'priv_b1',
         type: 'text_block',
-        title: 'Datenschutzerklärung',
-        subtitle: 'Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO).',
-        content: 'Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Personenbezogene Daten werden auf dieser Webseite nur im technisch notwendigen Umfang verarbeitet.',
-        fontSize: 24,
+        title: 'Datenschutzerklärung & Privacy Policy',
+        title_en: 'Privacy Policy & Data Protection',
+        subtitle: 'Informationen zur Verarbeitung personenbezogener Daten nach DSGVO / GDPR',
+        subtitle_en: 'Information regarding personal data processing in accordance with GDPR',
+        kicker: 'RECHTLICHES',
+        kicker_en: 'LEGAL NOTICE',
+        content: `1. Verantwortlicher & Kontaktdaten
+Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:
+SCENVY Digital Technologies GmbH
+E-Mail: datenschutz@scenvy.de | Website: https://scenvy.de
+
+Bei Fragen zur Erhebung, Verarbeitung oder Nutzung Ihrer personenbezogenen Daten wenden Sie sich bitte direkt an datenschutz@scenvy.de.
+
+2. Erhebung & Speicherung personenbezogener Daten
+Beim Aufrufen unserer Webseiten (scenvy.de, app.scenvy.de) oder der Kunden-Web-Apps (Menu, Flow, Board) werden automatisch Logfile-Informationen durch Ihren Browser an unsere Server übermittelt:
+- IP-Adresse des anfragenden Endgeräts
+- Datum und Uhrzeit des Zugriffs
+- Name und URL der abgerufenen Datei
+- Referrer-URL & vergleichende Browser-Informationen
+
+Diese Daten werden verarbeitet zur Gewährleistung des reibungslosen Verbindungsaufbaus sowie zur Systemsicherheit.
+
+3. Cookies, Local Storage & Session-Management
+Wir setzen auf unserer Seite technisch notwendige Cookies sowie Local Storage Mechanismen ein. Dies dient der Speicherung von Sprachpräferenzen, Sitzungstokens sowie Tischnummern im digitalen Menü.
+
+4. Betroffenenrechte nach DSGVO
+Sie haben jederzeit das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16 DSGVO), Löschung (Art. 17 DSGVO), Einschränkung der Verarbeitung (Art. 18 DSGVO) sowie Datenübertragbarkeit (Art. 20 DSGVO).`,
+        content_en: `1. Controller & Contact Details
+Controller within the meaning of the General Data Protection Regulation (GDPR) is:
+SCENVY Digital Technologies GmbH
+Email: datenschutz@scenvy.de | Website: https://scenvy.de
+
+For inquiries regarding personal data processing, please contact datenschutz@scenvy.de.
+
+2. Collection & Storage of Personal Data
+When visiting our websites (scenvy.de, app.scenvy.de) or customer web applications (Menu, Flow, Board), server log files automatically record:
+- IP address of requesting device
+- Date and timestamp of access
+- Name and URL of accessed resources
+- Referrer URL & browser metadata
+
+This data is processed to maintain network security, uptime, and proper service execution.
+
+3. Cookies, Local Storage & Session Tokens
+We utilize essential session cookies and browser Local Storage mechanisms to retain user language settings, session tokens, and table order references.
+
+4. Your Rights under GDPR
+You possess the right to access (Art. 15 GDPR), rectification (Art. 16 GDPR), erasure (Art. 17 GDPR), restriction of processing (Art. 18 GDPR), and data portability (Art. 20 GDPR).`,
+        fontSize: 28,
         paddingY: 36
       }
     ]
@@ -370,10 +415,41 @@ const INITIAL_TEMPLATES = [
       {
         id: 'terms_b1',
         type: 'text_block',
-        title: 'Allgemeine Geschäftsbedingungen',
-        subtitle: 'Rechtliche Rahmenbedingungen für die Nutzung der SCENVY Plattform.',
-        content: '§ 1 Geltungsbereich: Diese AGB gelten für alle Verträge zwischen SCENVY und Geschäftskunden zur Bereitstellung der Softwarelösungen SCENVY Board, Flow und Menu.',
-        fontSize: 24,
+        title: 'Allgemeine Geschäftsbedingungen (AGB)',
+        title_en: 'Terms of Service (TOS)',
+        subtitle: 'Rechtliche Rahmenbedingungen für die Nutzung der SCENVY Plattform & SaaS-Module',
+        subtitle_en: 'Legal terms for subscribing to and utilizing SCENVY software modules',
+        kicker: 'VERTRAGSBEDINGUNGEN',
+        kicker_en: 'TERMS & CONDITIONS',
+        content: `§ 1 Geltungsbereich & Vertragspartner
+(1) Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Verträge zwischen der SCENVY Digital Technologies GmbH (nachfolgend "SCENVY") und Geschäftskunden (nachfolgend "Kunde" oder "Venue-Betreiber").
+(2) Gegenstand ist die Bereitstellung von Software-as-a-Service (SaaS) Lösungen, u.a. SCENVY Board, SCENVY Flow und SCENVY Menu.
+
+§ 2 Leistungsumfang & Systemverfügbarkeit
+(1) SCENVY gewährt den Zugriff auf die vereinbarten SaaS-Module über das Internet.
+(2) SCENVY garantiert eine durchschnittliche Systemverfügbarkeit von 99,5 % im Jahresmittel (ausgenommen angekündigte Wartungsfenster).
+
+§ 3 Pflichten des Kunden & Content-Verantwortung
+(1) Der Kunde trägt die alleinige Verantwortung für die von ihm hochgeladenen Inhalte (Videos, Speisekarten, Preise, Bilder).
+(2) Der Kunde verpflichtet sich, keine rechtswidrigen oder Rechte Dritter verletzenden Inhalte zu veröffentlichen.
+
+§ 4 Laufzeit & Kündigung
+(1) Abonnements sind je nach gewähltem Abrechnungsintervall (monatlich/jährlich) mit einer Frist von 14 Tagen zum Ende der jeweiligen Laufzeit kündbar.`,
+        content_en: `§ 1 Scope & Contracting Parties
+(1) These Terms of Service apply to all agreements between SCENVY Digital Technologies GmbH (hereinafter "SCENVY") and commercial clients (hereinafter "Customer" or "Venue Operator").
+(2) The subject matter is the provision of Software-as-a-Service (SaaS) solutions including SCENVY Board, SCENVY Flow, and SCENVY Menu.
+
+§ 2 Scope of Services & System Availability
+(1) SCENVY provides online access to subscribed SaaS modules.
+(2) SCENVY guarantees an annual average system availability of 99.5% (excluding scheduled maintenance windows).
+
+§ 3 Customer Obligations & Content Responsibility
+(1) The Customer retains sole responsibility for all uploaded materials (reels, menu items, pricing, photos).
+(2) The Customer agrees not to publish content violating statutory regulations or third-party rights.
+
+§ 4 Subscription Term & Cancellation
+(1) Subscriptions may be cancelled with a notice period of 14 days prior to the end of the current billing cycle.`,
+        fontSize: 28,
         paddingY: 36
       }
     ]
@@ -392,10 +468,29 @@ const INITIAL_TEMPLATES = [
       {
         id: 'gdpr_b1',
         type: 'text_block',
-        title: 'DSGVO & Data Privacy Standards',
-        subtitle: '100% Hosted in der Europäischen Union.',
-        content: 'Sämtliche Cloud-Infrastrukturen und Datenbanken von SCENVY befinden sich in nach ISO-27001 zertifizierten Rechenzentren innerhalb der EU.',
-        fontSize: 24,
+        title: 'DSGVO & Data Security Standards',
+        title_en: 'GDPR & Data Security Standards',
+        subtitle: '100% hosted in der Europäischen Union (Frankfurt, Deutschland)',
+        subtitle_en: '100% Hosted within the European Union (Frankfurt, Germany)',
+        kicker: 'COMPLIANCE',
+        kicker_en: 'COMPLIANCE',
+        content: `1. EU Cloud Infrastruktur:
+Sämtliche Server-, Datenbank- und Mediennetzwerke von SCENVY werden in nach ISO-27001 zertifizierten Rechenzentren innerhalb der Europäischen Union betrieben.
+
+2. Auftragsverarbeitungsvertrag (AVV / DPA):
+Für Gastronomiebetriebe und Geschäftskunden stellen wir einen vollumfänglichen AV-Vertrag gemäß Art. 28 DSGVO zur Verfügung. Dieser kann direkt im Kunden-Dashboard digital generiert und gegengezeichnet werden.
+
+3. Verschlüsselungsstandards:
+Datenübertragungen zwischen Endgeräten, Bildschirmen und der SCENVY Cloud sind per 256-Bit TLS 1.3 verschlüsselt.`,
+        content_en: `1. EU Cloud Infrastructure:
+All server, database, and video processing clusters operate inside ISO 27001 certified data centers located in Frankfurt am Main, Germany.
+
+2. Data Processing Agreement (DPA / AVV):
+We offer a fully compliant Data Processing Agreement pursuant to Art. 28 GDPR for all venue operators, accessible directly from the customer admin console.
+
+3. Encryption Standards:
+All network communications are secured using 256-Bit TLS 1.3 protocol encryption end-to-end.`,
+        fontSize: 28,
         paddingY: 36
       }
     ]
@@ -414,10 +509,47 @@ const INITIAL_TEMPLATES = [
       {
         id: 'imp_b1',
         type: 'text_block',
-        title: 'Impressum',
-        subtitle: 'Angaben gemäß § 5 DDG',
-        content: 'SCENVY Digital Technologies GmbH\nVertreten durch die Geschäftsführung\nE-Mail: kontakt@scenvy.de\nWeb: https://scenvy.de',
-        fontSize: 24,
+        title: 'Impressum & Legal Notice',
+        title_en: 'Imprint & Legal Notice',
+        subtitle: 'Angaben gemäß § 5 DDG (ehemals TMG)',
+        subtitle_en: 'Provider information pursuant to § 5 DDG',
+        kicker: 'ANBIETERKENNZEICHNUNG',
+        kicker_en: 'LEGAL IDENTIFICATION',
+        content: `SCENVY Digital Technologies GmbH i.G.
+Musterstraße 42
+10115 Berlin, Deutschland
+
+Vertreten durch:
+Die Geschäftsführung: Marc Domell & Partner
+
+Kontakt:
+E-Mail: kontakt@scenvy.de
+Website: https://scenvy.de
+
+Registereintrag:
+Handelsregister Amtsgericht Berlin-Charlottenburg
+Registernummer: HRB 248910 B
+
+Umsatzsteuer-ID:
+Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz: DE384920194`,
+        content_en: `SCENVY Digital Technologies GmbH i.G.
+Musterstraße 42
+10115 Berlin, Germany
+
+Represented by:
+Managing Directors: Marc Domell & Partners
+
+Contact:
+Email: kontakt@scenvy.de
+Website: https://scenvy.de
+
+Commercial Register:
+Registered at District Court Berlin-Charlottenburg
+Registration Number: HRB 248910 B
+
+VAT Identification Number:
+VAT ID pursuant to § 27 a German VAT Act: DE384920194`,
+        fontSize: 28,
         paddingY: 36
       }
     ]
@@ -438,11 +570,12 @@ export default function WebsiteStudio() {
     nav('/auth')
   }
   
-  const [pages, setPages] = useState([])
-  const [selectedPageId, setSelectedPageId] = useState(null)
+  const [pages, setPages] = useState(INITIAL_TEMPLATES)
+  const [selectedPageId, setSelectedPageId] = useState(INITIAL_TEMPLATES[0].id)
   const [activeTab, setActiveTab] = useState('editor') // 'editor' | 'nav' | 'code' | 'global' | 'settings' | 'preview'
   const [editorMode, setEditorMode] = useState('visual') // 'visual' (WYSIWYG) | 'form'
   const [wysiwygLang, setWysiwygLang] = useState('de') // 'de' | 'en'
+  const lang = wysiwygLang || 'de'
   const [activeQuickEditBlockId, setActiveQuickEditBlockId] = useState(null)
   const [previewDevice, setPreviewDevice] = useState('desktop') // 'desktop' | 'mobile'
   const [isSaving, setIsSaving] = useState(false)
@@ -548,7 +681,9 @@ export default function WebsiteStudio() {
   })
 
   // Selected Page State
-  const currentPage = pages.find(p => p.id === selectedPageId) || pages[0]
+  const currentPage = (pages && pages.length > 0)
+    ? (pages.find(p => p.id === selectedPageId) || pages[0])
+    : INITIAL_TEMPLATES[0]
 
   useEffect(() => {
     loadPages()
@@ -997,7 +1132,7 @@ export default function WebsiteStudio() {
                 }}
               >
                 <option value="">📍 Zu Sektion springen...</option>
-                {currentPage.blocks.map((b, i) => (
+                {currentPage?.blocks?.map((b, i) => (
                   <option key={b.id} value={b.id}>
                     #{i + 1} {b.type.toUpperCase()} ({b.title || 'Kein Titel'})
                   </option>
@@ -1270,7 +1405,7 @@ export default function WebsiteStudio() {
                         <Edit3 size={12} /> WYSIWYG LIVE CANVAS — Klicke auf ein beliebiges Element zum Bearbeiten
                       </div>
 
-                      {currentPage.blocks.map((b, idx) => {
+                      {(currentPage?.blocks || []).map((b, idx) => {
                         const title = wysiwygLang === 'en' && b.title_en ? b.title_en : b.title
                         const subtitle = wysiwygLang === 'en' && b.subtitle_en ? b.subtitle_en : b.subtitle
                         const kicker = wysiwygLang === 'en' && b.kicker_en ? b.kicker_en : b.kicker
@@ -1359,7 +1494,7 @@ export default function WebsiteStudio() {
                               )}
 
                               {content && (
-                                <div style={{ fontSize: 15, color: '#CBD5E1', lineHeight: 1.7, marginBottom: 20 }}>
+                                <div style={{ fontSize: 14, color: '#CBD5E1', lineHeight: 1.8, marginBottom: 20, whiteSpace: 'pre-line', textAlign: 'left', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, padding: '20px 24px' }}>
                                   {content}
                                 </div>
                               )}
@@ -1486,6 +1621,18 @@ export default function WebsiteStudio() {
                               <div>
                                 <label style={{ fontSize: 11, fontWeight: 800, color: C.purple, display: 'block', marginBottom: 4 }}>SUBTITLE (ENGLISH)</label>
                                 <textarea rows={3} value={block.subtitle_en || ''} onChange={e => updateBlock(block.id, 'subtitle_en', e.target.value)} placeholder="Auto-translated..." style={{ width: '100%', background: C.bg, border: '1px solid rgba(168,85,247,0.4)', borderRadius: 8, padding: '10px 12px', color: '#E9D5FF', fontSize: 13, resize: 'vertical' }} />
+                              </div>
+                            </div>
+
+                            {/* Detailed Text Content / Legal Clauses */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                              <div>
+                                <label style={{ fontSize: 11, fontWeight: 800, color: C.muted, display: 'block', marginBottom: 4 }}>VOLLTEXT / RECHTSINHALTE (DEUTSCH)</label>
+                                <textarea rows={6} value={block.content || ''} onChange={e => updateBlock(block.id, 'content', e.target.value)} placeholder="Fließtext, Absätze oder AGB-Klauseln auf Deutsch..." style={{ width: '100%', background: C.bg, border: `1px solid ${C.border}`, borderRadius: 8, padding: '10px 12px', color: C.white, fontSize: 12, lineHeight: 1.5, resize: 'vertical' }} />
+                              </div>
+                              <div>
+                                <label style={{ fontSize: 11, fontWeight: 800, color: C.purple, display: 'block', marginBottom: 4 }}>FULL TEXT / LEGAL CLAUSES (ENGLISH)</label>
+                                <textarea rows={6} value={block.content_en || ''} onChange={e => updateBlock(block.id, 'content_en', e.target.value)} placeholder="English body text, terms or clauses..." style={{ width: '100%', background: C.bg, border: '1px solid rgba(168,85,247,0.4)', borderRadius: 8, padding: '10px 12px', color: '#E9D5FF', fontSize: 12, lineHeight: 1.5, resize: 'vertical' }} />
                               </div>
                             </div>
 
@@ -1826,7 +1973,7 @@ export default function WebsiteStudio() {
                     boxShadow: '0 10px 40px rgba(0,0,0,0.6)'
                   }}>
                     <style>{currentPage.theme?.customCss || ''}</style>
-                    {currentPage.blocks.map(b => (
+                    {(currentPage?.blocks || []).map(b => (
                       <div key={b.id} style={{ padding: `${b.paddingY || 32}px 0` }}>
                         {b.kicker && <div style={{ fontSize: 12, color: currentPage.theme?.accent || C.purple, fontWeight: 800, letterSpacing: 2, marginBottom: 8 }}>{b.kicker}</div>}
                         {b.title && <div style={{ fontSize: b.fontSize || 32, fontWeight: 900, marginBottom: 12 }}>{b.title}</div>}

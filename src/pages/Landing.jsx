@@ -2396,28 +2396,32 @@ export default function Landing({ onOpenAuthModal }){
             </div>
 
             <div>
-              <div style={{fontSize:11,fontWeight:700,color:C.white,letterSpacing:1,marginBottom:14}}>COMPANY</div>
+              <div style={{fontSize:11,fontWeight:700,color:C.white,letterSpacing:1,marginBottom:14}}>
+                {lang === 'de' ? 'UNTERNEHMEN' : 'COMPANY'}
+              </div>
               {[
-                { name: 'About', path: '/p/about' },
+                { name: lang === 'de' ? 'Über uns' : 'About Us', path: '/p/about' },
                 { name: 'Blog', path: '/p/blog' },
-                { name: 'Careers', path: '/p/careers' },
-                { name: 'Press', path: '/p/press' }
+                { name: lang === 'de' ? 'Karriere' : 'Careers', path: '/p/careers' },
+                { name: lang === 'de' ? 'Presse' : 'Press', path: '/p/press' }
               ].map(l => (
-                <div key={l.name} onClick={() => nav(l.path)} style={{fontSize:13,color:C.muted,marginBottom:10,cursor:'pointer'}} onMouseEnter={e=>e.target.style.color=C.white} onMouseLeave={e=>e.target.style.color=C.muted}>
+                <div key={l.path} onClick={() => nav(l.path)} style={{fontSize:13,color:C.muted,marginBottom:10,cursor:'pointer'}} onMouseEnter={e=>e.target.style.color=C.white} onMouseLeave={e=>e.target.style.color=C.muted}>
                   {l.name}
                 </div>
               ))}
             </div>
 
             <div>
-              <div style={{fontSize:11,fontWeight:700,color:C.white,letterSpacing:1,marginBottom:14}}>LEGAL</div>
+              <div style={{fontSize:11,fontWeight:700,color:C.white,letterSpacing:1,marginBottom:14}}>
+                {lang === 'de' ? 'RECHTLICHES' : 'LEGAL'}
+              </div>
               {[
-                { name: 'Privacy', path: '/p/privacy' },
-                { name: 'Terms', path: '/p/terms' },
-                { name: 'GDPR', path: '/p/gdpr' },
-                { name: 'Imprint', path: '/p/imprint' }
+                { name: lang === 'de' ? 'Datenschutz' : 'Privacy Policy', path: '/p/privacy' },
+                { name: lang === 'de' ? 'AGB' : 'Terms of Service', path: '/p/terms' },
+                { name: lang === 'de' ? 'DSGVO' : 'GDPR Compliance', path: '/p/gdpr' },
+                { name: lang === 'de' ? 'Impressum' : 'Imprint / Legal Notice', path: '/p/imprint' }
               ].map(l => (
-                <div key={l.name} onClick={() => nav(l.path)} style={{fontSize:13,color:C.muted,marginBottom:10,cursor:'pointer'}} onMouseEnter={e=>e.target.style.color=C.white} onMouseLeave={e=>e.target.style.color=C.muted}>
+                <div key={l.path} onClick={() => nav(l.path)} style={{fontSize:13,color:C.muted,marginBottom:10,cursor:'pointer'}} onMouseEnter={e=>e.target.style.color=C.white} onMouseLeave={e=>e.target.style.color=C.muted}>
                   {l.name}
                 </div>
               ))}

@@ -134,81 +134,132 @@ export default function PublicCustomPage() {
 
       {/* Main Blocks Content */}
       <main style={{ maxWidth: 1100, margin: '0 auto', padding: '40px 20px' }}>
-        {page.blocks?.map((b) => (
-          <section key={b.id} style={{ padding: `${b.paddingY || 40}px 0`, textAlign: 'center' }}>
-            {b.kicker && (
-              <div style={{ fontSize: 12, color: page.theme?.accent || C.purple, fontWeight: 800, letterSpacing: 2, marginBottom: 10, textTransform: 'uppercase' }}>
-                {b.kicker}
-              </div>
-            )}
+        {page.blocks?.map((b) => {
+          const title = (lang === 'en' && b.title_en) ? b.title_en : b.title
+          const subtitle = (lang === 'en' && b.subtitle_en) ? b.subtitle_en : b.subtitle
+          const kicker = (lang === 'en' && b.kicker_en) ? b.kicker_en : b.kicker
+          const ctaText = (lang === 'en' && b.ctaText_en) ? b.ctaText_en : b.ctaText
+          const content = (lang === 'en' && b.content_en) ? b.content_en : b.content
 
-            {b.title && (
-              <h1 className="animated-hero-title" style={{ fontSize: b.fontSize || 34, fontWeight: 900, lineHeight: 1.2, marginBottom: 16, maxWidth: 800, margin: '0 auto 16px' }}>
-                {b.title}
-              </h1>
-            )}
+          return (
+            <section key={b.id} style={{ padding: `${b.paddingY || 40}px 0`, textAlign: 'center' }}>
+              {kicker && (
+                <div style={{ fontSize: 12, color: page.theme?.accent || C.purple, fontWeight: 800, letterSpacing: 2, marginBottom: 10, textTransform: 'uppercase' }}>
+                  {kicker}
+                </div>
+              )}
 
-            {b.subtitle && (
-              <p style={{ fontSize: 16, opacity: 0.85, maxWidth: 640, margin: '0 auto 24px', lineHeight: 1.6 }}>
-                {b.subtitle}
-              </p>
-            )}
+              {title && (
+                <h1 className="animated-hero-title" style={{ fontSize: b.fontSize || 32, fontWeight: 900, lineHeight: 1.2, marginBottom: 16, maxWidth: 840, margin: '0 auto 16px' }}>
+                  {title}
+                </h1>
+              )}
 
-            {b.ctaText && (
-              <Link to={b.ctaLink || '/auth'} className="pulse-cta" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 12, background: page.theme?.accent || C.purple, color: '#FFF', fontWeight: 800, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 20px rgba(124,58,237,0.4)' }}>
-                {b.ctaText} <ArrowRight size={16} />
-              </Link>
-            )}
+              {subtitle && (
+                <p style={{ fontSize: 16, opacity: 0.85, maxWidth: 680, margin: '0 auto 24px', lineHeight: 1.6 }}>
+                  {subtitle}
+                </p>
+              )}
 
-            {b.type === 'social_proof_hardware' && (
-              <div style={{ marginTop: 20 }}>
-                <SocialProofAndHardwareSection lang={lang} />
-              </div>
-            )}
+              {content && (
+                <div style={{
+                  textAlign: 'left',
+                  background: 'rgba(255,255,255,0.03)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: 16,
+                  padding: '28px 32px',
+                  marginTop: 16,
+                  fontSize: 14,
+                  color: '#E2E8F0',
+                  lineHeight: 1.85,
+                  whiteSpace: 'pre-line'
+                }}>
+                  {content}
+                </div>
+              )}
 
-            {b.type === 'buyer_personas' && (
-              <div style={{ marginTop: 20 }}>
-                <BuyerPersonaSection lang={lang} />
-              </div>
-            )}
+              {ctaText && (
+                <Link to={b.ctaLink || '/auth'} className="pulse-cta" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 12, background: page.theme?.accent || C.purple, color: '#FFF', fontWeight: 800, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 20px rgba(124,58,237,0.4)', marginTop: 16 }}>
+                  {ctaText} <ArrowRight size={16} />
+                </Link>
+              )}
 
-            {b.type === 'roi_calculator' && (
-              <div style={{ marginTop: 20 }}>
-                <RoiCalculatorSection lang={lang} />
-              </div>
-            )}
+              {b.type === 'social_proof_hardware' && (
+                <div style={{ marginTop: 20 }}>
+                  <SocialProofAndHardwareSection lang={lang} />
+                </div>
+              )}
 
-            {b.type === 'ai_workflow' && (
-              <div style={{ marginTop: 20 }}>
-                <AiWorkflowSection lang={lang} />
-              </div>
-            )}
+              {b.type === 'buyer_personas' && (
+                <div style={{ marginTop: 20 }}>
+                  <BuyerPersonaSection lang={lang} />
+                </div>
+              )}
 
-            {b.type === 'features' && b.items && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginTop: 40, textAlign: 'left' }}>
-                {b.items.map((item, idx) => (
-                  <div key={idx} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: 24 }}>
-                    <div style={{ fontSize: 16, fontWeight: 800, color: '#FFF', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <CheckCircle size={18} color={page.theme?.accent || C.purple} /> {item.title}
+              {b.type === 'roi_calculator' && (
+                <div style={{ marginTop: 20 }}>
+                  <RoiCalculatorSection lang={lang} />
+                </div>
+              )}
+
+              {b.type === 'ai_workflow' && (
+                <div style={{ marginTop: 20 }}>
+                  <AiWorkflowSection lang={lang} />
+                </div>
+              )}
+
+              {b.type === 'features' && b.items && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, marginTop: 40, textAlign: 'left' }}>
+                  {b.items.map((item, idx) => (
+                    <div key={idx} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, padding: 24 }}>
+                      <div style={{ fontSize: 16, fontWeight: 800, color: '#FFF', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <CheckCircle size={18} color={page.theme?.accent || C.purple} /> {item.title}
+                      </div>
+                      <div style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.5 }}>
+                        {item.desc}
+                      </div>
                     </div>
-                    <div style={{ fontSize: 13, opacity: 0.75, lineHeight: 1.5 }}>
-                      {item.desc}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
 
-            {b.htmlContent && (
-              <div style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: b.htmlContent }} />
-            )}
-          </section>
-        ))}
+              {b.htmlContent && (
+                <div style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: b.htmlContent }} />
+              )}
+            </section>
+          )
+        })}
       </main>
 
       {/* Public Footer */}
-      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.08)', padding: 32, textAlign: 'center', fontSize: 12, opacity: 0.6 }}>
-        © 2026 SCENVY. Powered by SCENVY Webseiten Studio. Alle Rechte vorbehalten.
+      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.08)', padding: '40px 20px 32px', background: 'rgba(10,10,16,0.95)', fontSize: 13, color: '#94A3B8' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <ScenvyLogoFull height={40} />
+          </div>
+
+          <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap', fontSize: 12, fontWeight: 700 }}>
+            <Link to="/p/privacy" style={{ color: '#94A3B8', textDecoration: 'none' }}>
+              {lang === 'de' ? 'Datenschutz' : 'Privacy Policy'}
+            </Link>
+            <Link to="/p/terms" style={{ color: '#94A3B8', textDecoration: 'none' }}>
+              {lang === 'de' ? 'AGB' : 'Terms of Service'}
+            </Link>
+            <Link to="/p/gdpr" style={{ color: '#94A3B8', textDecoration: 'none' }}>
+              {lang === 'de' ? 'DSGVO' : 'GDPR'}
+            </Link>
+            <Link to="/p/imprint" style={{ color: '#94A3B8', textDecoration: 'none' }}>
+              {lang === 'de' ? 'Impressum' : 'Imprint'}
+            </Link>
+            <Link to="/p/about" style={{ color: '#94A3B8', textDecoration: 'none' }}>
+              {lang === 'de' ? 'Über uns' : 'About'}
+            </Link>
+          </div>
+
+          <div style={{ fontSize: 12, opacity: 0.6 }}>
+            © 2026 SCENVY Ecosystem. {lang === 'de' ? 'Alle Rechte vorbehalten.' : 'All rights reserved.'}
+          </div>
+        </div>
       </footer>
     </div>
   )
