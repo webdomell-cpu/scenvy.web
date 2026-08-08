@@ -6,6 +6,10 @@ import { C } from '@/tokens'
 import { ScenvyLogoFull } from '@/components/ScenvyLogo'
 import { FlagDE, FlagGB } from '@/components/FlagIcons'
 import { ArrowRight, CheckCircle, Sparkles } from 'lucide-react'
+import { SocialProofAndHardwareSection } from '@/components/SocialProofAndHardwareSection'
+import { BuyerPersonaSection } from '@/components/BuyerPersonaSection'
+import { RoiCalculatorSection } from '@/components/RoiCalculatorSection'
+import { AiWorkflowSection } from '@/components/AiWorkflowSection'
 
 export default function PublicCustomPage() {
   const { slug } = useParams()
@@ -154,6 +158,30 @@ export default function PublicCustomPage() {
               <Link to={b.ctaLink || '/auth'} className="pulse-cta" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 12, background: page.theme?.accent || C.purple, color: '#FFF', fontWeight: 800, fontSize: 15, textDecoration: 'none', boxShadow: '0 4px 20px rgba(124,58,237,0.4)' }}>
                 {b.ctaText} <ArrowRight size={16} />
               </Link>
+            )}
+
+            {b.type === 'social_proof_hardware' && (
+              <div style={{ marginTop: 20 }}>
+                <SocialProofAndHardwareSection lang={lang} />
+              </div>
+            )}
+
+            {b.type === 'buyer_personas' && (
+              <div style={{ marginTop: 20 }}>
+                <BuyerPersonaSection lang={lang} />
+              </div>
+            )}
+
+            {b.type === 'roi_calculator' && (
+              <div style={{ marginTop: 20 }}>
+                <RoiCalculatorSection lang={lang} />
+              </div>
+            )}
+
+            {b.type === 'ai_workflow' && (
+              <div style={{ marginTop: 20 }}>
+                <AiWorkflowSection lang={lang} />
+              </div>
             )}
 
             {b.type === 'features' && b.items && (

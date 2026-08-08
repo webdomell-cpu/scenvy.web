@@ -6,10 +6,14 @@ import {
   Globe, Layout, Code, Sparkles, Plus, Save, Trash2, Eye, EyeOff, ExternalLink, 
   Settings, Type, Palette, MoveUp, MoveDown, Check, ArrowLeft, RefreshCw, 
   Sliders, Copy, Monitor, Smartphone, Layers, Play, Zap, FileText, CheckCircle, LogOut, User,
-  Image as ImageIcon, Upload, List, AlignLeft, HelpCircle, Star, MessageSquare, Flame, Tv
+  Image as ImageIcon, Upload, List, AlignLeft, HelpCircle, Star, MessageSquare, Flame, Tv, Edit3
 } from 'lucide-react'
 import { db } from '@/lib/firebase'
 import { collection, doc, setDoc, getDoc, getDocs, deleteDoc } from 'firebase/firestore'
+import { SocialProofAndHardwareSection } from '@/components/SocialProofAndHardwareSection'
+import { BuyerPersonaSection } from '@/components/BuyerPersonaSection'
+import { RoiCalculatorSection } from '@/components/RoiCalculatorSection'
+import { AiWorkflowSection } from '@/components/AiWorkflowSection'
 
 // Default template pages with Company & Legal pages pre-populated
 const INITIAL_TEMPLATES = [
@@ -1366,28 +1370,28 @@ export default function WebsiteStudio() {
                                 </button>
                               )}
 
-                              {/* Specialized Section Placeholders */}
-                              {b.type === 'pos_reel_toggle' && (
-                                <div style={{ padding: 20, background: 'rgba(255,255,255,0.03)', borderRadius: 12, border: `1px solid ${C.border}`, fontSize: 13, color: C.muted, display: 'flex', alignItems: 'center', gap: 10 }}>
-                                  <Tv size={18} color={C.purple} /> Interactive POS Reel vs Static Interactive Switch Module
+                              {/* Specialized Section Renderers */}
+                              {b.type === 'social_proof_hardware' && (
+                                <div style={{ marginTop: 16 }}>
+                                  <SocialProofAndHardwareSection lang={lang} />
                                 </div>
                               )}
 
-                              {b.type === 'pos_psychology' && (
-                                <div style={{ padding: 20, background: 'rgba(255,255,255,0.03)', borderRadius: 12, border: `1px solid ${C.border}`, fontSize: 13, color: C.muted, display: 'flex', alignItems: 'center', gap: 10 }}>
-                                  <Sparkles size={18} color={C.pink} /> Kaufimpuls Psychologie 4-Card Module
+                              {b.type === 'buyer_personas' && (
+                                <div style={{ marginTop: 16 }}>
+                                  <BuyerPersonaSection lang={lang} />
                                 </div>
                               )}
 
                               {b.type === 'roi_calculator' && (
-                                <div style={{ padding: 20, background: 'rgba(255,255,255,0.03)', borderRadius: 12, border: `1px solid ${C.border}`, fontSize: 13, color: C.muted, display: 'flex', alignItems: 'center', gap: 10 }}>
-                                  <Sliders size={18} color={C.green} /> Interactive ROI Revenue Calculator Module
+                                <div style={{ marginTop: 16 }}>
+                                  <RoiCalculatorSection lang={lang} />
                                 </div>
                               )}
 
-                              {b.type === 'faq_accordion' && (
-                                <div style={{ padding: 20, background: 'rgba(255,255,255,0.03)', borderRadius: 12, border: `1px solid ${C.border}`, fontSize: 13, color: C.muted, display: 'flex', alignItems: 'center', gap: 10 }}>
-                                  <MessageSquare size={18} color={C.purple} /> FAQ Accordion Interactive Module
+                              {b.type === 'ai_workflow' && (
+                                <div style={{ marginTop: 16 }}>
+                                  <AiWorkflowSection lang={lang} />
                                 </div>
                               )}
                             </div>
