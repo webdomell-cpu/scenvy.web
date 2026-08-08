@@ -47,97 +47,166 @@ const INITIAL_TEMPLATES = [
       {
         id: 'b1',
         type: 'hero',
-        kicker: 'DIE ZUKUNFT DES VENUE-MARKETINGS',
-        title: 'Verwandle jeden Ort in ein scrollbares Erlebnis.',
-        subtitle: 'SCENVY verwandelt QR-Codes in TikTok-artige vertikale Reels. Echtzeit-Angebote & KI-Inhalte ohne App-Download.',
+        kicker: '✨ NEU: KI Reel-Generator 2.0 ist live',
+        kicker_en: '✨ NEW: AI Reel Generator 2.0 is live',
+        title: 'DAS BETRIEBSSYSTEM FÜR Moderne Gastronomie',
+        title_en: 'THE OPERATING SYSTEM FOR Modern Hospitality',
+        subtitle: 'Erstelle, verwalte und verteile digitale Erlebnisse an jedem Berührungspunkt. Verwandle QR-Codes & NFC-Tags in TikTok-artige vertikale Story-Reels.',
+        subtitle_en: 'Create, manage and distribute digital experiences across every touchpoint. Transform QR codes & NFC tags into TikTok-style vertical story reels.',
         imageUrl: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=1000&q=80',
-        ctaText: 'Jetzt Kostenlos Ausprobieren →',
-        ctaLink: 'https://app.scenvy.de',
-        secondaryCtaText: 'Live Demo Ansehen',
-        secondaryCtaLink: '#demo',
+        ctaText: 'Demo buchen',
+        ctaText_en: 'Book Demo',
+        ctaLink: '#demo',
+        secondaryCtaText: 'Live Vorschau',
+        secondaryCtaText_en: 'Live Preview',
+        secondaryCtaLink: '#preview',
         fontSize: 34,
         paddingY: 48,
         isHidden: false
       },
       {
+        id: 'b_social_proof',
+        type: 'trust_banner',
+        kicker: 'VERTRAUEN IN 40+ LÄNDERN',
+        kicker_en: 'TRUSTED IN 40+ COUNTRIES',
+        title: 'Vertrauen von über 2.000 führenden Venues',
+        title_en: 'Trusted by over 2,000 leading venues',
+        subtitle: 'Marina Lounge, Grand Hotel Ritz, Rooftop Bar 21, Urban Bistro & Co, The Palm Resort, Gourmet Plaza',
+        paddingY: 30,
+        isHidden: false
+      },
+      {
         id: 'b_reel_toggle',
         type: 'pos_reel_toggle',
+        kicker: 'INTERAKTIVER POS-VERGLEICH',
+        kicker_en: 'INTERACTIVE POS COMPARISON',
         title: 'Der „Reel vs. Static“ Unterschied am POS',
-        subtitle: 'Interaktiver Schalter: Wechsle zwischen klassischem Plakat und dynamischem Video Reel.',
+        title_en: 'The "Reel vs. Static" Difference at POS',
+        subtitle: 'Klicke auf den Schalter, um direkt zu erleben, wie der Wechsel von der verstaubten statischen Plakat-Speisekarte zum dynamischen Video-Reel das Gäste-Erlebnis verändert.',
+        subtitle_en: 'Click the switch to experience how switching from static poster menus to dynamic video reels transforms the guest experience.',
         paddingY: 40,
         isHidden: false
       },
       {
         id: 'b_psychology',
         type: 'pos_psychology',
-        title: 'Verkaufs-Psychologie & Impulse Engine am POS',
-        subtitle: 'Wie Bewegung, Farbkontraste und Timing die Kaufentscheidung am POS lenken.',
-        paddingY: 40,
-        isHidden: false
-      },
-      {
-        id: 'b_roi',
-        type: 'roi_calculator',
-        title: 'Interaktiver ROI & Umsatz-Rechner',
-        subtitle: 'Berechne deinen monatlichen Zusatzumsatz durch dynamisches Cross-Selling mit SCENVY.',
+        kicker: 'KAUFIMPULS-PSYCHOLOGIE',
+        kicker_en: 'PURCHASE IMPULSE PSYCHOLOGY',
+        title: 'Warum Video-Reels dein Umsatztreiber Nr. 1 sind',
+        title_en: 'Why Video Reels Are Your #1 Revenue Driver',
+        subtitle: 'Deine Mitbewerber verkaufen Software-Lizenzen. Wir verkaufen Verkaufspsychologie und messbare Umsatzsteigerung am Point of Sale.',
+        subtitle_en: 'Your competitors sell software licenses. We sell sales psychology and measurable revenue growth at the Point of Sale.',
         paddingY: 40,
         isHidden: false
       },
       {
         id: 'b_sandbox',
         type: 'live_demo_sandbox',
-        title: 'Interaktive Live-Demo & Smartphone QR Scanner',
-        subtitle: 'Testen Sie das SCENVY Gästeerlebnis direkt im Browser oder scannen Sie den QR-Code mit Ihrem Smartphone.',
+        kicker: 'INTERAKTIVES VORFUHR-ELEMENT',
+        kicker_en: 'INTERACTIVE DEMO ELEMENT',
+        title: 'So sieht das fortlaufende Reel-Format aus.',
+        title_en: 'This is what the sequential reel format looks like.',
+        subtitle: 'Keine verstaubte Speisekarte, keine starre Kachelwand: Gäste scannen den QR-Code/NFC-Chip und swipen durch aufeinanderfolgende, hochauflösende Reels mit direkter Bestell- und Buchungsfunktion.',
+        subtitle_en: 'No dusty menu, no rigid grid: Guests scan the QR/NFC tag and swipe through sequential, high-resolution reels with direct order & booking capabilities.',
+        paddingY: 40,
+        isHidden: false
+      },
+      {
+        id: 'b_bento',
+        type: 'bento_grid',
+        kicker: 'DAS MODUL-ÖKOSYSTEM',
+        kicker_en: 'THE MODULE ECOSYSTEM',
+        title: 'Das Bento-Grid deiner digitalen Touchpoints',
+        title_en: 'The Bento Grid of your digital touchpoints',
+        subtitle: 'Kombiniere unsere Spezialmodule nahtlos in einem zentralen Dashboard. Steuere Screens, Speisekarten und Gäste-Erlebnisse in Echtzeit.',
+        subtitle_en: 'Combine our specialized modules seamlessly in one central dashboard. Control screens, menus, and guest experiences in real-time.',
+        paddingY: 40,
+        isHidden: false
+      },
+      {
+        id: 'b_roi',
+        type: 'roi_calculator',
+        kicker: 'INTERAKTIVER MEHRUMSATZ-RECHNER',
+        kicker_en: 'INTERACTIVE ROI CALCULATOR',
+        title: 'Berechne deinen Mehrumsatz mit SCENVY',
+        title_en: 'Calculate your extra revenue with SCENVY',
+        subtitle: 'Erfahre in Sekunden, wie viel Zusatzumsatz durch visuelle Verkaufsförderung, Impulskäufe & automatische Menü-Reels in deinem Betrieb entsteht.',
+        subtitle_en: 'Discover in seconds how much extra revenue visual sales promotion, impulse buys & automatic menu reels generate in your business.',
         paddingY: 40,
         isHidden: false
       },
       {
         id: 'b_ai_wf',
         type: 'ai_workflow',
-        title: 'KI-Workflow in 60 Sekunden',
-        subtitle: 'Erstellen Sie automatisch fesselnde Marketing-Reels aus Text oder Fotos.',
+        kicker: 'KI-WORKFLOW IN 60 SEKUNDEN',
+        kicker_en: 'AI WORKFLOW IN 60 SECONDS',
+        title: 'Keine fertig produzierten Videos? Kein Problem!',
+        title_en: 'No finished videos? No problem!',
+        subtitle: 'Lade einfach ein einfaches Handy-Foto deines Gerichts oder Produkts hoch. Unsere integrierte Gemini & Claude KI verwandelt es automatisch in ein hochauflösendes, animiertes Reel.',
+        subtitle_en: 'Simply upload a smartphone photo of your dish or product. Our integrated Gemini & Claude AI automatically transforms it into a high-res animated reel.',
         paddingY: 40,
         isHidden: false
       },
       {
         id: 'b_personas',
         type: 'buyer_personas',
-        title: 'Maßgeschneiderte Lösungen für Ihr Team',
-        subtitle: 'Egal ob Betreiber, Marketing oder IT — SCENVY bietet den passenden Mehrwert.',
+        kicker: 'MASSGESCHNEIDERT FÜR DEIN TEAM',
+        kicker_en: 'TAILORED FOR YOUR TEAM',
+        title: 'Lösungen für jede Rolle im Betrieb',
+        title_en: 'Solutions for every role in your business',
+        subtitle: 'Egal ob Umsatzsteigerung, Design-Kontrolle oder IT-Stabilität — SCENVY löst die größten Herausforderungen deines Teams.',
+        subtitle_en: 'Whether revenue growth, design control, or IT stability — SCENVY solves your team\'s biggest challenges.',
         paddingY: 40,
         isHidden: false
       },
       {
         id: 'b_hardware',
         type: 'social_proof_hardware',
-        title: '100% Hardware-Unabhängigkeit & Vergleichstabelle',
-        subtitle: 'Erfahren Sie, warum SCENVY herkömmlichen Digital Signage Anbietern meilenweit voraus ist.',
+        kicker: 'HARDWARE-UNABHÄNGIGKEIT & PROOF',
+        kicker_en: 'HARDWARE INDEPENDENCE & PROOF',
+        title: 'Keine teuren Spezial-Player nötig',
+        title_en: 'No expensive proprietary players needed',
+        subtitle: 'Nutze einfach deine bereits vorhandenen Fernseher, Fire TV Sticks, Tablets oder PC-Monitore. SCENVY läuft direkt im Browser.',
+        subtitle_en: 'Simply use your existing Smart TVs, Fire TV Sticks, tablets or monitors. SCENVY runs directly in the browser.',
         paddingY: 40,
         isHidden: false
       },
       {
         id: 'b_faq',
         type: 'faq_accordion',
-        title: 'Häufig gestellte Fragen (FAQ)',
-        subtitle: 'Alles was Sie über SCENVY, Setup, Hardware und Verträge wissen müssen.',
+        kicker: 'HÄUFIG GESTELLTE FRAGEN',
+        kicker_en: 'FREQUENTLY ASKED QUESTIONS',
+        title: 'Alles was du vor dem Start wissen musst',
+        title_en: 'Everything you need to know before starting',
+        subtitle: 'Keine versteckten Verträge, keine Spezialhardware – volle Flexibilität.',
+        subtitle_en: 'No hidden contracts, no proprietary hardware – full flexibility.',
         paddingY: 36,
         isHidden: false
       },
       {
         id: 'b_pricing',
         type: 'pricing',
+        kicker: 'PREISE',
+        kicker_en: 'PRICING',
         title: 'Einfache, transparente Preise',
+        title_en: 'Simple, transparent pricing',
         subtitle: 'Keine Setup-Gebühren. Keine versteckten Kosten. Jederzeit kündbar.',
+        subtitle_en: 'No setup fees. No hidden costs. Cancel anytime.',
         paddingY: 40,
         isHidden: false
       },
       {
         id: 'b_cta',
         type: 'cta',
-        title: 'Bereit deinen Umsatz zu steigern?',
-        subtitle: 'Über 2.000 Venues vertrauen bereits auf das SCENVY Ecosystem.',
-        ctaText: 'Jetzt Standort Registrieren →',
-        ctaLink: 'https://app.scenvy.de',
+        kicker: 'LOSLEGEN',
+        kicker_en: 'GET STARTED',
+        title: 'Bereit, deine Gastronomie zu revolutionieren?',
+        title_en: 'Ready to revolutionize your hospitality business?',
+        subtitle: 'Verwandle jeden Ort in ein scrollbares Erlebnis.',
+        subtitle_en: 'Turn every venue into a scrollable experience.',
+        ctaText: 'Kostenlos starten →',
+        ctaText_en: 'Get Started Free →',
+        ctaLink: '#auth',
         fontSize: 28,
         paddingY: 40,
         isHidden: false
@@ -562,14 +631,38 @@ export default function WebsiteStudio() {
 
   const handleLogout = async () => {
     sessionStorage.removeItem('scenvy_cms_unlocked')
+    localStorage.removeItem('scenvy_cms_unlocked')
     try {
       await logout()
     } catch (e) {
       console.warn('Logout error:', e)
     }
-    nav('/auth')
+    window.location.href = 'https://www.send.de'
   }
   
+  const [isCmsUnlocked, setIsCmsUnlocked] = useState(false)
+  const [cmsPasscode, setCmsPasscode] = useState('')
+  const [passcodeError, setPasscodeError] = useState('')
+
+  useEffect(() => {
+    const unlocked = sessionStorage.getItem('scenvy_cms_unlocked') === 'true' || localStorage.getItem('scenvy_cms_unlocked') === 'true'
+    if (unlocked || user?.role === 'admin') {
+      setIsCmsUnlocked(true)
+    }
+  }, [user])
+
+  const handleUnlockCms = (e) => {
+    e.preventDefault()
+    if (cmsPasscode.trim() === '150815') {
+      sessionStorage.setItem('scenvy_cms_unlocked', 'true')
+      localStorage.setItem('scenvy_cms_unlocked', 'true')
+      setIsCmsUnlocked(true)
+      setPasscodeError('')
+    } else {
+      setPasscodeError('Falsches Passwort. Bitte 150815 eingeben.')
+    }
+  }
+
   const [pages, setPages] = useState(INITIAL_TEMPLATES)
   const [selectedPageId, setSelectedPageId] = useState(INITIAL_TEMPLATES[0].id)
   const [activeTab, setActiveTab] = useState('editor') // 'editor' | 'nav' | 'code' | 'global' | 'settings' | 'preview'
@@ -722,8 +815,21 @@ export default function WebsiteStudio() {
 
   const savePagesToBackend = async (updatedPagesList) => {
     setIsSaving(true)
+    const listToSave = updatedPagesList || pages
+    
     try {
-      for (const p of updatedPagesList || pages) {
+      localStorage.setItem('scenvy_custom_pages', JSON.stringify(listToSave))
+      const mainPage = listToSave.find(p => p.slug === 'hauptseite' || p.id === 'page_main_landing')
+      if (mainPage) {
+        localStorage.setItem('scenvy_custom_page_hauptseite', JSON.stringify(mainPage))
+      }
+      window.dispatchEvent(new Event('scenvy_config_updated'))
+    } catch (err) {
+      console.warn('Local save warning:', err)
+    }
+
+    try {
+      for (const p of listToSave) {
         await setDoc(doc(db, 'custom_pages', p.id), {
           ...p,
           updatedAt: new Date().toISOString()
@@ -739,7 +845,7 @@ export default function WebsiteStudio() {
       triggerNotify('✅ Alle Webseiten & globale Header-Einstellungen gespeichert!')
     } catch (e) {
       console.error('Save error:', e)
-      triggerNotify('💾 Lokal aktualisiert (Backend-Hinweis: ' + e.message + ')')
+      triggerNotify('💾 Lokal aktualisiert!')
     } finally {
       setIsSaving(false)
     }
@@ -962,6 +1068,36 @@ export default function WebsiteStudio() {
     nextBlocks[index] = nextBlocks[targetIndex]
     nextBlocks[targetIndex] = temp
     updateCurrentPage(prev => ({ ...prev, blocks: nextBlocks }))
+  }
+
+  if (!isCmsUnlocked) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#0A0A10', color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, fontFamily: 'Inter, sans-serif' }}>
+        <div style={{ background: '#131221', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 24, padding: 36, width: '100%', maxWidth: 440, textAlign: 'center', boxShadow: '0 25px 60px rgba(0,0,0,0.8)' }}>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
+          <h2 style={{ fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Website Studio CMS</h2>
+          <p style={{ fontSize: 13, color: '#94A3B8', marginBottom: 24 }}>
+            Bitte geben Sie das Admin-Passwort ein, um den Website Studio Editor zu öffnen.
+          </p>
+          <form onSubmit={handleUnlockCms} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <input
+              type="password"
+              placeholder="Passwort (150815)"
+              value={cmsPasscode}
+              onChange={e => setCmsPasscode(e.target.value)}
+              style={{ width: '100%', padding: '14px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(0,0,0,0.6)', color: '#FFF', fontSize: 15, outline: 'none', textAlign: 'center', letterSpacing: 2 }}
+            />
+            {passcodeError && <div style={{ color: '#EC4899', fontSize: 12, fontWeight: 700 }}>{passcodeError}</div>}
+            <button
+              type="submit"
+              style={{ padding: '14px', borderRadius: 12, border: 'none', background: 'linear-gradient(135deg, #7C3AED, #EC4899)', color: '#FFF', fontWeight: 800, fontSize: 15, cursor: 'pointer' }}
+            >
+              Studio Freischalten →
+            </button>
+          </form>
+        </div>
+      </div>
+    )
   }
 
   return (

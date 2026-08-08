@@ -1465,8 +1465,10 @@ export default function Landing({ onOpenAuthModal }){
 
   const handleOpenAuth = () => {
     if (onOpenAuthModal) onOpenAuthModal()
-    else window.location.href = 'https://app.sv.de'
+    else nav('/auth')
   }
+
+  const [customStudioHero, setCustomStudioHero] = useState(null)
 
   const [landingConfig, setLandingConfig] = useState(() => {
     const saved = localStorage.getItem('scenvy_landing_config')
@@ -1517,7 +1519,21 @@ export default function Landing({ onOpenAuthModal }){
       if (l) setLandingConfig(JSON.parse(l))
       const p = localStorage.getItem('scenvy_pricing_config')
       if (p) setPricingConfig(JSON.parse(p))
+
+      const savedCustomPage = localStorage.getItem('scenvy_custom_page_hauptseite')
+      if (savedCustomPage) {
+        try {
+          const parsed = JSON.parse(savedCustomPage)
+          const heroBlock = parsed.blocks?.find(b => b.type === 'hero' || b.id === 'b1')
+          if (heroBlock) {
+            setCustomStudioHero(heroBlock)
+          }
+        } catch (e) {
+          console.warn('Error parsing studio page:', e)
+        }
+      }
     }
+    reloadConfigs()
     window.addEventListener('scenvy_config_updated', reloadConfigs)
     return () => window.removeEventListener('scenvy_config_updated', reloadConfigs)
   }, [])
@@ -1526,6 +1542,24 @@ export default function Landing({ onOpenAuthModal }){
   const t=T[lang]
 
   const getLangText = (key, defaultDe, defaultEn) => {
+    if (customStudioHero) {
+      if (key === 'hero_kicker') {
+        return lang === 'en' ? (customStudioHero.kicker_en || customStudioHero.kicker) : customStudioHero.kicker
+      }
+      if (key === 'hero_title_highlight' && customStudioHero.title) {
+        return lang === 'en' ? (customStudioHero.title_en || customStudioHero.title) : customStudioHero.title
+      }
+      if (key === 'hero_subtitle' && customStudioHero.subtitle) {
+        return lang === 'en' ? (customStudioHero.subtitle_en || customStudioHero.subtitle) : customStudioHero.subtitle
+      }
+      if (key === 'hero_btn_primary_text' && customStudioHero.ctaText) {
+        return lang === 'en' ? (customStudioHero.ctaText_en || customStudioHero.ctaText) : customStudioHero.ctaText
+      }
+      if (key === 'hero_btn_secondary_text' && customStudioHero.secondaryCtaText) {
+        return lang === 'en' ? (customStudioHero.secondaryCtaText_en || customStudioHero.secondaryCtaText) : customStudioHero.secondaryCtaText
+      }
+    }
+
     // Determine the desired string based on language
     let text = lang === 'en' ? defaultEn : defaultDe;
     
