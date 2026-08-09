@@ -2049,7 +2049,7 @@ export default function Landing({ onOpenAuthModal }){
                 <button onClick={()=>nav('/board')} style={{flex:1,padding:'12px 0',borderRadius:12,border:'1px solid rgba(59,130,246,0.5)',background:'rgba(59,130,246,0.15)',color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',textAlign:'center'}}>
                   {lang === 'de' ? 'Details ansehen →' : 'View details →'}
                 </button>
-                <button onClick={handleOpenAuth} style={{flex:1.2,padding:'12px 0',borderRadius:12,border:'none',background:'linear-gradient(135deg, #3B82F6, #8B5CF6)',color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',textAlign:'center'}}>
+                <button onClick={() => window.location.href = 'https://board.scenvy.de'} style={{flex:1.2,padding:'12px 0',borderRadius:12,border:'none',background:'linear-gradient(135deg, #3B82F6, #8B5CF6)',color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',textAlign:'center'}}>
                   {lang === 'de' ? 'Scenvy Board starten' : 'Start Scenvy Board'}
                 </button>
               </div>
@@ -2465,30 +2465,32 @@ export default function Landing({ onOpenAuthModal }){
           <div style={{borderTop:`1px solid ${C.border}`,paddingTop:24,display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:16}}>
             <div style={{fontSize:13,color:C.dim}}>{t.footerCopy}</div>
             
+            {/* BUTTON WITH STAR: ONLY WAY TO ACCESS WEBSITE STUDIO ADMIN (WITH PASSCODE) */}
             <button 
               onClick={() => {
-                sessionStorage.setItem('scenvy_cms_unlocked', 'true')
-                nav('/website-studio')
+                setShowCmsModal(true)
               }} 
-              title="Webseiten-Studio & Visual Editor"
-              aria-label="CMS"
+              title="Website Studio Admin & Visual Editor (Passcode)"
+              aria-label="Website Studio Admin"
               style={{
-                background:'linear-gradient(135deg, rgba(124,58,237,0.25) 0%, rgba(236,72,153,0.25) 100%)',
-                border:'1px solid rgba(168,85,247,0.6)',
-                color:'#E9D5FF',
-                padding:'10px 12px',
+                background:'linear-gradient(135deg, rgba(124,58,237,0.3) 0%, rgba(236,72,153,0.3) 100%)',
+                border:'1px solid rgba(236,72,153,0.6)',
+                color:'#F472B6',
+                padding:'10px 14px',
                 borderRadius:10,
                 cursor:'pointer',
                 display:'inline-flex',
                 alignItems:'center',
                 justifyContent:'center',
-                boxShadow:'0 4px 16px rgba(124,58,237,0.25)',
+                gap:8,
+                boxShadow:'0 4px 16px rgba(236,72,153,0.3)',
                 transition:'all 0.2s'
               }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
             >
-              <Sparkles size={16} color="#A855F7" />
+              <Star size={16} color="#EC4899" fill="#EC4899" />
+              <span style={{ fontSize: 11, fontWeight: 800, color: '#FFF' }}>Edit Website ★</span>
             </button>
 
             <div style={{fontSize:13,color:C.dim}}>{t.footerMade}</div>
@@ -2501,8 +2503,8 @@ export default function Landing({ onOpenAuthModal }){
         <button onClick={handleOpenAuth} style={{flex:1,padding:'12px 0',borderRadius:10,border:`1px solid ${C.border}`,background:C.card,color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',fontFamily:'inherit',textAlign:'center'}}>
           {t.nav.login}
         </button>
-        <button onClick={() => { sessionStorage.setItem('scenvy_cms_unlocked', 'true'); nav('/website-studio') }} title="CMS Studio" aria-label="CMS" style={{padding:'12px 14px',borderRadius:10,border:'1px solid rgba(168,85,247,0.5)',background:'rgba(124,58,237,0.2)',color:'#E9D5FF',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>
-          <Sparkles size={16} color="#A855F7"/>
+        <button onClick={() => setShowCmsModal(true)} title="Website Studio Admin" aria-label="CMS" style={{padding:'12px 14px',borderRadius:10,border:'1px solid rgba(236,72,153,0.6)',background:'rgba(236,72,153,0.2)',color:'#F472B6',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <Star size={16} color="#EC4899" fill="#EC4899"/>
         </button>
         <button onClick={handleOpenAuth} style={{flex:1.5,padding:'12px 0',borderRadius:10,border:'none',background:grad(C.purple,C.pink),color:C.white,fontWeight:700,fontSize:13,cursor:'pointer',fontFamily:'inherit',textAlign:'center',boxShadow:`0 4px 15px ${C.purple}55`}}>
           {t.nav.cta}
